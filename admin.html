@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>פאנל ניהול | קליניקת ארגמן</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background: var(--color-bg-light); }
+    .admin-wrap { max-width: 960px; margin: 0 auto; padding: 2rem var(--container-pad); }
+    .form-section { background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
+    .form-section h2 { font-size: 1.2rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-border); }
+    .table-wrap { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow-x: auto; }
+    .admin-table { min-width: 600px; }
+  </style>
+</head>
+<body>
+
+<!-- AUTH OVERLAY -->
+<div class="admin-auth-overlay" id="admin-auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+  <div class="admin-auth-box">
+    <div style="font-size:2.5rem;margin-bottom:1rem">🔐</div>
+    <h2 id="auth-title">כניסה לפאנל הניהול</h2>
+    <p>אזור זה מוגן בסיסמה</p>
+    <form id="admin-login-form" novalidate>
+      <div class="form-group">
+        <label for="admin-pass">סיסמה</label>
+        <input type="password" id="admin-pass" name="password" required autocomplete="current-password" placeholder="הכניסו סיסמה">
+      </div>
+      <div id="admin-error" class="admin-error" role="alert" aria-live="polite"></div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem">כניסה ←</button>
+    </form>
+    <div style="margin-top:1.5rem">
+      <a href="index.html" style="font-size:0.88rem;color:var(--color-text-muted)">← חזרה לאתר</a>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="admin-dashboard" style="display:none">
+
+  <header style="background:var(--color-primary);padding:1rem 0;position:sticky;top:0;z-index:100">
+    <div style="max-width:960px;margin:0 auto;padding:0 var(--container-pad);display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+      <a href="index.html" style="color:rgba(255,255,255,0.7);font-size:0.85rem">← לאתר</a>
+      <span style="color:rgba(255,255,255,0.3)">|</span>
+      <span style="color:white;font-weight:700;flex:1">קליניקת ארגמן — פאנל ניהול</span>
+      <span class="admin-badge" id="article-count">0 מאמרים</span>
+      <button id="admin-logout" class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3)">התנתק</button>
+    </div>
+  </header>
+
+  <div class="admin-wrap">
+
+    <!-- FORM SECTION -->
+    <div class="form-section">
+      <h2 id="form-title">✍️ פרסום מאמר חדש</h2>
+      <form id="article-form" novalidate>
+        <div class="grid-2" style="gap:1rem">
+          <div class="form-group" style="grid-column:1/-1">
+            <label for="title_field">כותרת המאמר *</label>
+            <input type="text" id="title_field" name="title_field" required placeholder="כותרת ברורה ומושכת">
+          </div>
+          <div class="form-group">
+            <label for="category">קטגוריה</label>
+            <select id="category" name="category">
+              <option value="זוגיות">זוגיות</option>
+              <option value="מיניות">מיניות</option>
+              <option value="טראומה">טראומה</option>
+              <option value="אישי">אישי</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="article-img">תמונה (עד 500KB)</label>
+            <input type="file" id="article-img" name="image" accept="image/*">
+            <img id="img-preview" class="img-preview" alt="תצוגה מקדימה">
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label for="excerpt">תקציר (2 שורות)</label>
+            <textarea id="excerpt" name="excerpt" rows="2" placeholder="תיאור קצר שיופיע ברשימת המאמרים..."></textarea>
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label for="content">תוכן המאמר *</label>
+            <textarea id="content" name="content" rows="14" placeholder="כתבו את תוכן המאמר כאן...&#10;&#10;ניתן להשתמש בשורות ריקות להפרדה בין פסקאות."></textarea>
+          </div>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
+          <button type="submit" class="btn btn-primary btn-lg" id="form-submit-btn">פרסם מאמר ←</button>
+          <button type="button" class="btn btn-outline" onclick="resetAdminForm()">נקה טופס</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- ARTICLES TABLE -->
+    <div class="form-section">
+      <h2>📋 מאמרים קיימים</h2>
+      <div class="table-wrap">
+        <table class="admin-table" role="grid">
+          <thead>
+            <tr>
+              <th scope="col">כותרת</th>
+              <th scope="col">קטגוריה</th>
+              <th scope="col">תאריך</th>
+              <th scope="col">עריכה</th>
+              <th scope="col">מחיקה</th>
+            </tr>
+          </thead>
+          <tbody id="articles-tbody"></tbody>
+        </table>
+      </div>
+      <div style="margin-top:1rem;display:flex;gap:1rem">
+        <a href="blog.html" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">צפו בבלוג ←</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+  function resetAdminForm() {
+    document.getElementById('article-form').reset();
+    const preview = document.getElementById('img-preview');
+    if (preview) { preview.src = ''; preview.style.display = 'none'; }
+    const btn = document.getElementById('form-submit-btn');
+    if (btn) btn.textContent = 'פרסם מאמר ←';
+    const title = document.getElementById('form-title');
+    if (title) title.textContent = '✍️ פרסום מאמר חדש';
+    if (typeof editingId !== 'undefined') window.editingId = null;
+  }
+
+  const origEdit = window.adminEditArticle;
+  window.adminEditArticle = function(id) {
+    if (origEdit) origEdit(id);
+    const title = document.getElementById('form-title');
+    if (title) title.textContent = '✏️ עריכת מאמר';
+    document.getElementById('article-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+</script>
+</body>
+</html>

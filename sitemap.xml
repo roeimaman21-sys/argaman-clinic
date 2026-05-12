@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://argamanclinic.co.il/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://argamanclinic.co.il/about.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://argamanclinic.co.il/services.html</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://argamanclinic.co.il/pricing.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://argamanclinic.co.il/workshops.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://argamanclinic.co.il/testimonials.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://argamanclinic.co.il/videos.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://argamanclinic.co.il/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://argamanclinic.co.il/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://argamanclinic.co.il/contact.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://argamanclinic.co.il/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://argamanclinic.co.il/accessibility.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>
