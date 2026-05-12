@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <!-- GA4 | REPLACE: G-XXXXXXXXXX -->
@@ -6,41 +6,20 @@
   <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>שירותים | קליניקת ארגמן — ייעוץ זוגי, מיני ואישי</title>
-  <meta name="description" content="שירותי ייעוץ זוגי, ייעוץ מיני, ריפוי טראומה וייעוץ אישי עם גל ממן. פגישות פנים ואונליין, בית שמש.">
+  <title>שירותים | קליניקת ארגמן — ייעוץ נישואין, מיני ואישי</title>
+  <meta name="description" content="ייעוץ זוגי ונישואין, ייעוץ מיני, ריפוי טראומה וייעוץ אישי עם גל ממן. פגישות פנים ואונליין, בית שמש. סודיות מוחלטת.">
   <link rel="canonical" href="https://argamanclinic.co.il/services.html">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://argamanclinic.co.il/services.html">
   <meta property="og:title" content="שירותים | קליניקת ארגמן">
-  <meta property="og:description" content="ייעוץ זוגי, מיני, ריפוי טראומה וייעוץ אישי. גישה חמה ומקצועית.">
+  <meta property="og:description" content="ייעוץ זוגי, מיני, ריפוי טראומה וייעוץ אישי. גישה חמה, מקצועית וסודית לחלוטין.">
   <meta property="og:image" content="https://argamanclinic.co.il/og-image.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="שירותים | קליניקת ארגמן">
-  <meta name="twitter:description" content="ייעוץ זוגי, מיני, ריפוי טראומה וייעוץ אישי.">
-  <meta name="twitter:image" content="https://argamanclinic.co.il/og-image.jpg">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
   <link rel="stylesheet" href="style.css">
-  <style>
-    .service-section { padding: 5rem 0; }
-    .service-section:nth-child(even) { background: var(--color-bg-light); }
-    .service-detail-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: center; }
-    .service-detail-img {
-      width: 100%; height: 320px;
-      border-radius: var(--radius-lg);
-      display: flex; align-items: center; justify-content: center;
-      color: rgba(255,255,255,0.3); font-size: 0.85rem;
-    }
-    .service-feature-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin: 1.25rem 0; }
-    .service-feature-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.97rem; }
-    .service-feature-list li::before { content: '✓'; color: var(--color-gold); font-weight: 800; flex-shrink: 0; margin-top: 0.1rem; }
-    .for-whom-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
-    .for-whom-tag { background: rgba(27,58,107,0.08); color: var(--color-primary); border-radius: var(--radius-full); padding: 0.35rem 0.85rem; font-size: 0.88rem; font-weight: 600; }
-    @media (min-width: 768px) { .service-detail-grid { grid-template-columns: 1fr 1fr; } }
-  </style>
 </head>
 <body>
 
@@ -55,7 +34,8 @@
     <nav class="nav-links" aria-label="ניווט ראשי">
       <a href="index.html">ראשי</a>
       <a href="about.html">אודות</a>
-      <a href="services.html">שירותים</a>
+      <a href="services.html" class="active">שירותים</a>
+      <a href="process.html">תהליך הליווי</a>
       <a href="workshops.html">סדנאות</a>
       <a href="pricing.html">מחירים</a>
       <a href="blog.html">מאמרים</a>
@@ -77,6 +57,7 @@
     <a href="index.html">🏠 ראשי</a>
     <a href="about.html">👤 אודות גל</a>
     <a href="services.html">🌿 שירותים</a>
+    <a href="process.html">🔄 תהליך הליווי</a>
     <a href="workshops.html">🧡 סדנאות</a>
     <a href="pricing.html">💰 מחירים</a>
     <a href="blog.html">📖 מאמרים</a>
@@ -88,193 +69,155 @@
   </div>
 </nav>
 
+<!-- SERVICES STICKY SUBNAV -->
+<div class="services-subnav is-sticky" id="services-subnav" role="navigation" aria-label="ניווט שירותים">
+  <div class="container">
+    <div class="services-subnav-inner">
+      <a href="service-couples.html"  class="subnav-link">💑 ייעוץ זוגי ונישואין</a>
+      <a href="service-sexual.html"   class="subnav-link">🌹 ייעוץ מיני</a>
+      <a href="service-trauma.html"   class="subnav-link">🕊 ריפוי טראומה</a>
+      <a href="service-personal.html" class="subnav-link">🌱 ייעוץ אישי</a>
+      <a href="process.html"          class="subnav-link" style="border-right:1px solid var(--color-border);margin-right:0.5rem;padding-right:1.75rem">🔄 תהליך הליווי</a>
+    </div>
+  </div>
+</div>
+
 <main id="main-content">
 
   <!-- HERO -->
-  <section class="page-hero">
+  <section class="page-hero" aria-label="כותרת">
     <div class="container page-hero-content">
-      <span class="section-tag" data-aos="fade-up">שירותים</span>
-      <h1 data-aos="fade-up" data-aos-delay="100">השירותים שלי</h1>
-      <p class="subtitle" data-aos="fade-up" data-aos-delay="200">פתרונות מקצועיים לכל אתגר זוגי ואישי — מותאמים לכם</p>
+      <span class="section-tag" data-aos="fade-up">השירותים שלנו</span>
+      <h1 data-aos="fade-up" data-aos-delay="100">פתרון אמיתי לכל אתגר זוגי ואישי</h1>
+      <p class="subtitle" data-aos="fade-up" data-aos-delay="200">4 תחומי ייעוץ מקצועיים — כל אחד עם תהליך מותאם אישית, כלים מעשיים ותוצאות מדידות</p>
     </div>
   </section>
 
-  <!-- QUICK NAV -->
-  <div style="background:var(--color-bg-light);padding:1.25rem 0;border-bottom:1px solid var(--color-border)">
-    <div class="container" style="display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">
-      <a href="#couples"  class="filter-btn">💑 ייעוץ זוגי</a>
-      <a href="#sexual"   class="filter-btn">🌹 ייעוץ מיני</a>
-      <a href="#trauma"   class="filter-btn">🕊 ריפוי טראומה</a>
-      <a href="#personal" class="filter-btn">🌱 ייעוץ אישי</a>
-    </div>
-  </div>
-
-  <!-- SERVICE 1: COUPLES -->
-  <section class="service-section" id="couples" aria-labelledby="couples-heading">
+  <!-- TEASER CARDS -->
+  <section class="section section-light" aria-label="בחירת שירות">
     <div class="container">
-      <div class="service-detail-grid">
-        <div data-aos="fade-left">
-          <div class="service-detail-img" style="background:linear-gradient(135deg,#1B3A6B,#2a5298)">
-            <!-- REPLACE WITH REAL IMAGE -->
-            💑
+
+      <div class="text-center mb-4" data-aos="fade-up">
+        <p style="font-size:1.1rem;color:var(--color-text-muted);max-width:600px;margin-inline:auto">
+          לחצו על השירות שמדבר אליכם — בכל דף תמצאו תוכן מפורט, שאלות נפוצות וכל מה שצריך לדעת לפני שמתחילים
+        </p>
+      </div>
+
+      <div class="grid-4" style="gap:1.75rem">
+
+        <!-- COUPLES -->
+        <article class="service-teaser" data-aos="fade-up" data-aos-delay="0">
+          <div class="service-teaser-header" style="background:linear-gradient(135deg,#1B3A6B,#2a5298)">
+            <span class="service-teaser-icon">💑</span>
+            <h3>ייעוץ זוגי ונישואין</h3>
           </div>
-        </div>
+          <div class="service-teaser-body">
+            <p>ריחוק, ויכוחים בלי סוף, תחושה שדברים לא מתקדמים? ייעוץ זוגי יכול לשנות את הדינמיקה — ממש.</p>
+            <div class="who-tags" style="margin-bottom:0.5rem">
+              <span class="who-tag">זוגות בכל שלב</span>
+              <span class="who-tag">לפני נישואין</span>
+              <span class="who-tag">אחרי בגידה</span>
+            </div>
+            <a href="service-couples.html" class="btn btn-primary">לפרטים המלאים ←</a>
+          </div>
+        </article>
+
+        <!-- SEXUAL -->
+        <article class="service-teaser" data-aos="fade-up" data-aos-delay="100">
+          <div class="service-teaser-header" style="background:linear-gradient(135deg,#6B1B4A,#a8427a)">
+            <span class="service-teaser-icon">🌹</span>
+            <h3>ייעוץ מיני</h3>
+          </div>
+          <div class="service-teaser-body">
+            <p>קשיים באינטימיות, חרדת ביצוע, תקשורת מינית לא מספקת — הם נפוצים, הם ניתנים לשינוי, ואין מה להתבייש.</p>
+            <div class="who-tags" style="margin-bottom:0.5rem">
+              <span class="who-tag">יחידים</span>
+              <span class="who-tag">זוגות</span>
+              <span class="who-tag">חרדת ביצוע</span>
+            </div>
+            <a href="service-sexual.html" class="btn btn-primary">לפרטים המלאים ←</a>
+          </div>
+        </article>
+
+        <!-- TRAUMA -->
+        <article class="service-teaser" data-aos="fade-up" data-aos-delay="200">
+          <div class="service-teaser-header" style="background:linear-gradient(135deg,#1B4D5B,#2a7a8c)">
+            <span class="service-teaser-icon">🕊</span>
+            <h3>ריפוי טראומה</h3>
+          </div>
+          <div class="service-teaser-body">
+            <p>חוויות עבר שממשיכות לרדוף אתכם? טריגרים, חרדות, דפוסים שחוזרים? אפשר לעבד, לשחרר ולהמשיך.</p>
+            <div class="who-tags" style="margin-bottom:0.5rem">
+              <span class="who-tag">טראומה ילדות</span>
+              <span class="who-tag">טראומה מינית</span>
+              <span class="who-tag">PTSD</span>
+            </div>
+            <a href="service-trauma.html" class="btn btn-primary">לפרטים המלאים ←</a>
+          </div>
+        </article>
+
+        <!-- PERSONAL -->
+        <article class="service-teaser" data-aos="fade-up" data-aos-delay="300">
+          <div class="service-teaser-header" style="background:linear-gradient(135deg,#1B5E3A,#2d8a57)">
+            <span class="service-teaser-icon">🌱</span>
+            <h3>ייעוץ אישי</h3>
+          </div>
+          <div class="service-teaser-body">
+            <p>רוצים לצמוח, להבין את עצמכם לעומק, לשנות דפוסים? ייעוץ אישי הוא המרחב הנכון בשבילכם.</p>
+            <div class="who-tags" style="margin-bottom:0.5rem">
+              <span class="who-tag">אחרי פרידה</span>
+              <span class="who-tag">דימוי עצמי</span>
+              <span class="who-tag">צמיחה אישית</span>
+            </div>
+            <a href="service-personal.html" class="btn btn-primary">לפרטים המלאים ←</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE -->
+  <section class="section" aria-label="למה לבחור בנו">
+    <div class="container">
+      <div class="split" style="align-items:center">
         <div data-aos="fade-right">
-          <span class="section-tag">שירות</span>
-          <h2 id="couples-heading" class="section-title">ייעוץ זוגי</h2>
-          <p>האם אתם מרגישים שהמרחק ביניכם גדל? שהשיחות הפכו לויכוחים? שאתם חיים יחד אבל לא באמת קשורים? ייעוץ זוגי יכול לשנות את זה.</p>
-          <p>בתהליך הייעוץ הזוגי נעבוד יחד על שיפור התקשורת, פתרון קונפליקטים ובניית קשר רגשי חזק ואמיתי יותר.</p>
-
-          <div style="margin:1.25rem 0">
-            <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">למי מתאים?</strong>
-            <div class="for-whom-tags">
-              <span class="for-whom-tag">זוגות בכל שלב</span>
-              <span class="for-whom-tag">לפני נישואין</span>
-              <span class="for-whom-tag">בעת משבר</span>
-              <span class="for-whom-tag">ותיקים ומנוסים</span>
-            </div>
+          <span class="section-tag">למה גל ממן?</span>
+          <h2 class="section-title">ייעוץ שמביא תוצאות אמיתיות</h2>
+          <p>15+ שנות ניסיון לא רק מלמדות — הן מביאות ענווה, גמישות ויכולת לפגוש כל אדם בדיוק שם שהוא.</p>
+          <div class="trust-list" style="margin-top:1.5rem">
+            <div class="trust-item">פגישת היכרות חינמית — ללא התחייבות</div>
+            <div class="trust-item">סודיות מוחלטת בכל פגישה</div>
+            <div class="trust-item">גם אונליין — מכל מקום בארץ</div>
+            <div class="trust-item">תהליך מותאם אישית — לא תבנית</div>
+            <div class="trust-item">כלים מעשיים שמביאים תוצאות</div>
+            <div class="trust-item">גישה חמה, לא שיפוטית ולא מתנשאת</div>
           </div>
-
-          <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">מה מקבלים?</strong>
-          <ul class="service-feature-list">
-            <li>כלים מעשיים לשיפור התקשורת</li>
-            <li>שפה זוגית משותפת</li>
-            <li>הבנת דפוסים חוזרים ושינויים</li>
-            <li>חיזוק הקשר הרגשי והאינטימי</li>
-            <li>כלים לניהול קונפליקטים</li>
-          </ul>
-          <a href="https://wa.me/972506415222" class="btn btn-primary" target="_blank" rel="noopener noreferrer">קבעו פגישת היכרות ←</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SERVICE 2: SEXUAL -->
-  <section class="service-section" id="sexual" aria-labelledby="sexual-heading">
-    <div class="container">
-      <div class="service-detail-grid">
-        <div data-aos="fade-right" style="order:-1">
-          <span class="section-tag">שירות</span>
-          <h2 id="sexual-heading" class="section-title">ייעוץ מיני</h2>
-          <p>מיניות היא חלק בלתי נפרד מהאושר האישי והזוגי. כאשר יש קשיים — בתפקוד, באינטימיות, בתקשורת על מין — הם לעיתים קרובות ניתנים לפתרון.</p>
-          <p>בייעוץ מיני נדבר בפתיחות ובסודיות מוחלטת על כל מה שמטריד אתכם, ונבנה יחד דרך לאינטימיות בריאה ומספקת.</p>
-
-          <div style="margin:1.25rem 0">
-            <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">למי מתאים?</strong>
-            <div class="for-whom-tags">
-              <span class="for-whom-tag">יחידים</span>
-              <span class="for-whom-tag">זוגות</span>
-              <span class="for-whom-tag">קשיים בתפקוד</span>
-              <span class="for-whom-tag">חרדה מינית</span>
-            </div>
-          </div>
-
-          <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">מה מקבלים?</strong>
-          <ul class="service-feature-list">
-            <li>הבנה עמוקה של הקשיים המיניים</li>
-            <li>טכניקות מעשיות לשיפור</li>
-            <li>שיפור מדיד באינטימיות</li>
-            <li>הסרת בושה ואשמה</li>
-            <li>בניית מיניות בריאה ומהנה</li>
-          </ul>
-          <a href="https://wa.me/972506415222" class="btn btn-primary" target="_blank" rel="noopener noreferrer">קבעו פגישת היכרות ←</a>
         </div>
         <div data-aos="fade-left">
-          <div class="service-detail-img" style="background:linear-gradient(135deg,#8B4C8C,#c06dc0)">
-            <!-- REPLACE WITH REAL IMAGE -->
-            🌹
-          </div>
+          <img src="gal.jpg" alt="גל ממן — יועץ נישואין ומיני" class="gal-about-img" style="height:420px">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- SERVICE 3: TRAUMA -->
-  <section class="service-section" id="trauma" aria-labelledby="trauma-heading">
-    <div class="container">
-      <div class="service-detail-grid">
-        <div data-aos="fade-left">
-          <div class="service-detail-img" style="background:linear-gradient(135deg,#2C5F6B,#3a8a99)">
-            <!-- REPLACE WITH REAL IMAGE -->
-            🕊
-          </div>
-        </div>
-        <div data-aos="fade-right">
-          <span class="section-tag">שירות</span>
-          <h2 id="trauma-heading" class="section-title">ריפוי טראומה</h2>
-          <p>חוויות עבר כואבות — פיזיות, רגשיות או מיניות — יכולות להמשיך להשפיע על חיינו בהווה. הן אינן גזירת גורל.</p>
-          <p>בתהליך ריפוי הטראומה נעבד יחד את החוויות בקצב שלכם, נפחית חרדות ותגובות, ונבנה ביטחון פנימי מחדש.</p>
-
-          <div style="margin:1.25rem 0">
-            <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">למי מתאים?</strong>
-            <div class="for-whom-tags">
-              <span class="for-whom-tag">טראומה ילדות</span>
-              <span class="for-whom-tag">טראומה מינית</span>
-              <span class="for-whom-tag">PTSD</span>
-              <span class="for-whom-tag">חרדות וטריגרים</span>
-            </div>
-          </div>
-
-          <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">מה מקבלים?</strong>
-          <ul class="service-feature-list">
-            <li>עיבוד בטוח של חוויות עבר</li>
-            <li>כלים להפחתת חרדות ותגובות</li>
-            <li>שחרור רגשי אמיתי</li>
-            <li>בניית ביטחון פנימי חדש</li>
-            <li>שיפור ביחסים ובאינטימיות</li>
-          </ul>
-          <a href="https://wa.me/972506415222" class="btn btn-primary" target="_blank" rel="noopener noreferrer">קבעו פגישת היכרות ←</a>
-        </div>
-      </div>
+  <!-- PROCESS TEASER -->
+  <section class="section section-light" aria-label="תהליך הליווי">
+    <div class="container text-center" data-aos="fade-up">
+      <span class="section-tag">רוצים להבין איך זה עובד?</span>
+      <h2 class="section-title">תהליך הליווי — איך זה נראה בפועל?</h2>
+      <p class="section-subtitle" style="margin-inline:auto;margin-bottom:2rem">מהפגישה הראשונה ועד לשינוי האמיתי — הכל שקוף, מוסבר ומותאם לכם</p>
+      <a href="process.html" class="btn btn-primary btn-lg">לדף תהליך הליווי ←</a>
     </div>
   </section>
 
-  <!-- SERVICE 4: PERSONAL -->
-  <section class="service-section" id="personal" aria-labelledby="personal-heading">
-    <div class="container">
-      <div class="service-detail-grid">
-        <div data-aos="fade-right" style="order:-1">
-          <span class="section-tag">שירות</span>
-          <h2 id="personal-heading" class="section-title">ייעוץ אישי</h2>
-          <p>לפעמים לא מדובר בזוגיות אלא בנו עצמנו — בדימוי עצמי, בדפוסים חוזרים, ביחסים שלא עובדים, ברצון לצמוח ולהיות גרסה טובה יותר.</p>
-          <p>בייעוץ האישי נעבוד על מה שעוצר אתכם, נבין את הדפוסים ונבנה כוח אישי אמיתי.</p>
-
-          <div style="margin:1.25rem 0">
-            <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">למי מתאים?</strong>
-            <div class="for-whom-tags">
-              <span class="for-whom-tag">יחידים</span>
-              <span class="for-whom-tag">אחרי פרידה</span>
-              <span class="for-whom-tag">דימוי עצמי</span>
-              <span class="for-whom-tag">דפוסים חוזרים</span>
-            </div>
-          </div>
-
-          <strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em">מה מקבלים?</strong>
-          <ul class="service-feature-list">
-            <li>בהירות על מה שמעכב אתכם</li>
-            <li>כלים לשינוי דפוסים חוזרים</li>
-            <li>שיפור דימוי עצמי וביטחון</li>
-            <li>כיוון ומטרות ברורות</li>
-            <li>כוח אישי אמיתי ומתמשך</li>
-          </ul>
-          <a href="https://wa.me/972506415222" class="btn btn-primary" target="_blank" rel="noopener noreferrer">קבעו פגישת היכרות ←</a>
-        </div>
-        <div data-aos="fade-left">
-          <div class="service-detail-img" style="background:linear-gradient(135deg,#2d6a4f,#52b788)">
-            <!-- REPLACE WITH REAL IMAGE -->
-            🌱
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- FINAL CTA -->
+  <!-- CTA -->
   <section class="section section-dark" aria-label="קריאה לפעולה">
     <div class="container text-center" data-aos="fade-up">
-      <h2 class="text-white section-title mb-2">לא בטוחים איזה שירות מתאים לכם?</h2>
-      <p style="color:rgba(255,255,255,0.8);margin-bottom:2rem;font-size:1.05rem;max-width:500px;margin-inline:auto">בואו לשיחת היכרות — ביחד נמצא את הדרך הנכונה</p>
+      <h2 class="text-white section-title mb-2">לא בטוחים איזה שירות מתאים?</h2>
+      <p style="color:rgba(255,255,255,0.8);margin-bottom:2rem;font-size:1.05rem;max-width:480px;margin-inline:auto">שלחו הודעה — ובשיחה קצרה יחד נמצא את הדרך הנכונה בשבילכם</p>
       <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה בוואטסאפ ←</a>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.82rem;margin-top:0.75rem">⚡ תגובה תוך שעה · ללא התחייבות · סודיות מלאה</p>
     </div>
   </section>
 
@@ -286,12 +229,14 @@
       <div>
         <div class="footer-logo-text">קליניקת ארגמן</div>
         <div class="footer-tagline">ייעוץ זוגי, מיני ואישי</div>
+        <p style="color:rgba(255,255,255,0.55);font-size:0.88rem;margin-top:1rem;max-width:260px">מאמינים שכל אדם וכל זוג ראוי לחיים מלאים ואינטימיות בריאה.</p>
       </div>
       <div>
         <h4>ניווט מהיר</h4>
         <nav class="footer-links">
           <a href="about.html">אודות גל</a>
           <a href="services.html">שירותים</a>
+          <a href="process.html">תהליך הליווי</a>
           <a href="workshops.html">סדנאות</a>
           <a href="pricing.html">מחירים</a>
           <a href="blog.html">מאמרים</a>
@@ -305,8 +250,9 @@
           <a href="tel:0506415222">📞 050-641-5222</a>
           <a href="mailto:argamanclinic@gmail.com">✉ argamanclinic@gmail.com</a>
           <span>📍 יגאל אלון 1, בית שמש</span>
+          <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer">📱 שלחו וואטסאפ</a>
         </div>
-        <div class="footer-social">
+        <div class="footer-social" style="margin-top:1rem">
           <a href="https://www.facebook.com/share/1CgDECpXp9/" target="_blank" rel="noopener noreferrer" aria-label="פייסבוק">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
           </a>

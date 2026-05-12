@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <!-- GA4 | REPLACE: G-XXXXXXXXXX -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>תהליך הליווי | קליניקת ארגמן — גל ממן</title>
+  <meta name="description" content="איך נראה תהליך הליווי בקליניקת ארגמן? מה קורה בפגישה הראשונה ואיך ממשיכים? גל ממן מסביר את הדרך — לזוגות וליחידים.">
+  <meta property="og:title" content="תהליך הליווי | קליניקת ארגמן">
+  <meta property="og:description" content="תהליך ליווי מובנה ומותאם אישית — לזוגות וליחידים. גל ממן, יועץ נישואין ומיני, בית שמש ואונליין.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="process.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>א</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .process-track {
+      position: relative;
+      padding-right: 3rem;
+    }
+    .process-track::before {
+      content: '';
+      position: absolute;
+      right: 1.3rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--color-gold), var(--color-primary));
+      opacity: 0.3;
+    }
+    .process-track-item {
+      position: relative;
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 2rem;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 1.5rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .process-track-item:hover {
+      transform: translateX(-6px);
+      box-shadow: var(--shadow-md);
+    }
+    .process-track-item::before {
+      content: '';
+      position: absolute;
+      right: -2.15rem;
+      top: 1.75rem;
+      width: 14px;
+      height: 14px;
+      background: var(--color-gold);
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 0 0 2px var(--color-gold);
+    }
+    .track-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--color-primary);
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 0.75rem;
+      flex-shrink: 0;
+    }
+    .comparison-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .comparison-card-header {
+      padding: 1.5rem 2rem;
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .comparison-card-body {
+      padding: 1.75rem 2rem;
+    }
+    .comparison-item {
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+      line-height: 1.6;
+    }
+    .comparison-item:last-child { border-bottom: none; }
+    .process-phase {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 2rem;
+    }
+    .process-phase-header {
+      padding: 1.25rem 1.75rem;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .process-phase-body {
+      background: white;
+      padding: 1.5rem 1.75rem;
+    }
+    .faq-accordion-item {
+      background: white;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 0.75rem;
+    }
+    .faq-accordion-btn {
+      width: 100%;
+      text-align: right;
+      background: none;
+      border: none;
+      padding: 1.25rem 1.5rem;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    .faq-accordion-btn .arrow {
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      font-size: 0.8rem;
+    }
+    .faq-accordion-item.open .arrow { transform: rotate(180deg); }
+    .faq-accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .faq-accordion-body p {
+      padding: 0 1.5rem 1.25rem;
+      color: var(--color-text-light);
+      line-height: 1.8;
+      margin: 0;
+    }
+    .faq-accordion-item.open .faq-accordion-body {
+      max-height: 500px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="mainNav">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img">
+        <span>קליניקת ארגמן</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="תפריט">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">ראשי</a></li>
+        <li><a href="about.html">אודות</a></li>
+        <li><a href="services.html">שירותים</a></li>
+        <li><a href="process.html" class="active">תהליך הליווי</a></li>
+        <li><a href="workshops.html">סדנאות</a></li>
+        <li><a href="pricing.html">מחירים</a></li>
+        <li><a href="blog.html">מאמרים</a></li>
+        <li><a href="contact.html">צור קשר</a></li>
+      </ul>
+      <a href="https://wa.me/972506415222" class="btn btn-wa nav-cta" target="_blank" rel="noopener noreferrer">📱 WhatsApp</a>
+    </div>
+  </nav>
+
+  <!-- SERVICES SUB-NAV -->
+  <div class="services-subnav is-sticky">
+    <div class="container">
+      <div class="subnav-links">
+        <a href="service-couples.html" class="subnav-link">💑 ייעוץ זוגי</a>
+        <a href="service-sexual.html" class="subnav-link">🌹 ייעוץ מיני</a>
+        <a href="service-trauma.html" class="subnav-link">🕊 ריפוי טראומה</a>
+        <a href="service-personal.html" class="subnav-link">🌱 ייעוץ אישי</a>
+        <a href="process.html" class="subnav-link active">🗺 תהליך הליווי</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="page-hero" style="background: linear-gradient(135deg, var(--color-primary) 0%, #2a5298 50%, #1a3a6b 100%);">
+    <div class="container">
+      <div class="page-hero-content" data-aos="fade-up">
+        <div class="section-tag">🗺 תהליך הליווי</div>
+        <h1>שקיפות מלאה — לפני שמתחילים</h1>
+        <p class="hero-sub">אנשים רבים מהססים לפנות לייעוץ כי הם לא יודעים מה מחכה להם. כאן תקבלו תמונה מלאה — מה קורה בפגישה הראשונה, איך נראה התהליך, ומה אפשר לצפות.</p>
+        <div class="hero-actions">
+          <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שאלו אותי ישירות</a>
+          <a href="services.html" class="btn btn-secondary btn-lg">← חזרה לשירותים</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIRST CONTACT -->
+  <section class="section" style="background: white;">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-tag">שלב ראשון</div>
+        <h2>מהרגע שפונים — עד הפגישה הראשונה</h2>
+        <p class="section-sub">פשוט, נינוח, וללא לחץ</p>
+      </div>
+      <div class="grid grid-3" style="margin-top: 3rem;">
+        <div data-aos="fade-up" data-aos-delay="0" style="text-align: center; padding: 2rem;">
+          <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--color-primary), #2a5298); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.25rem;">📱</div>
+          <h3>פונים ב-WhatsApp</h3>
+          <p style="color: var(--color-text-light); line-height: 1.7;">שולחים הודעה קצרה — "שלום, רציתי לשאול על תהליך הליווי". אפשר גם להתקשר. מגיבים תוך שעה.</p>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="100" style="text-align: center; padding: 2rem;">
+          <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--color-primary), #2a5298); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.25rem;">💬</div>
+          <h3>שיחת היכרות קצרה</h3>
+          <p style="color: var(--color-text-light); line-height: 1.7;">שיחה קצרה של 10-15 דקות — ללא עלות. מבינים מה מביא אתכם ורואים אם יש התאמה.</p>
+        </div>
+        <div data-aos="fade-up" data-aos-delay="200" style="text-align: center; padding: 2rem;">
+          <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--color-primary), #2a5298); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.25rem;">📅</div>
+          <h3>קובעים פגישה</h3>
+          <p style="color: var(--color-text-light); line-height: 1.7;">קובעים זמן נוח — פנים אל פנים בבית שמש או אונליין. פגישה ראשונה ללא התחייבות להמשיך.</p>
+        </div>
+      </div>
+      <div style="text-align: center; margin-top: 2rem;" data-aos="fade-up">
+        <a href="https://wa.me/972506415222" class="btn btn-wa" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה עכשיו — ללא עלות וללא התחייבות</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUPLES VS INDIVIDUALS -->
+  <section class="section" style="background: var(--color-bg-light);">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-tag">תהליך הליווי</div>
+        <h2>זוגות לעומת יחידים — מה ההבדל?</h2>
+        <p class="section-sub">שני מסלולים שונים, אותה מחויבות לתוצאות</p>
+      </div>
+      <div class="grid grid-2" style="margin-top: 3rem; gap: 2rem; align-items: start;">
+
+        <!-- COUPLES -->
+        <div class="comparison-card" data-aos="fade-right">
+          <div class="comparison-card-header" style="background: linear-gradient(135deg, var(--color-primary), #2a5298);">
+            💑 ליווי לזוגות
+          </div>
+          <div class="comparison-card-body">
+            <p style="color: var(--color-text-light); margin-bottom: 1.25rem; line-height: 1.7;">כשמגיעים כזוג, שניכם הלקוח. המטרה היא לשפר את הדינמיקה ביניכם — לא "לתקן" אחד על חשבון השני.</p>
+            <div class="comparison-item">
+              <span style="color: var(--color-gold); font-size: 1.1rem;">✦</span>
+              <span><strong>פגישה 1:</strong> היכרות כזוג — כל אחד מספר את הנרטיב שלו, ללא הפרעה</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: var(--color-gold); font-size: 1.1rem;">✦</span>
+              <span><strong>פגישה 2-3:</strong> לפעמים פגישות אישיות בנפרד — כדי להבין כל אחד לעומק</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: var(--color-gold); font-size: 1.1rem;">✦</span>
+              <span><strong>פגישות 4+:</strong> עבודה משותפת על תקשורת, קונפליקטים ואינטימיות</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: var(--color-gold); font-size: 1.1rem;">✦</span>
+              <span><strong>תדירות מומלצת:</strong> אחת לשבוע או שבועיים</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: var(--color-gold); font-size: 1.1rem;">✦</span>
+              <span><strong>משך ממוצע:</strong> 3-6 חודשים, תלוי בצרכים</span>
+            </div>
+            <a href="service-couples.html" style="display: inline-block; margin-top: 1.25rem; color: var(--color-primary); font-weight: 600; text-decoration: none;">קראו עוד על ייעוץ זוגי ←</a>
+          </div>
+        </div>
+
+        <!-- INDIVIDUALS -->
+        <div class="comparison-card" data-aos="fade-left">
+          <div class="comparison-card-header" style="background: linear-gradient(135deg, #1a3a1a, #2d5a2d);">
+            🌱 ליווי ליחידים
+          </div>
+          <div class="comparison-card-body">
+            <p style="color: var(--color-text-light); margin-bottom: 1.25rem; line-height: 1.7;">כשמגיעים לבד — בין אם לייעוץ אישי, מיני או ריפוי טראומה — כל הפגישות מוקדשות לכם בלבד.</p>
+            <div class="comparison-item">
+              <span style="color: #2d5a2d; font-size: 1.1rem;">✦</span>
+              <span><strong>פגישה 1:</strong> מיפוי מלא של המצב, ההיסטוריה והמטרות שלכם</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: #2d5a2d; font-size: 1.1rem;">✦</span>
+              <span><strong>פגישה 2-3:</strong> בניית כלים ראשוניים והבנת דפוסים מרכזיים</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: #2d5a2d; font-size: 1.1rem;">✦</span>
+              <span><strong>פגישות 4+:</strong> עבודה עמוקה על השינוי שרציתם להשיג</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: #2d5a2d; font-size: 1.1rem;">✦</span>
+              <span><strong>תדירות מומלצת:</strong> אחת לשבוע, לפחות בהתחלה</span>
+            </div>
+            <div class="comparison-item">
+              <span style="color: #2d5a2d; font-size: 1.1rem;">✦</span>
+              <span><strong>משך ממוצע:</strong> 2-4 חודשים לנושאים ממוקדים, יותר לטראומה</span>
+            </div>
+            <a href="service-personal.html" style="display: inline-block; margin-top: 1.25rem; color: #2d5a2d; font-weight: 600; text-decoration: none;">קראו עוד על ייעוץ אישי ←</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNIVERSAL STAGES -->
+  <section class="section" style="background: white;">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-tag">שלבי התהליך</div>
+        <h2>ארבעת השלבים בכל תהליך ליווי</h2>
+        <p class="section-sub">בין אם זוג ובין אם יחיד — כל תהליך עובר את אותם שלבים עיקריים</p>
+      </div>
+
+      <div class="grid grid-2" style="margin-top: 3rem; gap: 4rem; align-items: start;">
+        <div data-aos="fade-right">
+          <div class="process-track">
+
+            <div class="process-track-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span class="track-num">1</span>
+                <h3 style="margin: 0;">שלב ההיכרות והמיפוי</h3>
+              </div>
+              <p style="color: var(--color-text-light); margin: 0; line-height: 1.7;">מבינים את התמונה המלאה — מה קורה, מה הרקע, מה כבר נוסה. בונים מטרות ברורות ומוסכמות.</p>
+              <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline" style="font-size: 0.75rem;">1-2 פגישות</span>
+              </div>
+            </div>
+
+            <div class="process-track-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span class="track-num">2</span>
+                <h3 style="margin: 0;">שלב הכלים והמיומנויות</h3>
+              </div>
+              <p style="color: var(--color-text-light); margin: 0; line-height: 1.7;">לומדים כלים מעשיים — תקשורת, ויסות רגשי, גראונדינג, קבלת החלטות. מרגישים שינוי ראשוני.</p>
+              <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline" style="font-size: 0.75rem;">2-4 פגישות</span>
+              </div>
+            </div>
+
+            <div class="process-track-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span class="track-num">3</span>
+                <h3 style="margin: 0;">שלב העבודה העמוקה</h3>
+              </div>
+              <p style="color: var(--color-text-light); margin: 0; line-height: 1.7;">עיבוד דפוסים, אמונות, פצעים ישנים וחסמים. השינוי האמיתי קורה כאן — לרוב הכי מאתגר וגם הכי משמעותי.</p>
+              <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline" style="font-size: 0.75rem;">4-10 פגישות</span>
+              </div>
+            </div>
+
+            <div class="process-track-item">
+              <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
+                <span class="track-num">4</span>
+                <h3 style="margin: 0;">שלב הייצוב וסיום</h3>
+              </div>
+              <p style="color: var(--color-text-light); margin: 0; line-height: 1.7;">מבססים את השינוי, בונים תוכנית להמשך עצמאי ויוצאים עם כלים לחיים. אפשר תמיד לחזור לבוסטר בעתיד.</p>
+              <div style="margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                <span class="badge badge-outline" style="font-size: 0.75rem;">1-2 פגישות</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div data-aos="fade-left">
+          <div style="background: var(--color-bg-light); border-radius: var(--radius-lg); padding: 2rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--color-primary); margin-bottom: 1.25rem;">📍 פרטים לוגיסטיים</h3>
+            <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 1rem;">
+              <li style="display: flex; gap: 0.75rem;">
+                <span style="color: var(--color-gold); font-size: 1.1rem;">⏱</span>
+                <div><strong>משך פגישה</strong><br><span style="color: var(--color-text-light);">50-60 דקות לפגישה סטנדרטית</span></div>
+              </li>
+              <li style="display: flex; gap: 0.75rem;">
+                <span style="color: var(--color-gold); font-size: 1.1rem;">📍</span>
+                <div><strong>מיקום</strong><br><span style="color: var(--color-text-light);">פנים אל פנים — יגאל אלון 1, בית שמש<br>אונליין — Zoom / Google Meet</span></div>
+              </li>
+              <li style="display: flex; gap: 0.75rem;">
+                <span style="color: var(--color-gold); font-size: 1.1rem;">📅</span>
+                <div><strong>זמינות</strong><br><span style="color: var(--color-text-light);">ימים א'–ה', גם שעות ערב לפי תיאום</span></div>
+              </li>
+              <li style="display: flex; gap: 0.75rem;">
+                <span style="color: var(--color-gold); font-size: 1.1rem;">🔒</span>
+                <div><strong>סודיות</strong><br><span style="color: var(--color-text-light);">מלאה ומוחלטת — כל מה שנאמר נשאר בחדר</span></div>
+              </li>
+              <li style="display: flex; gap: 0.75rem;">
+                <span style="color: var(--color-gold); font-size: 1.1rem;">💳</span>
+                <div><strong>תשלום</strong><br><span style="color: var(--color-text-light);">לפני כל פגישה, ביט / העברה / מזומן<br><a href="pricing.html" style="color: var(--color-primary); text-decoration: none; font-weight: 600;">לפרטי מחירים ←</a></span></div>
+              </li>
+            </ul>
+          </div>
+
+          <div style="background: linear-gradient(135deg, rgba(27,58,107,0.06), rgba(201,168,76,0.08)); border-radius: var(--radius-lg); padding: 2rem; border-right: 4px solid var(--color-gold);">
+            <h3 style="color: var(--color-primary); margin-bottom: 0.75rem;">💬 מה גל אומר</h3>
+            <p style="color: var(--color-text-light); line-height: 1.8; margin: 0; font-style: italic;">"הרבה אנשים שואלים אותי 'כמה זמן זה ייקח?' — והתשובה הכנה היא: אני לא יודע מראש. מה שאני יודע הוא שכל פגישה תקדם אתכם, ושתוצאות אמיתיות קורות כשנותנים לתהליך את הזמן שלו."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BY SERVICE TYPE -->
+  <section class="section" style="background: var(--color-bg-light);">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-tag">לפי סוג הליווי</div>
+        <h2>מה ייחודי לכל תחום?</h2>
+        <p class="section-sub">כל נושא מחייב גישה מעט שונה — הנה מה שכדאי לדעת</p>
+      </div>
+      <div style="margin-top: 2.5rem; display: grid; gap: 1.25rem;" data-aos="fade-up">
+
+        <div class="process-phase">
+          <div class="process-phase-header" style="background: linear-gradient(135deg, var(--color-primary), #2a5298);">
+            <span style="font-size: 1.5rem;">💑</span>
+            ייעוץ זוגי ונישואין
+          </div>
+          <div class="process-phase-body">
+            <p style="color: var(--color-text-light); margin: 0 0 1rem; line-height: 1.8;">בייעוץ זוגי, הקשר הוא הלקוח — לא אחד מבני הזוג. העבודה מתמקדת בדינמיקה ביניכם: דפוסי תקשורת, עיבוד עלבונות ישנים, שיחזור האינטימיות והגדרה מחדש של ה"אנחנו".</p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge badge-outline">שיחזור אמון</span>
+              <span class="badge badge-outline">תקשורת זוגית</span>
+              <span class="badge badge-outline">ניהול קונפליקטים</span>
+              <span class="badge badge-outline">אינטימיות רגשית</span>
+              <span class="badge badge-outline">החלטות כזוג</span>
+            </div>
+            <a href="service-couples.html" style="display: inline-block; margin-top: 1rem; color: var(--color-primary); font-weight: 600; text-decoration: none;">לדף הייעוץ הזוגי ←</a>
+          </div>
+        </div>
+
+        <div class="process-phase">
+          <div class="process-phase-header" style="background: linear-gradient(135deg, #4a1a4a, #7a2d7a);">
+            <span style="font-size: 1.5rem;">🌹</span>
+            ייעוץ מיני
+          </div>
+          <div class="process-phase-body">
+            <p style="color: var(--color-text-light); margin: 0 0 1rem; line-height: 1.8;">הייעוץ המיני הוא שיחה בלבד — ללא מגע פיזי. נושאים כמו תפקוד מיני, חרדת ביצוע ואינטימיות מטופלים במרחב בטוח, ללא שיפוט. זה תחום שאנשים מתביישים לדבר עליו — ואני יוצר מרחב שזה בסדר.</p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge badge-outline">ביטחון מיני</span>
+              <span class="badge badge-outline">תקשורת אינטימית</span>
+              <span class="badge badge-outline">הפרות תפקוד</span>
+              <span class="badge badge-outline">חינוך מיני</span>
+              <span class="badge badge-outline">גוף ועצמי</span>
+            </div>
+            <a href="service-sexual.html" style="display: inline-block; margin-top: 1rem; color: #7a2d7a; font-weight: 600; text-decoration: none;">לדף הייעוץ המיני ←</a>
+          </div>
+        </div>
+
+        <div class="process-phase">
+          <div class="process-phase-header" style="background: linear-gradient(135deg, #0a1f3c, #2d6b6b);">
+            <span style="font-size: 1.5rem;">🕊</span>
+            ריפוי טראומה
+          </div>
+          <div class="process-phase-body">
+            <p style="color: var(--color-text-light); margin: 0 0 1rem; line-height: 1.8;">עבודה עם טראומה דורשת קצב איטי יותר ובניית ביטחון טרם העיבוד. לא "טובלים" בניסיון הקשה — ניגשים אליו בהדרגה, תוך שמירה על ויסות ותחושת שליטה לאורך כל הדרך.</p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge badge-outline">ויסות עצמי</span>
+              <span class="badge badge-outline">גראונדינג</span>
+              <span class="badge badge-outline">עיבוד הדרגתי</span>
+              <span class="badge badge-outline">שחרור רגשי</span>
+              <span class="badge badge-outline">בניית חוסן</span>
+            </div>
+            <a href="service-trauma.html" style="display: inline-block; margin-top: 1rem; color: #2d6b6b; font-weight: 600; text-decoration: none;">לדף ריפוי הטראומה ←</a>
+          </div>
+        </div>
+
+        <div class="process-phase">
+          <div class="process-phase-header" style="background: linear-gradient(135deg, #1a3a1a, #2d5a2d);">
+            <span style="font-size: 1.5rem;">🌱</span>
+            ייעוץ אישי
+          </div>
+          <div class="process-phase-body">
+            <p style="color: var(--color-text-light); margin: 0 0 1rem; line-height: 1.8;">ייעוץ אישי הוא הגמיש מכולם — יכול להיות ממוקד מטרה ספציפית (שינוי קריירה, גבולות, ביטחון עצמי) או יותר פתוח לצמיחה כללית. הגישה מותאמת לכם — לא תבנית קבועה.</p>
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <span class="badge badge-outline">מטרות וערכים</span>
+              <span class="badge badge-outline">ביטחון עצמי</span>
+              <span class="badge badge-outline">גבולות</span>
+              <span class="badge badge-outline">מעברי חיים</span>
+              <span class="badge badge-outline">חרדה ולחץ</span>
+            </div>
+            <a href="service-personal.html" style="display: inline-block; margin-top: 1rem; color: #2d5a2d; font-weight: 600; text-decoration: none;">לדף הייעוץ האישי ←</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" style="background: white;">
+    <div class="container">
+      <div class="section-header" data-aos="fade-up">
+        <div class="section-tag">שאלות נפוצות</div>
+        <h2>כל מה שרציתם לדעת</h2>
+        <p class="section-sub">שאלות שאנשים שואלים לפני שמחליטים לפנות</p>
+      </div>
+      <div style="max-width: 750px; margin: 2.5rem auto 0;" id="processFaq">
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            האם הפגישה הראשונה מחייבת אותי להמשיך?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>בכלל לא. הפגישה הראשונה היא היכרות הדדית — גם אתם בוחנים אם מרגישים בנוח, וגם אני מוודא שאוכל לעזור. לא תצאו ממנה עם התחייבות.</p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            מה קורה אם אחד מבני הזוג לא רוצה לבוא?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>זה קורה יותר ממה שנדמה. במקרה כזה, אפשר להתחיל עם ייעוץ אישי לבן/בת הזוג שמוכן/ה — שינוי באחד תמיד משפיע על הקשר. לעיתים זה מוביל גם את הצד השני להצטרף בהמשך.</p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            האם אתה עובד עם LGBTQ+?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>כן, בהחלט. הקליניקה פתוחה לכל הזהויות המיניות וסוגי הקשרים — ללא שיפוט. חשוב לי שכולם ירגישו בנוח לדבר בגלוי.</p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            כמה עולה פגישה?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>פרטי המחירים מפורטים בדף המחירים — כולל אפשרות לחבילות. הפגישה הראשונה (שיחת היכרות קצרה) ללא עלות. <a href="pricing.html" style="color: var(--color-primary); font-weight: 600;">לדף המחירים ←</a></p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            האם אפשר לקבוע בשעות ערב?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>כן. שעות ערב (עד 21:00) זמינות לפי תיאום. ניתן ליצור קשר ב-WhatsApp ולבדוק זמינות.</p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            מה ההבדל בין ייעוץ לפסיכולוגיה?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>פסיכולוגיה היא תחום מוסדר עם אבחנות קליניות, מוכוונת לרוב לעבר ולפתולוגיה. ייעוץ ממוקד בהווה ובעתיד — שינוי, צמיחה, הגעה למטרות. לאנשים רבים ייעוץ מספק תוצאות מהירות יותר ופרקטיות יותר.</p>
+          </div>
+        </div>
+
+        <div class="faq-accordion-item">
+          <button class="faq-accordion-btn">
+            האם ייעוץ אונליין יעיל כמו פנים אל פנים?
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-accordion-body">
+            <p>מחקרים מראים שייעוץ אונליין יעיל כמו פנים אל פנים ברוב הנושאים. יתרונות ייחודיים: נוחות, חיסכון בנסיעות, ויכולת לבצע את התהליך מהמרחב הבטוח ביותר שלכם — הבית.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="section" style="background: var(--color-bg-light);">
+    <div class="container">
+      <div class="service-cta-box" data-aos="fade-up" style="text-align: center; padding: 3.5rem 2rem;">
+        <div class="section-tag" style="display: inline-block; margin-bottom: 1.5rem;">🗺 מוכנים?</div>
+        <h2 style="color: white; margin-bottom: 1rem;">השלב הבא הוא פשוט לשלוח הודעה</h2>
+        <p style="color: rgba(255,255,255,0.85); max-width: 550px; margin: 0 auto 2rem; line-height: 1.8;">לא צריך לדעת בדיוק מה אתם מחפשים — מספיק שאתם מרגישים שמשהו צריך להשתנות. על זה נדבר ביחד.</p>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+          <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה עכשיו</a>
+          <a href="tel:0506415222" class="btn btn-lg" style="background: rgba(255,255,255,0.15); color: white; border: 2px solid rgba(255,255,255,0.4);">📞 050-641-5222</a>
+        </div>
+        <p style="color: rgba(255,255,255,0.6); font-size: 0.85rem; margin-top: 1.5rem;">⚡ מגיבים תוך שעה · ללא התחייבות · סודיות מלאה</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHATSAPP FAB -->
+  <a href="https://wa.me/972506415222" class="whatsapp-fab" aria-label="שלחו הודעה בוואטסאפ" target="_blank" rel="noopener noreferrer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.126 1.533 5.859L.057 23.882a.5.5 0 0 0 .614.628l6.204-1.625A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.796 9.796 0 0 1-5.031-1.388l-.36-.214-3.733.978.999-3.642-.235-.374A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+    <span class="tooltip">שלחו הודעה</span>
+  </a>
+
+  <!-- BACK TO TOP -->
+  <button class="back-to-top" id="backToTop" aria-label="חזרה למעלה">↑</button>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">קליניקת ארגמן</div>
+          <p class="footer-tagline">ייעוץ זוגי, מיני ואישי<br>גל ממן | בית שמש & אונליין</p>
+        </div>
+        <div class="footer-links">
+          <h4>ניווט מהיר</h4>
+          <ul>
+            <li><a href="index.html">ראשי</a></li>
+            <li><a href="about.html">אודות</a></li>
+            <li><a href="services.html">שירותים</a></li>
+            <li><a href="process.html">תהליך הליווי</a></li>
+            <li><a href="blog.html">מאמרים</a></li>
+            <li><a href="contact.html">צור קשר</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>יצירת קשר</h4>
+          <ul>
+            <li><a href="tel:0506415222">📞 050-641-5222</a></li>
+            <li><a href="mailto:argamanclinic@gmail.com">✉ argamanclinic@gmail.com</a></li>
+            <li><a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a></li>
+            <li><a href="https://www.facebook.com/share/1CgDECpXp9/" target="_blank" rel="noopener noreferrer">📘 פייסבוק</a></li>
+            <li>📍 יגאל אלון 1, בית שמש</li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 קליניקת ארגמן — גל ממן | <a href="privacy.html">מדיניות פרטיות</a> | <a href="accessibility.html">הצהרת נגישות</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script src="script.js"></script>
+  <script>
+    // FAQ accordion for process page
+    document.querySelectorAll('#processFaq .faq-accordion-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-accordion-item');
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('#processFaq .faq-accordion-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>
