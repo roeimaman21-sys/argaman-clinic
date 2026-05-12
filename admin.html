@@ -308,6 +308,159 @@
       .adm-hd-top { padding: 0.75rem 1rem; }
       .adm-main   { padding: 1rem; }
     }
+
+    /* ─── CRM: CLIENT LIST ──────────────────── */
+    .crm-toolbar {
+      display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.25rem;
+    }
+    .crm-search {
+      flex: 1; min-width: 180px; padding: 0.55rem 0.85rem;
+      border: 1.5px solid var(--border); border-radius: var(--r-sm);
+      font-family: inherit; font-size: 0.88rem; background: var(--white);
+    }
+    .crm-search:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,58,107,0.08); }
+    .filter-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .pill {
+      padding: 0.3rem 0.85rem; border-radius: 20px; font-size: 0.78rem; font-weight: 700;
+      cursor: pointer; border: 1.5px solid var(--border); background: var(--white);
+      color: var(--muted); transition: all 0.15s;
+    }
+    .pill.on { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .pill:hover:not(.on) { border-color: var(--navy); color: var(--navy); }
+
+    .client-tbl thead th { background: #f0f2f8; }
+    .client-tbl .type-couple     { background: rgba(27,58,107,0.1);  color: var(--navy); }
+    .client-tbl .type-individual { background: rgba(22,163,74,0.1);  color: #15803d; }
+    .status-active  { background: rgba(22,163,74,0.12);  color: #15803d; }
+    .status-paused  { background: rgba(245,158,11,0.12); color: #b45309; }
+    .status-ended   { background: rgba(107,114,128,0.12);color: var(--muted); }
+    .client-tbl tbody tr { cursor: pointer; }
+    .client-tbl tbody tr:hover td { background: #eef2ff; }
+    .client-name { font-weight: 700; color: var(--navy); }
+    .client-partner { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* ─── CRM: CLIENT DETAIL ──────────────────── */
+    .detail-back { display: flex; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-bottom: 1.25rem; width: fit-content; }
+    .detail-back:hover { color: var(--navy); }
+    .client-hdr {
+      display: flex; gap: 1.25rem; align-items: flex-start; flex-wrap: wrap;
+      padding: 1.4rem; background: var(--white); border-radius: var(--r); box-shadow: var(--sh); margin-bottom: 1.25rem;
+    }
+    .client-avatar {
+      width: 64px; height: 64px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; font-weight: 900;
+    }
+    .avatar-couple     { background: linear-gradient(135deg,#1B3A6B,#2a5298); color: #fff; }
+    .avatar-individual { background: linear-gradient(135deg,#15803d,#16a34a); color: #fff; }
+    .client-hdr-info { flex: 1; min-width: 0; }
+    .client-hdr-name { font-size: 1.2rem; font-weight: 800; color: var(--navy); margin-bottom: 0.25rem; }
+    .client-hdr-meta { font-size: 0.83rem; color: var(--muted); line-height: 1.7; }
+    .client-hdr-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: flex-start; }
+
+    .sessions-hdr {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .sessions-hdr h3 { font-size: 1rem; font-weight: 800; color: var(--navy); }
+
+    .session-timeline { display: flex; flex-direction: column; gap: 0; }
+    .session-item {
+      background: var(--white); border-radius: var(--r); box-shadow: var(--sh);
+      margin-bottom: 1rem; overflow: hidden; border-right: 4px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .session-item.mood-great  { border-right-color: #16a34a; }
+    .session-item.mood-good   { border-right-color: #4ade80; }
+    .session-item.mood-neutral{ border-right-color: #94a3b8; }
+    .session-item.mood-hard   { border-right-color: #f59e0b; }
+    .session-item.mood-crisis { border-right-color: #ef4444; }
+    .session-hdr {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: 0.9rem 1.1rem; cursor: pointer; user-select: none;
+    }
+    .session-hdr:hover { background: #f8f9ff; }
+    .session-hdr-left { display: flex; align-items: center; gap: 0.75rem; }
+    .session-num {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--navy);
+      color: #fff; font-size: 0.78rem; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .session-date-title { font-weight: 700; font-size: 0.9rem; }
+    .session-date-sub { font-size: 0.76rem; color: var(--muted); margin-top: 0.1rem; }
+    .mood-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .mood-dot.mood-great   { background: #16a34a; }
+    .mood-dot.mood-good    { background: #4ade80; }
+    .mood-dot.mood-neutral { background: #94a3b8; }
+    .mood-dot.mood-hard    { background: #f59e0b; }
+    .mood-dot.mood-crisis  { background: #ef4444; }
+    .session-body { padding: 0 1.1rem 1.1rem; display: none; }
+    .session-body.open { display: block; }
+    .session-field { margin-bottom: 0.9rem; }
+    .session-field-label { font-size: 0.72rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+    .session-field-val { font-size: 0.88rem; line-height: 1.7; white-space: pre-wrap; }
+
+    /* WhatsApp composer */
+    .wa-composer {
+      background: #f0fdf4; border: 1.5px solid #86efac; border-radius: var(--r-sm);
+      padding: 1rem; margin-top: 0.75rem;
+    }
+    .wa-composer-title { font-size: 0.82rem; font-weight: 800; color: #15803d; margin-bottom: 0.65rem; display: flex; align-items: center; gap: 0.35rem; }
+    .wa-composer textarea { background: var(--white); }
+    .wa-send-btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: #16a34a; color: #fff; padding: 0.52rem 1.1rem;
+      border-radius: var(--r-sm); font-weight: 700; font-size: 0.85rem;
+      border: none; cursor: pointer; font-family: inherit; margin-top: 0.6rem; transition: background 0.18s;
+    }
+    .wa-send-btn:hover { background: #15803d; }
+
+    /* Session editor */
+    .mood-selector { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.35rem; }
+    .mood-opt {
+      padding: 0.35rem 0.8rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+      cursor: pointer; border: 2px solid transparent; transition: all 0.15s; background: var(--bg);
+    }
+    .mood-opt:hover { opacity: 0.8; }
+    .mood-opt.sel { border-color: currentColor; background: transparent; }
+    .mood-opt-great   { color: #16a34a; }
+    .mood-opt-good    { color: #4ade80; border-color: #4ade80; }
+    .mood-opt-neutral { color: #64748b; }
+    .mood-opt-hard    { color: #f59e0b; }
+    .mood-opt-crisis  { color: #ef4444; }
+    .mood-opt.sel.mood-opt-great   { background: rgba(22,163,74,0.1); }
+    .mood-opt.sel.mood-opt-neutral { background: rgba(100,116,139,0.1); }
+    .mood-opt.sel.mood-opt-hard    { background: rgba(245,158,11,0.1); }
+    .mood-opt.sel.mood-opt-crisis  { background: rgba(239,68,68,0.1); }
+
+    /* ─── CRM: CALENDAR ──────────────────────── */
+    .cal-section-title {
+      font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--muted); padding: 0.5rem 0; margin-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+    }
+    .appt-item {
+      display: flex; align-items: center; gap: 1rem; padding: 0.9rem 1.1rem;
+      border-bottom: 1px solid var(--border); transition: background 0.15s;
+    }
+    .appt-item:last-child { border-bottom: none; }
+    .appt-item:hover { background: #f5f7ff; }
+    .appt-time-col { text-align: center; min-width: 52px; flex-shrink: 0; }
+    .appt-time { font-size: 1rem; font-weight: 800; color: var(--navy); }
+    .appt-dur  { font-size: 0.72rem; color: var(--muted); }
+    .appt-info { flex: 1; min-width: 0; }
+    .appt-client { font-weight: 700; font-size: 0.9rem; }
+    .appt-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.1rem; }
+    .appt-type-online     { background: rgba(99,102,241,0.1); color: #4f46e5; }
+    .appt-type-in-person  { background: rgba(27,58,107,0.1);  color: var(--navy); }
+    .appt-today { background: #fffbeb; }
+    .appt-today .appt-time { color: #b45309; }
+
+    /* Stats summary cards */
+    .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 0.75rem; margin-bottom: 1.5rem; }
+    .stat-card { background: var(--white); border-radius: var(--r-sm); padding: 1rem 1.1rem; box-shadow: var(--sh); text-align: center; }
+    .stat-num { font-size: 1.8rem; font-weight: 900; color: var(--navy); line-height: 1; }
+    .stat-lbl { font-size: 0.75rem; color: var(--muted); font-weight: 600; margin-top: 0.3rem; }
   </style>
 </head>
 <body>
@@ -350,6 +503,7 @@
       <div class="adm-chips" id="statsChips">
         <span class="chip" id="chipArticles">⌛ טוען…</span>
         <span class="chip" id="chipWS">🎯 3 סדנאות</span>
+        <span class="chip" id="chipClients">👥 לקוחות</span>
         <span class="chip ok" id="chipSaved">✓ שמור</span>
       </div>
       <div class="adm-acts">
@@ -358,9 +512,11 @@
       </div>
     </div>
     <div class="adm-tabs" role="tablist" aria-label="ניווט ראשי">
-      <button class="tab-btn on" data-target="pArticles" role="tab" aria-selected="true">✍️ מאמרים</button>
+      <button class="tab-btn on" data-target="pArticles"  role="tab" aria-selected="true">✍️ מאמרים</button>
       <button class="tab-btn"    data-target="pWorkshops" role="tab" aria-selected="false">🎯 סדנאות</button>
       <button class="tab-btn"    data-target="pPrices"    role="tab" aria-selected="false">💰 מחירים</button>
+      <button class="tab-btn"    data-target="pClients"   role="tab" aria-selected="false">👥 לקוחות</button>
+      <button class="tab-btn"    data-target="pCalendar"  role="tab" aria-selected="false">📅 יומן</button>
     </div>
   </header>
 
@@ -591,6 +747,262 @@
       </div>
 
     </div><!-- /pPrices -->
+
+    <!-- ═══ TAB: CLIENTS ═══ -->
+    <div class="tab-panel" id="pClients" role="tabpanel">
+
+      <!-- CLIENT LIST VIEW -->
+      <div id="clientListView">
+        <div class="stats-row" id="crmStats"></div>
+
+        <div class="acard">
+          <div class="acard-hd">
+            <div class="acard-title">👥 לקוחות</div>
+            <button class="btn btn-navy btn-sm" onclick="openNewClient()">+ לקוח/ה חדש/ה</button>
+          </div>
+          <div class="acard-body">
+            <div class="crm-toolbar">
+              <input class="crm-search" id="clientSearch" type="search" placeholder="🔍 חיפוש לפי שם…" oninput="renderClientList()">
+              <div class="filter-pills" id="clientFilters">
+                <span class="pill on" data-cf="all"        onclick="setCF(this)">הכל</span>
+                <span class="pill"    data-cf="couple"     onclick="setCF(this)">זוגות</span>
+                <span class="pill"    data-cf="individual" onclick="setCF(this)">אישי</span>
+                <span class="pill"    data-cf="active"     onclick="setCF(this)">פעילים</span>
+                <span class="pill"    data-cf="paused"     onclick="setCF(this)">הפסקה</span>
+                <span class="pill"    data-cf="ended"      onclick="setCF(this)">סיימו</span>
+              </div>
+            </div>
+            <div class="tbl-wrap">
+              <table class="client-tbl">
+                <thead>
+                  <tr>
+                    <th>שם</th>
+                    <th>סוג</th>
+                    <th>סטטוס</th>
+                    <th>פגישות</th>
+                    <th>פגישה אחרונה</th>
+                    <th>טלפון</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="clientsTbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW / EDIT CLIENT PANEL -->
+        <div class="editor-panel" id="clientEditor">
+          <div class="editor-title" id="clientEditorTitle">➕ לקוח/ה חדש/ה</div>
+          <input type="hidden" id="ceId">
+          <div class="frow">
+            <div class="fgrp">
+              <label>סוג טיפול</label>
+              <select id="ceType" onchange="togglePartner()">
+                <option value="couple">זוג</option>
+                <option value="individual">אישי</option>
+              </select>
+            </div>
+            <div class="fgrp">
+              <label>סטטוס</label>
+              <select id="ceStatus">
+                <option value="active">פעיל</option>
+                <option value="paused">הפסקה זמנית</option>
+                <option value="ended">סיים טיפול</option>
+              </select>
+            </div>
+          </div>
+          <div class="frow">
+            <div class="fgrp">
+              <label id="ceName1Label">שם פרטי + משפחה</label>
+              <input type="text" id="ceName" placeholder="שם לקוח/ה">
+            </div>
+            <div class="fgrp">
+              <label>טלפון</label>
+              <input type="text" id="cePhone" placeholder="05X-XXXXXXX">
+            </div>
+            <div class="fgrp" id="partnerGroup">
+              <label>שם בן/בת הזוג</label>
+              <input type="text" id="ceName2" placeholder="שם בן/בת הזוג">
+            </div>
+            <div class="fgrp" id="partnerPhoneGroup">
+              <label>טלפון בן/בת הזוג</label>
+              <input type="text" id="cePhone2" placeholder="05X-XXXXXXX">
+            </div>
+            <div class="fgrp">
+              <label>מייל (אופציונלי)</label>
+              <input type="email" id="ceEmail" placeholder="email@example.com">
+            </div>
+            <div class="fgrp">
+              <label>תאריך תחילת טיפול</label>
+              <input type="date" id="ceStartDate">
+            </div>
+            <div class="fgrp">
+              <label>איך הגיעו? (הפנייה)</label>
+              <input type="text" id="ceReferral" placeholder="חבר, גוגל, פייסבוק…">
+            </div>
+            <div class="fgrp">
+              <label>נושא/בעיה מרכזית</label>
+              <input type="text" id="ceTopic" placeholder="תקשורת, אינטימיות, חרדה…">
+            </div>
+            <div class="fgrp full">
+              <label>הערות כלליות</label>
+              <textarea id="ceNotes" rows="3" placeholder="מידע רקע, דגשים חשובים…"></textarea>
+            </div>
+          </div>
+          <div class="bgroup">
+            <button class="btn btn-navy" onclick="saveClient()">💾 שמור</button>
+            <button class="btn btn-ghost" onclick="closeClientEditor()">ביטול</button>
+          </div>
+        </div>
+      </div><!-- /clientListView -->
+
+      <!-- CLIENT DETAIL VIEW (hidden by default) -->
+      <div id="clientDetailView" style="display:none">
+        <div class="detail-back" onclick="backToClientList()">← חזרה לרשימת הלקוחות</div>
+
+        <!-- Client header card -->
+        <div class="client-hdr" id="clientHdrCard"></div>
+
+        <!-- Sessions -->
+        <div class="acard">
+          <div class="acard-hd">
+            <div class="acard-title">📋 יומן פגישות</div>
+            <button class="btn btn-navy btn-sm" onclick="openNewSession()">+ תיעוד פגישה</button>
+          </div>
+          <div class="acard-body">
+
+            <!-- SESSION EDITOR (hidden by default) -->
+            <div class="editor-panel" id="sessionEditor" style="margin-bottom:1.25rem">
+              <div class="editor-title" id="sessionEditorTitle">📝 תיעוד פגישה חדשה</div>
+              <input type="hidden" id="seId">
+              <div class="frow">
+                <div class="fgrp">
+                  <label>תאריך הפגישה</label>
+                  <input type="date" id="seDate">
+                </div>
+                <div class="fgrp">
+                  <label>מספר פגישה</label>
+                  <input type="number" id="seNum" min="1" placeholder="1">
+                </div>
+                <div class="fgrp">
+                  <label>משך (דקות)</label>
+                  <input type="number" id="seDur" placeholder="60" min="15" step="15">
+                </div>
+                <div class="fgrp">
+                  <label>מי נכח?</label>
+                  <input type="text" id="sePresent" placeholder="שניהם / רק היא / רק הוא">
+                </div>
+                <div class="fgrp full">
+                  <label>מצב רוח / אנרגיה בפגישה</label>
+                  <div class="mood-selector" id="moodSelector">
+                    <span class="mood-opt mood-opt-great"   data-mood="great"   onclick="setMood('great')">🟢 מצוין</span>
+                    <span class="mood-opt mood-opt-good"    data-mood="good"    onclick="setMood('good')">🔵 טוב</span>
+                    <span class="mood-opt mood-opt-neutral" data-mood="neutral" onclick="setMood('neutral')">⚪ ניטרלי</span>
+                    <span class="mood-opt mood-opt-hard"    data-mood="hard"    onclick="setMood('hard')">🟡 קשה</span>
+                    <span class="mood-opt mood-opt-crisis"  data-mood="crisis"  onclick="setMood('crisis')">🔴 משבר</span>
+                  </div>
+                </div>
+                <div class="fgrp full">
+                  <label>סיכום הפגישה (פרטי)</label>
+                  <textarea id="seSummary" rows="6" placeholder="מה עלה? מה עובד? נקודות עיקריות שעלו בפגישה…"></textarea>
+                </div>
+                <div class="fgrp full">
+                  <label>כלים / שיעורי בית שניתנו</label>
+                  <textarea id="seHomework" rows="3" placeholder="תרגיל X, ניסוי Y, קריאת Z, שיחה על…"></textarea>
+                </div>
+                <div class="fgrp full">
+                  <label>מה לטפל בפגישה הבאה</label>
+                  <textarea id="seNextSession" rows="2" placeholder="להמשיך מ-, לשאול על-, לבדוק אם…"></textarea>
+                </div>
+              </div>
+
+              <!-- WhatsApp composer -->
+              <div class="wa-composer">
+                <div class="wa-composer-title">📱 הודעת המלצות לשליחה בוואטסאפ אחרי הפגישה</div>
+                <div class="fhint" style="margin-bottom:0.6rem">גל כותב בדיוק מה ישלח — לחיצה על הכפתור תפתח וואטסאפ עם ההודעה</div>
+                <textarea id="seWaMsg" rows="5" placeholder="שלום [שם],&#10;&#10;רציתי לסכם את הפגישה של היום…&#10;&#10;מה שעבדנו עליו:&#10;- &#10;&#10;לנסות עד הפעם הבאה:&#10;- &#10;&#10;כל הכבוד על הפתיחות! 🙏"></textarea>
+                <div class="bgroup" style="margin-top:0.5rem">
+                  <button class="wa-send-btn" onclick="sendWaFromSession()">📱 פתח וואטסאפ ושלח</button>
+                  <span style="font-size:0.78rem;color:var(--muted)">ההודעה תעבור לוואטסאפ — גל לוחץ שלח</span>
+                </div>
+              </div>
+
+              <div class="bgroup" style="margin-top:1rem">
+                <button class="btn btn-navy" onclick="saveSession()">💾 שמור פגישה</button>
+                <button class="btn btn-ghost" onclick="closeSessionEditor()">ביטול</button>
+              </div>
+            </div><!-- /sessionEditor -->
+
+            <!-- Sessions list -->
+            <div class="session-timeline" id="sessionTimeline">
+              <div class="empty"><div class="ico">📋</div><h3>אין פגישות מתועדות עדיין</h3></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /clientDetailView -->
+
+    </div><!-- /pClients -->
+
+    <!-- ═══ TAB: CALENDAR ═══ -->
+    <div class="tab-panel" id="pCalendar" role="tabpanel">
+
+      <div class="stats-row" id="calStats"></div>
+
+      <div class="acard">
+        <div class="acard-hd">
+          <div class="acard-title">📅 פגישות קרובות</div>
+          <button class="btn btn-navy btn-sm" onclick="openNewAppt()">+ פגישה חדשה</button>
+        </div>
+        <div class="acard-body">
+
+          <!-- APPOINTMENT EDITOR -->
+          <div class="editor-panel" id="apptEditor" style="margin-bottom:1.25rem">
+            <div class="editor-title" id="apptEditorTitle">➕ הוספת פגישה</div>
+            <input type="hidden" id="aeId">
+            <div class="frow">
+              <div class="fgrp">
+                <label>לקוח/ה</label>
+                <select id="aeClient"></select>
+              </div>
+              <div class="fgrp">
+                <label>תאריך</label>
+                <input type="date" id="aeDate">
+              </div>
+              <div class="fgrp">
+                <label>שעה</label>
+                <input type="time" id="aeTime">
+              </div>
+              <div class="fgrp">
+                <label>משך (דקות)</label>
+                <input type="number" id="aeDur" value="60" min="15" step="15">
+              </div>
+              <div class="fgrp">
+                <label>סוג פגישה</label>
+                <select id="aeType">
+                  <option value="in-person">פנים אל פנים</option>
+                  <option value="online">אונליין (זום / ווצאפ)</option>
+                </select>
+              </div>
+              <div class="fgrp full">
+                <label>הערות</label>
+                <input type="text" id="aeNotes" placeholder="הערה קצרה…">
+              </div>
+            </div>
+            <div class="bgroup">
+              <button class="btn btn-navy" onclick="saveAppt()">💾 שמור</button>
+              <button class="btn btn-ghost" onclick="closeApptEditor()">ביטול</button>
+            </div>
+          </div>
+
+          <!-- Calendar list -->
+          <div id="apptList"></div>
+
+        </div>
+      </div>
+
+    </div><!-- /pCalendar -->
 
   </main>
 </div><!-- /dashboard -->
@@ -860,11 +1272,13 @@ function cancelArt() {
 /* ─── EXPORT ─────────────────────────────── */
 function exportData() {
   const data = {
-    exported: new Date().toISOString(),
-    articles:  getArts(),
-    workshops: getWS(),
-    prices:    getPR(),
-    notes:     localStorage.getItem(LS_NOTES) || DEF_NOTES
+    exported:     new Date().toISOString(),
+    articles:     getArts(),
+    workshops:    getWS(),
+    prices:       getPR(),
+    notes:        localStorage.getItem(LS_NOTES) || DEF_NOTES,
+    clients:      getClients(),
+    appointments: getAppts()
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -1026,6 +1440,532 @@ function savePricingNotes() {
   localStorage.setItem(LS_NOTES, G('pricingNotes').value);
   toast('הערות התמחור נשמרו');
 }
+
+/* ═══════════════════════════════════════════════
+   CRM — CLIENTS
+═══════════════════════════════════════════════ */
+const LS_CLIENTS = 'argaman_clients';
+const LS_APPTS   = 'argaman_appts';
+
+function getClients() { try { return JSON.parse(localStorage.getItem(LS_CLIENTS)) || []; } catch { return []; } }
+function saveClients(d) { localStorage.setItem(LS_CLIENTS, JSON.stringify(d)); refreshStats(); }
+function getAppts()   { try { return JSON.parse(localStorage.getItem(LS_APPTS))   || []; } catch { return []; } }
+function saveAppts(d) { localStorage.setItem(LS_APPTS, JSON.stringify(d)); }
+
+let currentClientId = null;
+let clientFilter = 'all';
+let sessionMood   = 'neutral';
+let sessionEditId = null;
+
+/* ── STATS ── */
+function refreshStats() {
+  const arts    = getArts();
+  const clients = getClients();
+  const active  = clients.filter(c => c.status === 'active').length;
+  G('chipArticles').textContent = arts.length    + ' מאמרים';
+  G('chipClients').textContent  = '👥 ' + clients.length + ' לקוחות';
+  if (G('crmStats')) renderCrmStats();
+}
+
+function renderCrmStats() {
+  const c = getClients();
+  const appts = getAppts();
+  const today = new Date().toISOString().slice(0,10);
+  const upcoming = appts.filter(a => a.date >= today).length;
+  G('crmStats').innerHTML = [
+    { num: c.length,                                  lbl: 'סה"כ לקוחות' },
+    { num: c.filter(x=>x.status==='active').length,   lbl: 'פעילים' },
+    { num: c.filter(x=>x.type==='couple').length,     lbl: 'זוגות' },
+    { num: c.filter(x=>x.type==='individual').length, lbl: 'אישי' },
+    { num: upcoming,                                  lbl: 'פגישות קרובות' },
+  ].map(s=>`<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+}
+
+/* ── FILTER ── */
+function setCF(el) {
+  document.querySelectorAll('#clientFilters .pill').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+  clientFilter = el.dataset.cf;
+  renderClientList();
+}
+
+/* ── LIST ── */
+function renderClientList() {
+  const q = (G('clientSearch')?.value||'').trim().toLowerCase();
+  let list = getClients();
+  if (clientFilter === 'couple')     list = list.filter(c=>c.type==='couple');
+  if (clientFilter === 'individual') list = list.filter(c=>c.type==='individual');
+  if (clientFilter === 'active')     list = list.filter(c=>c.status==='active');
+  if (clientFilter === 'paused')     list = list.filter(c=>c.status==='paused');
+  if (clientFilter === 'ended')      list = list.filter(c=>c.status==='ended');
+  if (q) list = list.filter(c=>(c.name+' '+(c.name2||'')).toLowerCase().includes(q));
+
+  const tbody = G('clientsTbody');
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="ico">👥</div><h3>אין לקוחות להצגה</h3><p>לחצו "+ לקוח/ה חדש/ה" כדי להוסיף</p></div></td></tr>`;
+    return;
+  }
+  const statusLabels = { active:'פעיל', paused:'הפסקה', ended:'סיים' };
+  const statusClass  = { active:'status-active', paused:'status-paused', ended:'status-ended' };
+  tbody.innerHTML = list.map(c => {
+    const sessions = c.sessions || [];
+    const lastS = sessions.length ? sessions.slice().sort((a,b)=>b.date.localeCompare(a.date))[0] : null;
+    const typeLabel = c.type==='couple' ? 'זוג' : 'אישי';
+    const typeClass = c.type==='couple' ? 'type-couple' : 'type-individual';
+    return `<tr onclick="openClientDetail(${c.id})">
+      <td>
+        <div class="client-name">${H(c.name)}</div>
+        ${c.name2 ? `<div class="client-partner">👫 ${H(c.name2)}</div>` : ''}
+      </td>
+      <td><span class="badge ${typeClass}">${typeLabel}</span></td>
+      <td><span class="badge ${statusClass[c.status]||''}">${statusLabels[c.status]||c.status}</span></td>
+      <td style="text-align:center;font-weight:700">${sessions.length}</td>
+      <td style="font-size:0.82rem;color:var(--muted)">${lastS ? new Date(lastS.date).toLocaleDateString('he-IL') : '—'}</td>
+      <td style="font-size:0.82rem">${H(c.phone||'')}</td>
+      <td>
+        <div class="bgroup">
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openEditClient(${c.id})">✏️</button>
+          <button class="btn btn-red btn-sm"   onclick="event.stopPropagation();delClient(${c.id})">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+  renderCrmStats();
+}
+
+/* ── NEW / EDIT CLIENT ── */
+let clientEditMode = false;
+
+function openNewClient() {
+  clientEditMode = false;
+  G('ceId').value = '';
+  G('ceType').value = 'couple';
+  G('ceStatus').value = 'active';
+  G('ceName').value = ''; G('cePhone').value = '';
+  G('ceName2').value = ''; G('cePhone2').value = '';
+  G('ceEmail').value = ''; G('ceStartDate').value = new Date().toISOString().slice(0,10);
+  G('ceReferral').value = ''; G('ceTopic').value = ''; G('ceNotes').value = '';
+  G('clientEditorTitle').textContent = '➕ לקוח/ה חדש/ה';
+  togglePartner();
+  const p = G('clientEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function openEditClient(id) {
+  const c = getClients().find(x=>x.id===id);
+  if (!c) return;
+  clientEditMode = true;
+  G('ceId').value = id;
+  G('ceType').value = c.type;
+  G('ceStatus').value = c.status;
+  G('ceName').value = c.name||'';
+  G('cePhone').value = c.phone||'';
+  G('ceName2').value = c.name2||'';
+  G('cePhone2').value = c.phone2||'';
+  G('ceEmail').value = c.email||'';
+  G('ceStartDate').value = c.startDate||'';
+  G('ceReferral').value = c.referral||'';
+  G('ceTopic').value = c.topic||'';
+  G('ceNotes').value = c.notes||'';
+  G('clientEditorTitle').textContent = '✏️ עריכת פרטי לקוח';
+  togglePartner();
+  const p = G('clientEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function togglePartner() {
+  const isCouple = G('ceType').value === 'couple';
+  G('partnerGroup').style.display      = isCouple ? '' : 'none';
+  G('partnerPhoneGroup').style.display = isCouple ? '' : 'none';
+}
+
+function saveClient() {
+  const name = G('ceName').value.trim();
+  if (!name) { toast('נא להכניס שם', 'err'); G('ceName').focus(); return; }
+  const clients = getClients();
+  const id = clientEditMode ? parseInt(G('ceId').value) : Date.now();
+  const obj = {
+    id, type: G('ceType').value, status: G('ceStatus').value,
+    name, phone: G('cePhone').value.trim(),
+    name2: G('ceName2').value.trim(), phone2: G('cePhone2').value.trim(),
+    email: G('ceEmail').value.trim(), startDate: G('ceStartDate').value,
+    referral: G('ceReferral').value.trim(), topic: G('ceTopic').value.trim(),
+    notes: G('ceNotes').value.trim(),
+    sessions: clientEditMode ? (clients.find(c=>c.id===id)?.sessions || []) : []
+  };
+  if (clientEditMode) {
+    const idx = clients.findIndex(c=>c.id===id);
+    if (idx>-1) clients[idx] = obj; else clients.push(obj);
+  } else {
+    clients.unshift(obj);
+  }
+  saveClients(clients);
+  closeClientEditor();
+  renderClientList();
+  toast(clientEditMode ? 'הלקוח עודכן' : 'לקוח חדש נוסף');
+}
+
+function closeClientEditor() { G('clientEditor').classList.remove('open'); }
+
+function delClient(id) {
+  if (!confirm('למחוק לקוח/ה זה לצמיתות? כל הפגישות המתועדות יימחקו גם כן.')) return;
+  const clients = getClients().filter(c=>c.id!==id);
+  saveClients(clients);
+  renderClientList();
+  toast('הלקוח נמחק');
+}
+
+/* ── CLIENT DETAIL ── */
+function openClientDetail(id) {
+  currentClientId = id;
+  const c = getClients().find(x=>x.id===id);
+  if (!c) return;
+  G('clientListView').style.display  = 'none';
+  G('clientDetailView').style.display = '';
+
+  const statusLabels = { active:'פעיל', paused:'הפסקה זמנית', ended:'סיים טיפול' };
+  const statusClass  = { active:'status-active', paused:'status-paused', ended:'status-ended' };
+  const avatarClass  = c.type==='couple' ? 'avatar-couple' : 'avatar-individual';
+  const avatarIcon   = c.type==='couple' ? '👫' : '👤';
+  const sessions = c.sessions || [];
+  const totalSessions = sessions.length;
+  const firstDate = c.startDate ? new Date(c.startDate).toLocaleDateString('he-IL') : '—';
+  const whatsappNum = (c.phone||'').replace(/\D/g,'');
+  const whatsappNum2 = (c.phone2||'').replace(/\D/g,'');
+
+  G('clientHdrCard').innerHTML = `
+    <div class="client-avatar ${avatarClass}">${avatarIcon}</div>
+    <div class="client-hdr-info">
+      <div class="client-hdr-name">${H(c.name)}${c.name2 ? ' & ' + H(c.name2) : ''}</div>
+      <div class="client-hdr-meta">
+        <span class="badge ${statusClass[c.status]||''}" style="margin-left:0.5rem">${statusLabels[c.status]||c.status}</span>
+        ${c.type==='couple' ? '<span class="badge type-couple">זוג</span>' : '<span class="badge type-individual">אישי</span>'}<br>
+        ${c.phone ? `📞 ${H(c.phone)}` : ''}${c.phone2 ? ` &nbsp;·&nbsp; 📞 ${H(c.phone2)}` : ''}<br>
+        ${c.email ? `✉️ ${H(c.email)}<br>` : ''}
+        📅 תחילת טיפול: ${firstDate} &nbsp;·&nbsp; ${totalSessions} פגישות מתועדות<br>
+        ${c.topic ? `🎯 נושא: ${H(c.topic)}` : ''}
+        ${c.referral ? `&nbsp;·&nbsp; 💬 הגיע/ה דרך: ${H(c.referral)}` : ''}
+      </div>
+    </div>
+    <div class="client-hdr-actions">
+      <button class="btn btn-outline btn-sm" onclick="openEditClient(${id});backToClientList();">✏️ עריכה</button>
+      ${whatsappNum ? `<a href="https://wa.me/972${whatsappNum.replace(/^0/,'')}" target="_blank" class="btn btn-green btn-sm">📱 וואטסאפ</a>` : ''}
+      ${whatsappNum2 ? `<a href="https://wa.me/972${whatsappNum2.replace(/^0/,'')}" target="_blank" class="btn btn-green btn-sm">📱 וואטסאפ 2</a>` : ''}
+    </div>
+  `;
+  if (c.notes) {
+    G('clientHdrCard').innerHTML += `<div class="full" style="margin-top:0.75rem;padding-top:0.75rem;border-top:1px solid var(--border);font-size:0.85rem;line-height:1.7;white-space:pre-wrap;color:var(--text)">${H(c.notes)}</div>`;
+  }
+  renderSessionTimeline(c);
+  closeSessionEditor();
+}
+
+function backToClientList() {
+  currentClientId = null;
+  G('clientListView').style.display   = '';
+  G('clientDetailView').style.display = 'none';
+  renderClientList();
+}
+
+/* ── SESSIONS ── */
+function renderSessionTimeline(c) {
+  const sessions = (c.sessions || []).slice().sort((a,b) => b.date.localeCompare(a.date));
+  const tl = G('sessionTimeline');
+  if (!sessions.length) {
+    tl.innerHTML = `<div class="empty"><div class="ico">📋</div><h3>אין פגישות מתועדות עדיין</h3><p>לחצו "+ תיעוד פגישה" להוספה</p></div>`;
+    return;
+  }
+  const moodLabel = { great:'🟢 מצוין', good:'🔵 טוב', neutral:'⚪ ניטרלי', hard:'🟡 קשה', crisis:'🔴 משבר' };
+  tl.innerHTML = sessions.map(s => {
+    const d = s.date ? new Date(s.date).toLocaleDateString('he-IL',{weekday:'long',year:'numeric',month:'long',day:'numeric'}) : '—';
+    return `<div class="session-item mood-${s.mood||'neutral'}" id="si-${s.id}">
+      <div class="session-hdr" onclick="toggleSession('${s.id}')">
+        <div class="session-hdr-left">
+          <div class="session-num">${s.sessionNum||'—'}</div>
+          <div>
+            <div class="session-date-title">${d}</div>
+            <div class="session-date-sub">${s.duration||60} דקות${s.present ? ' · ' + H(s.present) : ''} · ${moodLabel[s.mood]||'—'}</div>
+          </div>
+        </div>
+        <div class="bgroup">
+          <button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();editSession('${s.id}')">✏️</button>
+          <button class="btn btn-red btn-sm"   onclick="event.stopPropagation();delSession('${s.id}')">🗑</button>
+          <span style="color:var(--muted);font-size:0.8rem">▼</span>
+        </div>
+      </div>
+      <div class="session-body" id="sb-${s.id}">
+        ${s.summary    ? `<div class="session-field"><div class="session-field-label">סיכום הפגישה</div><div class="session-field-val">${H(s.summary)}</div></div>` : ''}
+        ${s.homework   ? `<div class="session-field"><div class="session-field-label">כלים / שיעורי בית</div><div class="session-field-val">${H(s.homework)}</div></div>` : ''}
+        ${s.nextSession? `<div class="session-field"><div class="session-field-label">לפגישה הבאה</div><div class="session-field-val">${H(s.nextSession)}</div></div>` : ''}
+        ${s.waMsg ? `<div class="wa-composer"><div class="wa-composer-title">📱 הודעה שנשלחה בוואטסאפ</div><div style="font-size:0.85rem;line-height:1.7;white-space:pre-wrap">${H(s.waMsg)}</div></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleSession(sid) {
+  const body = G('sb-' + sid);
+  if (!body) return;
+  body.classList.toggle('open');
+}
+
+function openNewSession() {
+  sessionEditId = null;
+  G('seId').value = '';
+  G('seDate').value = new Date().toISOString().slice(0,10);
+  const c = getClients().find(x=>x.id===currentClientId);
+  G('seNum').value = ((c?.sessions||[]).length + 1);
+  G('seDur').value = 60;
+  G('sePresent').value = '';
+  G('seSummary').value = ''; G('seHomework').value = ''; G('seNextSession').value = ''; G('seWaMsg').value = '';
+  setMood('neutral');
+  G('sessionEditorTitle').textContent = '📝 תיעוד פגישה חדשה';
+  const p = G('sessionEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function editSession(sid) {
+  const c = getClients().find(x=>x.id===currentClientId);
+  if (!c) return;
+  const s = (c.sessions||[]).find(x=>String(x.id)===String(sid));
+  if (!s) return;
+  sessionEditId = sid;
+  G('seId').value = sid;
+  G('seDate').value = s.date||'';
+  G('seNum').value  = s.sessionNum||'';
+  G('seDur').value  = s.duration||60;
+  G('sePresent').value     = s.present||'';
+  G('seSummary').value     = s.summary||'';
+  G('seHomework').value    = s.homework||'';
+  G('seNextSession').value = s.nextSession||'';
+  G('seWaMsg').value       = s.waMsg||'';
+  setMood(s.mood||'neutral');
+  G('sessionEditorTitle').textContent = '✏️ עריכת פגישה';
+  const p = G('sessionEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function closeSessionEditor() { G('sessionEditor').classList.remove('open'); }
+
+function setMood(mood) {
+  sessionMood = mood;
+  document.querySelectorAll('.mood-opt').forEach(el => {
+    el.classList.toggle('sel', el.dataset.mood === mood);
+  });
+}
+
+function saveSession() {
+  const date = G('seDate').value;
+  if (!date) { toast('נא לבחור תאריך', 'err'); return; }
+  const clients = getClients();
+  const idx = clients.findIndex(c=>c.id===currentClientId);
+  if (idx===-1) return;
+  const session = {
+    id: sessionEditId ? String(sessionEditId) : String(Date.now()),
+    date, sessionNum: parseInt(G('seNum').value)||1,
+    duration: parseInt(G('seDur').value)||60,
+    present: G('sePresent').value.trim(),
+    mood: sessionMood,
+    summary:     G('seSummary').value.trim(),
+    homework:    G('seHomework').value.trim(),
+    nextSession: G('seNextSession').value.trim(),
+    waMsg:       G('seWaMsg').value.trim()
+  };
+  if (sessionEditId) {
+    const si = clients[idx].sessions.findIndex(s=>String(s.id)===String(sessionEditId));
+    if (si>-1) clients[idx].sessions[si] = session;
+    else clients[idx].sessions.push(session);
+  } else {
+    if (!clients[idx].sessions) clients[idx].sessions = [];
+    clients[idx].sessions.push(session);
+  }
+  saveClients(clients);
+  closeSessionEditor();
+  renderSessionTimeline(clients[idx]);
+  toast(sessionEditId ? 'הפגישה עודכנה' : 'הפגישה נשמרה');
+}
+
+function delSession(sid) {
+  if (!confirm('למחוק את תיעוד הפגישה הזו?')) return;
+  const clients = getClients();
+  const idx = clients.findIndex(c=>c.id===currentClientId);
+  if (idx===-1) return;
+  clients[idx].sessions = (clients[idx].sessions||[]).filter(s=>String(s.id)!==String(sid));
+  saveClients(clients);
+  renderSessionTimeline(clients[idx]);
+  toast('הפגישה נמחקה');
+}
+
+function sendWaFromSession() {
+  const msg = G('seWaMsg').value.trim();
+  if (!msg) { toast('נא לכתוב הודעה תחילה', 'err'); return; }
+  const c = getClients().find(x=>x.id===currentClientId);
+  const phone = (c?.phone||'').replace(/\D/g,'').replace(/^0/,'972');
+  const url = phone
+    ? `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`
+    : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank', 'noopener');
+}
+
+/* ═══════════════════════════════════════════════
+   CALENDAR / APPOINTMENTS
+═══════════════════════════════════════════════ */
+let apptEditId = null;
+
+function renderCalendar() {
+  const appts = getAppts().slice().sort((a,b)=>a.date.localeCompare(b.date)||a.time.localeCompare(b.time));
+  const today = new Date().toISOString().slice(0,10);
+  const calStats = G('calStats');
+  if (calStats) {
+    const upcoming = appts.filter(a=>a.date>=today);
+    const todayAppts = appts.filter(a=>a.date===today);
+    calStats.innerHTML = [
+      { num: upcoming.length,    lbl: 'פגישות קרובות' },
+      { num: todayAppts.length,  lbl: 'היום' },
+      { num: appts.filter(a=>a.type==='online').length, lbl: 'אונליין' },
+    ].map(s=>`<div class="stat-card"><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+  }
+  const container = G('apptList');
+  if (!appts.length) {
+    container.innerHTML = `<div class="empty"><div class="ico">📅</div><h3>אין פגישות קבועות</h3><p>לחצו "+ פגישה חדשה" להוספה</p></div>`;
+    return;
+  }
+  const groups = {};
+  appts.forEach(a => {
+    if (!groups[a.date]) groups[a.date] = [];
+    groups[a.date].push(a);
+  });
+  const typeLabel = { 'in-person':'פנים אל פנים', 'online':'אונליין' };
+  const typeClass = { 'in-person':'appt-type-in-person', 'online':'appt-type-online' };
+  let html = '';
+  Object.keys(groups).sort().forEach(date => {
+    const d = new Date(date+'T12:00:00');
+    const label = date === today ? '📍 היום' : d.toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long'});
+    html += `<div class="cal-section-title">${label}</div>`;
+    groups[date].forEach(a => {
+      const isToday = date === today;
+      html += `<div class="appt-item${isToday?' appt-today':''}">
+        <div class="appt-time-col">
+          <div class="appt-time">${a.time||'—'}</div>
+          <div class="appt-dur">${a.duration||60} ד'</div>
+        </div>
+        <div class="appt-info">
+          <div class="appt-client">${H(a.clientName||'לא ידוע')}</div>
+          <div class="appt-meta">
+            <span class="badge ${typeClass[a.type]||''}">${typeLabel[a.type]||a.type}</span>
+            ${a.notes ? ' · ' + H(a.notes) : ''}
+          </div>
+        </div>
+        <div class="bgroup">
+          <button class="btn btn-ghost btn-sm" onclick="openEditAppt('${a.id}')">✏️</button>
+          <button class="btn btn-red btn-sm"   onclick="delAppt('${a.id}')">🗑</button>
+        </div>
+      </div>`;
+    });
+  });
+  container.innerHTML = html;
+}
+
+function openNewAppt() {
+  apptEditId = null;
+  G('aeId').value = '';
+  G('aeDate').value = new Date().toISOString().slice(0,10);
+  G('aeTime').value = '10:00';
+  G('aeDur').value  = 60;
+  G('aeType').value = 'in-person';
+  G('aeNotes').value = '';
+  populateApptClientSelect(null);
+  G('apptEditorTitle').textContent = '➕ הוספת פגישה';
+  const p = G('apptEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function openEditAppt(id) {
+  const a = getAppts().find(x=>String(x.id)===String(id));
+  if (!a) return;
+  apptEditId = id;
+  G('aeId').value    = id;
+  G('aeDate').value  = a.date||'';
+  G('aeTime').value  = a.time||'';
+  G('aeDur').value   = a.duration||60;
+  G('aeType').value  = a.type||'in-person';
+  G('aeNotes').value = a.notes||'';
+  populateApptClientSelect(a.clientId);
+  G('apptEditorTitle').textContent = '✏️ עריכת פגישה';
+  const p = G('apptEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function populateApptClientSelect(selectedId) {
+  const clients = getClients();
+  const sel = G('aeClient');
+  sel.innerHTML = '<option value="">— בחר לקוח/ה —</option>' +
+    clients.map(c => {
+      const name = c.name + (c.name2 ? ' & '+c.name2 : '');
+      const selected = String(c.id) === String(selectedId) ? 'selected' : '';
+      return `<option value="${c.id}" ${selected}>${H(name)}</option>`;
+    }).join('');
+}
+
+function closeApptEditor() { G('apptEditor').classList.remove('open'); }
+
+function saveAppt() {
+  const date = G('aeDate').value;
+  if (!date) { toast('נא לבחור תאריך', 'err'); return; }
+  const clientId = G('aeClient').value;
+  const clients = getClients();
+  const client = clients.find(c=>String(c.id)===String(clientId));
+  const clientName = client ? (client.name + (client.name2 ? ' & '+client.name2 : '')) : '';
+  const appts = getAppts();
+  const id = apptEditId ? String(apptEditId) : String(Date.now());
+  const obj = {
+    id, clientId: clientId||null, clientName,
+    date, time: G('aeTime').value, duration: parseInt(G('aeDur').value)||60,
+    type: G('aeType').value, notes: G('aeNotes').value.trim()
+  };
+  if (apptEditId) {
+    const idx = appts.findIndex(a=>String(a.id)===String(apptEditId));
+    if (idx>-1) appts[idx]=obj; else appts.push(obj);
+  } else {
+    appts.push(obj);
+  }
+  saveAppts(appts);
+  closeApptEditor();
+  renderCalendar();
+  toast(apptEditId ? 'הפגישה עודכנה' : 'הפגישה נוספה ליומן');
+}
+
+function delAppt(id) {
+  if (!confirm('למחוק פגישה זו מהיומן?')) return;
+  const appts = getAppts().filter(a=>String(a.id)!==String(id));
+  saveAppts(appts);
+  renderCalendar();
+  toast('הפגישה נמחקה');
+}
+
+/* ═══════════════════════════════════════════════
+   BOOT — extend existing boot()
+═══════════════════════════════════════════════ */
+const _origBoot = boot;
+boot = function() {
+  _origBoot();
+  renderClientList();
+  renderCalendar();
+};
+
+/* Tab switch also renders calendar/clients */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.dataset.target === 'pCalendar') renderCalendar();
+    if (btn.dataset.target === 'pClients')  { renderClientList(); renderCrmStats(); }
+  });
+});
 
 /* ═══════════════════════════════════════════════
    START
