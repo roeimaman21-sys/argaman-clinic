@@ -198,7 +198,13 @@ function renderBlogGrid(articles, page = 1) {
   const slice = articles.slice(start, start + PAGE_SIZE);
 
   if (!slice.length) {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--color-text-muted)">לא נמצאו מאמרים</p>';
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:4rem 1rem">
+        <div style="font-size:3rem;margin-bottom:1rem">📝</div>
+        <h3 style="color:var(--color-primary);margin-bottom:0.5rem">מאמרים בקרוב</h3>
+        <p style="color:var(--color-text-muted);max-width:400px;margin:0 auto 1.5rem;line-height:1.7">גל יפרסם כאן מאמרים מקצועיים בנושאי זוגיות, מיניות, טראומה וייעוץ אישי</p>
+        <a href="contact.html" class="btn btn-primary">לתיאום שיחת ייעוץ ←</a>
+      </div>`;
     return;
   }
   grid.innerHTML = slice.map(buildBlogCard).join('');
@@ -227,12 +233,6 @@ function initBlog() {
   let filtered    = allArticles;
   let currentPage = 1;
 
-  const placeholder = [
-    { id: 1000001, title: 'כיצד לשפר את התקשורת בזוגיות', category: 'זוגיות', excerpt: 'תקשורת היא אחד מאבני היסוד של כל זוגיות בריאה. במאמר זה נסקור כלים מעשיים לשיפור השיח הזוגי.', content: 'תוכן המאמר כאן...', image: '' },
-    { id: 1000002, title: 'מיניות ואינטימיות — שאלות ותשובות', category: 'מיניות', excerpt: 'שאלות נפוצות על מיניות ואינטימיות בזוגיות, ותשובות מקצועיות שיעזרו לכם להבין טוב יותר.', content: 'תוכן המאמר כאן...', image: '' },
-    { id: 1000003, title: 'ריפוי טראומה — המסע לחיים חדשים', category: 'טראומה', excerpt: 'טראומות מהעבר יכולות להשפיע על חיינו בהווה. כיצד ניתן לעבד אותן ולהתחיל מחדש?', content: 'תוכן המאמר כאן...', image: '' },
-  ];
-  if (!allArticles.length) { allArticles = placeholder; filtered = placeholder; }
 
   function refresh() {
     renderBlogGrid(filtered, currentPage);
@@ -483,8 +483,20 @@ function initContactForm() {
   const form = document.getElementById('contact-form');
   if (!form) return;
   form.addEventListener('submit', e => {
-    e.preventDefault();
-    window.location.href = 'thank-you.html';
+    const name    = form.querySelector('[name="name"]')?.value.trim();
+    const phone   = form.querySelector('[name="phone"]')?.value.trim();
+    const privacy = form.querySelector('[name="privacy"]')?.checked;
+    if (!name || !phone) {
+      e.preventDefault();
+      alert('נא למלא שם מלא וטלפון');
+      return;
+    }
+    if (privacy === false) {
+      e.preventDefault();
+      alert('נא לאשר את מדיניות הפרטיות כדי להמשיך');
+      return;
+    }
+    // Let the form submit naturally to FormSubmit.co
   });
 }
 

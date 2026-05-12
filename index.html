@@ -42,21 +42,70 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "קליניקת ארגמן",
-    "alternateName": "Argaman Clinic",
-    "url": "https://argamanclinic.co.il",
-    "telephone": "050-641-5222",
-    "email": "argamanclinic@gmail.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "יגאל אלון 1",
-      "addressLocality": "בית שמש",
-      "addressCountry": "IL"
-    },
-    "description": "ייעוץ זוגי, מיני ואישי עם גל ממן. גישה חמה, מקצועית וסודית לחלוטין.",
-    "priceRange": "$$",
-    "openingHours": "Mo-Th 09:00-20:00"
+    "@graph": [
+      {
+        "@type": ["LocalBusiness", "ProfessionalService"],
+        "@id": "https://argamanclinic.co.il/#business",
+        "name": "קליניקת ארגמן",
+        "alternateName": "Argaman Clinic",
+        "description": "קליניקת ארגמן — ייעוץ זוגי, מיני ואישי עם גל ממן. פגישות פנים אל פנים בבית שמש ואונליין. סודיות מוחלטת, גישה חמה ומקצועית.",
+        "url": "https://argamanclinic.co.il",
+        "telephone": "+972-50-641-5222",
+        "email": "argamanclinic@gmail.com",
+        "image": "https://argamanclinic.co.il/gal.jpg",
+        "logo": "https://argamanclinic.co.il/logo.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "יגאל אלון 1",
+          "addressLocality": "בית שמש",
+          "addressRegion": "מחוז ירושלים",
+          "addressCountry": "IL"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "31.7457",
+          "longitude": "34.9858"
+        },
+        "hasMap": "https://maps.google.com/maps?q=יגאל+אלון+1,+בית+שמש,+ישראל",
+        "openingHoursSpecification": [
+          {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Sunday","Monday","Tuesday","Wednesday","Thursday"],
+            "opens": "09:00",
+            "closes": "21:00"
+          }
+        ],
+        "priceRange": "$$",
+        "areaServed": [
+          {"@type": "City", "name": "בית שמש"},
+          {"@type": "City", "name": "ירושלים"},
+          {"@type": "Country", "name": "ישראל"}
+        ],
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "שירותי הייעוץ",
+          "itemListElement": [
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "ייעוץ זוגי ונישואין"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "ייעוץ מיני"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "ריפוי טראומה"}},
+            {"@type": "Offer", "itemOffered": {"@type": "Service", "name": "ייעוץ אישי"}}
+          ]
+        },
+        "sameAs": ["https://www.facebook.com/share/1CgDECpXp9/"],
+        "founder": {"@id": "https://argamanclinic.co.il/about.html#gal"}
+      },
+      {
+        "@type": "Person",
+        "@id": "https://argamanclinic.co.il/about.html#gal",
+        "name": "גל ממן",
+        "jobTitle": "יועץ זוגי ומיני",
+        "description": "גל ממן — יועץ זוגי, מיני ואישי עם 5 שנות ניסיון. מתמחה בזוגיות, אינטימיות, טראומה וצמיחה אישית.",
+        "image": "https://argamanclinic.co.il/gal.jpg",
+        "url": "https://argamanclinic.co.il/about.html",
+        "worksFor": {"@id": "https://argamanclinic.co.il/#business"},
+        "sameAs": ["https://www.facebook.com/share/1CgDECpXp9/"]
+      }
+    ]
   }
   </script>
 </head>
