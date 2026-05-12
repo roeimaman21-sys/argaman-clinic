@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
   <meta charset="UTF-8">
@@ -8,138 +8,1029 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    body { background: var(--color-bg-light); }
-    .admin-wrap { max-width: 960px; margin: 0 auto; padding: 2rem var(--container-pad); }
-    .form-section { background: white; border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem; }
-    .form-section h2 { font-size: 1.2rem; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--color-border); }
-    .table-wrap { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow-x: auto; }
-    .admin-table { min-width: 600px; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:      #1B3A6B;
+      --navy-dark: #0f2347;
+      --navy-mid:  #243f72;
+      --gold:      #C9A84C;
+      --gold-dark: #a8882e;
+      --red:       #e74c3c;
+      --green:     #16a34a;
+      --bg:        #eef0f6;
+      --border:    #e2e6ee;
+      --text:      #1a1a2e;
+      --muted:     #6b7280;
+      --white:     #ffffff;
+      --r:         12px;
+      --r-sm:      8px;
+      --sh:        0 2px 14px rgba(0,0,0,0.07);
+      --sh-md:     0 4px 28px rgba(0,0,0,0.12);
+    }
+    html { font-family: 'Heebo', Arial, sans-serif; direction: rtl; font-size: 15px; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ─── AUTH ─────────────────────────────── */
+    .auth-wrap {
+      position: fixed; inset: 0; z-index: 9999;
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy-mid) 100%);
+      display: flex; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .auth-box {
+      background: var(--white); border-radius: var(--r); padding: 2.75rem 2.25rem;
+      width: 100%; max-width: 380px; box-shadow: var(--sh-md); text-align: center;
+    }
+    .auth-emblem {
+      width: 64px; height: 64px; border-radius: 16px;
+      background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.75rem; margin: 0 auto 1.25rem; box-shadow: 0 4px 16px rgba(27,58,107,0.3);
+    }
+    .auth-box h2 { font-size: 1.35rem; font-weight: 800; color: var(--navy); margin-bottom: 0.35rem; }
+    .auth-box p  { font-size: 0.88rem; color: var(--muted); margin-bottom: 1.75rem; }
+
+    /* ─── FORMS ─────────────────────────────── */
+    label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--muted); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.04em; }
+    input[type="text"], input[type="number"], input[type="password"], input[type="email"],
+    input[type="file"], select, textarea {
+      width: 100%; padding: 0.6rem 0.85rem; border: 1.5px solid var(--border);
+      border-radius: var(--r-sm); font-family: inherit; font-size: 0.92rem;
+      color: var(--text); background: var(--white); transition: border-color 0.2s, box-shadow 0.2s;
+      line-height: 1.5;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none; border-color: var(--navy);
+      box-shadow: 0 0 0 3px rgba(27,58,107,0.1);
+    }
+    textarea { resize: vertical; }
+    input[type="file"] { padding: 0.45rem 0.7rem; background: var(--bg); cursor: pointer; }
+    .fgrp { margin-bottom: 1.1rem; }
+    .frow { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .frow.f3 { grid-template-columns: 1fr 1fr 1fr; }
+    @media (max-width: 640px) { .frow, .frow.f3 { grid-template-columns: 1fr; } }
+    .fhint { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; font-weight: 400; text-transform: none; letter-spacing: 0; }
+    .ferr  { color: var(--red); font-size: 0.82rem; margin-top: 0.35rem; display: none; }
+
+    /* ─── BUTTONS ─────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.58rem 1.15rem; border-radius: var(--r-sm);
+      font-family: inherit; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; border: none; transition: all 0.18s;
+      text-decoration: none; white-space: nowrap;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-navy  { background: var(--navy);      color: var(--white); }
+    .btn-navy:hover  { background: var(--navy-dark); }
+    .btn-gold  { background: var(--gold);      color: var(--white); }
+    .btn-gold:hover  { background: var(--gold-dark); }
+    .btn-red   { background: var(--red);       color: var(--white); }
+    .btn-red:hover   { background: #c0392b; }
+    .btn-green { background: var(--green);     color: var(--white); }
+    .btn-outline { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+    .btn-outline:hover { background: var(--navy); color: var(--white); }
+    .btn-ghost { background: transparent; color: var(--muted); border: 1.5px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--navy); color: var(--navy); }
+    .btn-sm  { padding: 0.38rem 0.85rem; font-size: 0.82rem; }
+    .btn-lg  { padding: 0.75rem 1.6rem; font-size: 0.95rem; }
+    .btn-blk { width: 100%; justify-content: center; }
+    .bgroup  { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; }
+
+    /* ─── HEADER ─────────────────────────────── */
+    .adm-hd {
+      background: var(--navy-dark); color: var(--white);
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+    }
+    .adm-hd-top {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.8rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.07);
+      flex-wrap: wrap;
+    }
+    .adm-logo {
+      font-size: 1rem; font-weight: 900; color: var(--white);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .adm-logo .gld { color: var(--gold); }
+    .adm-logo small { font-weight: 400; opacity: 0.45; font-size: 0.78rem; }
+    .adm-chips { display: flex; gap: 0.5rem; flex: 1; flex-wrap: wrap; }
+    .chip {
+      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
+      font-size: 0.76rem; font-weight: 600; padding: 0.22rem 0.65rem;
+      border-radius: 20px;
+    }
+    .chip.ok { background: rgba(22,163,74,0.3); color: #6ee7a3; }
+    .adm-acts { display: flex; gap: 0.5rem; }
+    .btn-hd {
+      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.15); font-family: inherit;
+      font-size: 0.82rem; font-weight: 600; padding: 0.4rem 0.9rem;
+      border-radius: var(--r-sm); cursor: pointer; transition: all 0.18s;
+      text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;
+    }
+    .btn-hd:hover { background: rgba(255,255,255,0.18); color: var(--white); }
+
+    /* ─── TABS ─────────────────────────────── */
+    .adm-tabs { display: flex; padding: 0 1.25rem; overflow-x: auto; gap: 0; }
+    .tab-btn {
+      background: none; border: none; border-bottom: 3px solid transparent;
+      color: rgba(255,255,255,0.48); font-family: inherit; font-size: 0.88rem;
+      font-weight: 700; padding: 0.85rem 1.15rem; cursor: pointer;
+      transition: all 0.18s; white-space: nowrap;
+    }
+    .tab-btn:hover { color: rgba(255,255,255,0.8); }
+    .tab-btn.on { color: var(--white); border-bottom-color: var(--gold); }
+
+    /* ─── PANELS ─────────────────────────────── */
+    .adm-main { max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+    .tab-panel { display: none; }
+    .tab-panel.on { display: block; }
+
+    /* ─── CARDS ─────────────────────────────── */
+    .acard {
+      background: var(--white); border-radius: var(--r);
+      box-shadow: var(--sh); margin-bottom: 1.5rem; overflow: hidden;
+    }
+    .acard-hd {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border);
+      gap: 0.75rem; flex-wrap: wrap;
+    }
+    .acard-title {
+      font-size: 0.97rem; font-weight: 800; color: var(--navy);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .acard-body { padding: 1.4rem; }
+    .acard-body.no-pad { padding: 0; }
+
+    /* ─── TABLE ─────────────────────────────── */
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+      padding: 0.65rem 1rem; text-align: right;
+      font-size: 0.72rem; font-weight: 800; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.05em;
+      background: var(--bg); border-bottom: 1px solid var(--border);
+    }
+    tbody td { padding: 0.8rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.88rem; vertical-align: middle; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #f5f7ff; }
+    .tbl-title { font-weight: 700; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .badge {
+      display: inline-block; padding: 0.18rem 0.55rem;
+      border-radius: 20px; font-size: 0.72rem; font-weight: 800;
+    }
+    .b-blue  { background: rgba(27,58,107,0.1);  color: var(--navy); }
+    .b-gold  { background: rgba(201,168,76,0.15); color: #876a10; }
+    .b-green { background: rgba(22,163,74,0.12);  color: #15803d; }
+    .b-red   { background: rgba(231,76,60,0.12);  color: #c0392b; }
+    .b-gray  { background: #f1f3f7; color: #6b7280; }
+
+    /* ─── IMG PREVIEW ─────────────────────────────── */
+    .img-drop {
+      border: 2px dashed var(--border); border-radius: var(--r-sm);
+      padding: 1rem; text-align: center; margin-top: 0.5rem;
+      transition: border-color 0.2s;
+    }
+    .img-drop:hover { border-color: var(--navy); }
+    .img-drop img { max-height: 110px; max-width: 100%; border-radius: 6px; display: none; margin: 0 auto; }
+    .img-drop .ph { font-size: 0.8rem; color: var(--muted); }
+
+    /* ─── TOGGLE ─────────────────────────────── */
+    .tgl-wrap { display: flex; align-items: center; gap: 0.75rem; }
+    .tgl-wrap label.lbl { margin: 0; text-transform: none; letter-spacing: 0; font-size: 0.88rem; color: var(--text); font-weight: 600; }
+    .tgl { position: relative; width: 44px; height: 24px; flex-shrink: 0; }
+    .tgl input { opacity: 0; width: 0; height: 0; }
+    .tgl-sl {
+      position: absolute; inset: 0; background: #d1d5db;
+      border-radius: 24px; cursor: pointer; transition: background 0.2s;
+    }
+    .tgl-sl::before {
+      content: ''; position: absolute; width: 18px; height: 18px;
+      background: white; border-radius: 50%; top: 3px; right: 3px;
+      transition: transform 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .tgl input:checked + .tgl-sl { background: var(--navy); }
+    .tgl input:checked + .tgl-sl::before { transform: translateX(-20px); }
+
+    /* ─── WORKSHOP / PRICE GRID ─────────────────────────────── */
+    .item-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem; margin-bottom: 1.25rem;
+    }
+    .ws-card {
+      border: 2px solid var(--border); border-radius: var(--r);
+      overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .ws-card.sel { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,58,107,0.12); }
+    .ws-card-hd { padding: 0.95rem 1.15rem; color: var(--white); }
+    .ws-card-hd h4 { font-size: 0.92rem; font-weight: 800; margin-bottom: 0.2rem; }
+    .ws-card-hd .status { font-size: 0.72rem; opacity: 0.75; }
+    .ws-card-body { padding: 1rem 1.15rem; background: var(--white); }
+    .ws-meta { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.65rem; line-height: 1.6; }
+    .ws-date {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.45rem 0.7rem; background: var(--bg);
+      border-radius: var(--r-sm); font-size: 0.82rem; margin-bottom: 0.75rem;
+    }
+    .ws-date strong { color: var(--navy); font-weight: 700; }
+    .ws-date .no-date { color: var(--red); font-weight: 700; }
+
+    .price-card {
+      border: 2px solid var(--border); border-radius: var(--r);
+      overflow: hidden; transition: border-color 0.2s;
+    }
+    .price-card.featured-card { border-color: var(--navy); }
+    .price-card.sel { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.18); }
+    .price-card-hd {
+      background: var(--bg); padding: 0.9rem 1.15rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+    }
+    .price-card-hd h4 { font-size: 0.9rem; font-weight: 800; color: var(--navy); }
+    .price-card-body { padding: 1rem 1.15rem; background: var(--white); }
+    .price-amount { font-size: 1.5rem; font-weight: 900; color: var(--navy); margin-bottom: 0.2rem; }
+    .price-note { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.65rem; }
+    .price-feats { font-size: 0.8rem; color: var(--muted); padding-right: 1.1rem; margin-bottom: 0.75rem; line-height: 1.7; }
+
+    /* ─── EDITOR PANEL ─────────────────────────────── */
+    .editor-panel {
+      border: 2px solid var(--navy); border-radius: var(--r);
+      background: var(--white); padding: 1.4rem; margin-bottom: 1.25rem;
+      display: none;
+    }
+    .editor-panel.open { display: block; }
+    .editor-title {
+      font-size: 0.95rem; font-weight: 800; color: var(--navy);
+      margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;
+      padding-bottom: 0.9rem; border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── NOTES SECTION ─────────────────────────────── */
+    .notes-box {
+      background: var(--bg); border-radius: var(--r-sm); padding: 1.1rem;
+      border-right: 4px solid var(--gold);
+    }
+    .notes-box h4 { font-size: 0.88rem; font-weight: 800; color: var(--navy); margin-bottom: 0.75rem; }
+
+    /* ─── EMPTY STATE ─────────────────────────────── */
+    .empty {
+      text-align: center; padding: 3rem 1rem; color: var(--muted);
+    }
+    .empty .ico { font-size: 2.75rem; margin-bottom: 0.75rem; }
+    .empty h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 0.35rem; }
+
+    /* ─── TOAST ─────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 1.75rem; left: 50%;
+      transform: translateX(-50%) translateY(130%);
+      background: var(--text); color: var(--white);
+      padding: 0.8rem 1.5rem; border-radius: 30px;
+      font-size: 0.88rem; font-weight: 700;
+      z-index: 9997; pointer-events: none;
+      transition: transform 0.38s cubic-bezier(0.34,1.56,0.64,1);
+      display: flex; align-items: center; gap: 0.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast.ok  { background: var(--green); }
+    .toast.err { background: var(--red); }
+
+    /* ─── DIVIDER ─────────────────────────────── */
+    hr { border: none; border-top: 1px solid var(--border); margin: 1.4rem 0; }
+
+    /* ─── UTILS ─────────────────────────────── */
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+    .full { grid-column: 1 / -1; }
+    @media (max-width: 768px) {
+      .adm-hd-top { padding: 0.75rem 1rem; }
+      .adm-main   { padding: 1rem; }
+    }
   </style>
 </head>
 <body>
 
-<!-- AUTH OVERLAY -->
-<div class="admin-auth-overlay" id="admin-auth-overlay" role="dialog" aria-modal="true" aria-labelledby="auth-title">
-  <div class="admin-auth-box">
-    <div style="font-size:2.5rem;margin-bottom:1rem">🔐</div>
-    <h2 id="auth-title">כניסה לפאנל הניהול</h2>
-    <p>אזור זה מוגן בסיסמה</p>
-    <form id="admin-login-form" novalidate>
-      <div class="form-group">
-        <label for="admin-pass">סיסמה</label>
-        <input type="password" id="admin-pass" name="password" required autocomplete="current-password" placeholder="הכניסו סיסמה">
+<!-- ═══════════════════════════════════════════
+     AUTH
+═══════════════════════════════════════════ -->
+<div class="auth-wrap" id="authWrap">
+  <div class="auth-box">
+    <div class="auth-emblem">🔐</div>
+    <h2>קליניקת ארגמן</h2>
+    <p>פאנל ניהול — אזור מוגן</p>
+    <form id="authForm" style="text-align:right" novalidate>
+      <div class="fgrp">
+        <label for="passIn">סיסמה</label>
+        <input type="password" id="passIn" placeholder="הכניסו סיסמה" autocomplete="current-password" required>
+        <div class="ferr" id="authErr">סיסמה שגויה — נסו שוב</div>
       </div>
-      <div id="admin-error" class="admin-error" role="alert" aria-live="polite"></div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:1rem">כניסה ←</button>
+      <button type="submit" class="btn btn-navy btn-lg btn-blk">כניסה ←</button>
+      <div style="margin-top:1.25rem;text-align:center">
+        <a href="index.html" style="font-size:0.82rem;color:var(--muted);text-decoration:none">← חזרה לאתר</a>
+      </div>
     </form>
-    <div style="margin-top:1.5rem">
-      <a href="index.html" style="font-size:0.88rem;color:var(--color-text-muted)">← חזרה לאתר</a>
-    </div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
-<div id="admin-dashboard" style="display:none">
+<!-- ═══════════════════════════════════════════
+     DASHBOARD
+═══════════════════════════════════════════ -->
+<div id="dashboard" style="display:none">
 
-  <header style="background:var(--color-primary);padding:1rem 0;position:sticky;top:0;z-index:100">
-    <div style="max-width:960px;margin:0 auto;padding:0 var(--container-pad);display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-      <a href="index.html" style="color:rgba(255,255,255,0.7);font-size:0.85rem">← לאתר</a>
-      <span style="color:rgba(255,255,255,0.3)">|</span>
-      <span style="color:white;font-weight:700;flex:1">קליניקת ארגמן — פאנל ניהול</span>
-      <span class="admin-badge" id="article-count">0 מאמרים</span>
-      <button id="admin-logout" class="btn btn-sm" style="background:rgba(255,255,255,0.15);color:white;border:1px solid rgba(255,255,255,0.3)">התנתק</button>
+  <!-- HEADER -->
+  <header class="adm-hd">
+    <div class="adm-hd-top">
+      <div class="adm-logo">
+        <span class="gld">א</span>
+        קליניקת ארגמן
+        <small>| פאנל ניהול</small>
+      </div>
+      <div class="adm-chips" id="statsChips">
+        <span class="chip" id="chipArticles">⌛ טוען…</span>
+        <span class="chip" id="chipWS">🎯 3 סדנאות</span>
+        <span class="chip ok" id="chipSaved">✓ שמור</span>
+      </div>
+      <div class="adm-acts">
+        <a href="index.html" target="_blank" class="btn-hd">🌐 לאתר</a>
+        <button id="logoutBtn" class="btn-hd">יציאה</button>
+      </div>
+    </div>
+    <div class="adm-tabs" role="tablist" aria-label="ניווט ראשי">
+      <button class="tab-btn on" data-target="pArticles" role="tab" aria-selected="true">✍️ מאמרים</button>
+      <button class="tab-btn"    data-target="pWorkshops" role="tab" aria-selected="false">🎯 סדנאות</button>
+      <button class="tab-btn"    data-target="pPrices"    role="tab" aria-selected="false">💰 מחירים</button>
     </div>
   </header>
 
-  <div class="admin-wrap">
+  <main class="adm-main">
 
-    <!-- FORM SECTION -->
-    <div class="form-section">
-      <h2 id="form-title">✍️ פרסום מאמר חדש</h2>
-      <form id="article-form" novalidate>
-        <div class="grid-2" style="gap:1rem">
-          <div class="form-group" style="grid-column:1/-1">
-            <label for="title_field">כותרת המאמר *</label>
-            <input type="text" id="title_field" name="title_field" required placeholder="כותרת ברורה ומושכת">
-          </div>
-          <div class="form-group">
-            <label for="category">קטגוריה</label>
-            <select id="category" name="category">
-              <option value="זוגיות">זוגיות</option>
-              <option value="מיניות">מיניות</option>
-              <option value="טראומה">טראומה</option>
-              <option value="אישי">אישי</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="article-img">תמונה (עד 500KB)</label>
-            <input type="file" id="article-img" name="image" accept="image/*">
-            <img id="img-preview" class="img-preview" alt="תצוגה מקדימה">
-          </div>
-          <div class="form-group" style="grid-column:1/-1">
-            <label for="excerpt">תקציר (2 שורות)</label>
-            <textarea id="excerpt" name="excerpt" rows="2" placeholder="תיאור קצר שיופיע ברשימת המאמרים..."></textarea>
-          </div>
-          <div class="form-group" style="grid-column:1/-1">
-            <label for="content">תוכן המאמר *</label>
-            <textarea id="content" name="content" rows="14" placeholder="כתבו את תוכן המאמר כאן...&#10;&#10;ניתן להשתמש בשורות ריקות להפרדה בין פסקאות."></textarea>
+    <!-- ═══ TAB: ARTICLES ═══ -->
+    <div class="tab-panel on" id="pArticles" role="tabpanel">
+
+      <!-- FORM CARD -->
+      <div class="acard">
+        <div class="acard-hd">
+          <div class="acard-title" id="artFormTitle">✍️ פרסום מאמר חדש</div>
+          <div class="bgroup">
+            <a href="blog.html" target="_blank" class="btn btn-ghost btn-sm">📖 לבלוג</a>
+            <button class="btn btn-ghost btn-sm" onclick="cancelArt()">× ניקוי</button>
           </div>
         </div>
-        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap">
-          <button type="submit" class="btn btn-primary btn-lg" id="form-submit-btn">פרסם מאמר ←</button>
-          <button type="button" class="btn btn-outline" onclick="resetAdminForm()">נקה טופס</button>
+        <div class="acard-body">
+          <form id="artForm" novalidate>
+            <input type="hidden" id="artEditId">
+            <div class="frow">
+              <div class="fgrp full">
+                <label for="artTitle">כותרת המאמר *</label>
+                <input type="text" id="artTitle" placeholder="כותרת ברורה ומושכת" required>
+              </div>
+              <div class="fgrp">
+                <label for="artCat">קטגוריה</label>
+                <select id="artCat">
+                  <option value="זוגיות">זוגיות</option>
+                  <option value="מיניות">מיניות</option>
+                  <option value="טראומה">טראומה</option>
+                  <option value="אישי">אישי</option>
+                </select>
+              </div>
+              <div class="fgrp">
+                <label>תמונה (עד 500KB)</label>
+                <input type="file" id="artImg" accept="image/*">
+                <div class="img-drop" id="imgDrop">
+                  <img id="imgPrev" alt="תצוגה מקדימה">
+                  <span class="ph" id="imgPh">📷 אין תמונה נבחרת</span>
+                </div>
+              </div>
+              <div class="fgrp full">
+                <label for="artExcerpt">תקציר (שורה-שתיים — יופיע ברשימת הבלוג)</label>
+                <textarea id="artExcerpt" rows="2" placeholder="תיאור קצר שיגרום לגולשים לרצות לקרוא…"></textarea>
+              </div>
+              <div class="fgrp full">
+                <label for="artContent">תוכן המאמר *</label>
+                <textarea id="artContent" rows="14" placeholder="כתבו כאן את תוכן המאמר…&#10;&#10;שורה ריקה = פסקה חדשה."></textarea>
+              </div>
+            </div>
+            <div class="bgroup">
+              <button type="submit" class="btn btn-navy btn-lg" id="artSubmitBtn">פרסם מאמר ←</button>
+              <button type="button" class="btn btn-ghost" onclick="cancelArt()">ביטול</button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-
-    <!-- ARTICLES TABLE -->
-    <div class="form-section">
-      <h2>📋 מאמרים קיימים</h2>
-      <div class="table-wrap">
-        <table class="admin-table" role="grid">
-          <thead>
-            <tr>
-              <th scope="col">כותרת</th>
-              <th scope="col">קטגוריה</th>
-              <th scope="col">תאריך</th>
-              <th scope="col">עריכה</th>
-              <th scope="col">מחיקה</th>
-            </tr>
-          </thead>
-          <tbody id="articles-tbody"></tbody>
-        </table>
       </div>
-      <div style="margin-top:1rem;display:flex;gap:1rem">
-        <a href="blog.html" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm">צפו בבלוג ←</a>
-      </div>
-    </div>
 
-  </div>
-</div>
+      <!-- TABLE CARD -->
+      <div class="acard">
+        <div class="acard-hd">
+          <div class="acard-title">📋 מאמרים מפורסמים</div>
+          <div class="bgroup">
+            <button class="btn btn-ghost btn-sm" onclick="exportData()">⬇ ייצוא גיבוי</button>
+          </div>
+        </div>
+        <div class="acard-body no-pad">
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>כותרת</th>
+                  <th>קטגוריה</th>
+                  <th>תאריך</th>
+                  <th>פעולות</th>
+                </tr>
+              </thead>
+              <tbody id="artsTbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /pArticles -->
+
+    <!-- ═══ TAB: WORKSHOPS ═══ -->
+    <div class="tab-panel" id="pWorkshops" role="tabpanel">
+
+      <div class="acard">
+        <div class="acard-hd">
+          <div class="acard-title">🎯 ניהול סדנאות</div>
+          <a href="workshops.html" target="_blank" class="btn btn-ghost btn-sm">צפו בעמוד ←</a>
+        </div>
+        <div class="acard-body">
+          <p style="font-size:0.87rem;color:var(--muted);margin-bottom:1.1rem">לחצו "עריכה" על הסדנה שברצונכם לעדכן. שינויים נשמרים ב-localStorage ומשתקפים מיידית בעמוד הסדנאות.</p>
+
+          <div class="item-grid" id="wsGrid"></div>
+
+          <!-- WS EDIT PANEL -->
+          <div class="editor-panel" id="wsEditor">
+            <div class="editor-title">
+              ✏️ עריכת סדנה: <span id="wsEditorName" style="color:var(--gold)"></span>
+            </div>
+            <input type="hidden" id="wsEdId">
+            <div class="frow">
+              <div class="fgrp full">
+                <label>שם הסדנה</label>
+                <input type="text" id="wsName" placeholder='סדנת זוגות "מחדש"'>
+              </div>
+              <div class="fgrp">
+                <label>📆 מועד הבא (מה יופיע באתר)</label>
+                <input type="text" id="wsDate" placeholder="יום שישי, 13.6.2025 · 09:00–17:00">
+                <div class="fhint">זה השדה הכי חשוב לעדכן לפני כל מחזור</div>
+              </div>
+              <div class="fgrp">
+                <label>📅 פורמט / תדירות</label>
+                <input type="text" id="wsSchedule" placeholder="יום שישי, 09:00–17:00">
+              </div>
+              <div class="fgrp">
+                <label>👥 קיבולת</label>
+                <input type="text" id="wsCapacity" placeholder="6–8 זוגות">
+              </div>
+              <div class="fgrp">
+                <label>⏱ משך</label>
+                <input type="text" id="wsDuration" placeholder="יום שלם / 3 שעות לערב">
+              </div>
+              <div class="fgrp full">
+                <label>תיאור הסדנה</label>
+                <textarea id="wsDesc" rows="3" placeholder="מה הסדנה נותנת? למי היא מתאימה?"></textarea>
+              </div>
+              <div class="fgrp full">
+                <label>מה לומדים — שורה = פריט אחד</label>
+                <textarea id="wsItems" rows="5" placeholder="תקשורת זוגית עמוקה&#10;חיזוק האינטימיות הרגשית&#10;כלים מעשיים ליום-יום&#10;פתרון קונפליקטים"></textarea>
+              </div>
+              <div class="fgrp">
+                <label>טקסט הודעת WhatsApp לרישום</label>
+                <input type="text" id="wsWa" placeholder="שלום, אני מעוניין/ת להירשם ל…">
+              </div>
+              <div class="fgrp">
+                <div class="tgl-wrap" style="margin-top:1.4rem">
+                  <label class="tgl"><input type="checkbox" id="wsActive"><span class="tgl-sl"></span></label>
+                  <span class="lbl">סדנה פעילה (מוצגת באתר)</span>
+                </div>
+              </div>
+            </div>
+            <div class="bgroup">
+              <button class="btn btn-navy" onclick="saveWorkshop()">💾 שמור שינויים</button>
+              <button class="btn btn-ghost" onclick="closeWsEd()">ביטול</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /pWorkshops -->
+
+    <!-- ═══ TAB: PRICES ═══ -->
+    <div class="tab-panel" id="pPrices" role="tabpanel">
+
+      <div class="acard">
+        <div class="acard-hd">
+          <div class="acard-title">💰 ניהול מחירים</div>
+          <a href="pricing.html" target="_blank" class="btn btn-ghost btn-sm">צפו בעמוד ←</a>
+        </div>
+        <div class="acard-body">
+          <p style="font-size:0.87rem;color:var(--muted);margin-bottom:1.1rem">לחצו "עריכה" על כרטיסיית המחיר שברצונכם לשנות. המחירים יופיעו מיד בדף המחירים.</p>
+
+          <div class="item-grid" id="priceGrid"></div>
+
+          <!-- PRICE EDIT PANEL -->
+          <div class="editor-panel" id="priceEditor">
+            <div class="editor-title">
+              💸 עריכת: <span id="priceEditorName" style="color:var(--gold)"></span>
+            </div>
+            <input type="hidden" id="prEdId">
+            <div class="frow">
+              <div class="fgrp">
+                <label>שם החבילה</label>
+                <input type="text" id="prName" placeholder="תהליך זוגי / אישי">
+              </div>
+              <div class="fgrp">
+                <label>אימוג'י</label>
+                <input type="text" id="prIcon" placeholder="🌱" style="font-size:1.4rem">
+              </div>
+              <div class="fgrp">
+                <label>מחיר (₪ — מספר בלבד)</label>
+                <input type="number" id="prAmount" placeholder="450" min="0">
+              </div>
+              <div class="fgrp">
+                <label>הערת מחיר</label>
+                <input type="text" id="prNote" placeholder="לפגישה · לחבילה · ללא עלות">
+              </div>
+              <div class="fgrp full">
+                <label>תיאור</label>
+                <textarea id="prDesc" rows="2" placeholder="משפט קצר שמסביר את החבילה…"></textarea>
+              </div>
+              <div class="fgrp full">
+                <label>כלול בחבילה — שורה = פריט אחד</label>
+                <textarea id="prFeats" rows="6" placeholder="60-90 דקות לפגישה&#10;תוכנית מותאמת אישית&#10;כלים לעבודה בין פגישות&#10;ליווי שוטף בוואטסאפ"></textarea>
+              </div>
+              <div class="fgrp">
+                <div class="tgl-wrap" style="margin-top:1.2rem">
+                  <label class="tgl"><input type="checkbox" id="prFeat"><span class="tgl-sl"></span></label>
+                  <span class="lbl">סמן כ"הכי פופולרי" (מסגרת מודגשת)</span>
+                </div>
+              </div>
+            </div>
+            <div class="bgroup">
+              <button class="btn btn-gold" onclick="savePrice()">💾 שמור שינויים</button>
+              <button class="btn btn-ghost" onclick="closePrEd()">ביטול</button>
+            </div>
+          </div>
+
+          <hr>
+
+          <!-- NOTES -->
+          <div class="notes-box">
+            <h4>📋 הערות תמחור (מופיעות בתחתית דף המחירים)</h4>
+            <div class="fgrp">
+              <label>כל שורה = הערה אחת</label>
+              <textarea id="pricingNotes" rows="5" placeholder='המחירים כוללים מע"מ&#10;ביטול עד 24 שעות לפני — ללא חיוב&#10;תשלום במזומן, העברה בנקאית או Bit'></textarea>
+            </div>
+            <button class="btn btn-navy btn-sm" onclick="savePricingNotes()">שמור הערות</button>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /pPrices -->
+
+  </main>
+</div><!-- /dashboard -->
+
+<!-- TOAST -->
+<div class="toast" id="toastEl" role="status" aria-live="polite"></div>
 
 <script src="script.js"></script>
 <script>
-  function resetAdminForm() {
-    document.getElementById('article-form').reset();
-    const preview = document.getElementById('img-preview');
-    if (preview) { preview.src = ''; preview.style.display = 'none'; }
-    const btn = document.getElementById('form-submit-btn');
-    if (btn) btn.textContent = 'פרסם מאמר ←';
-    const title = document.getElementById('form-title');
-    if (title) title.textContent = '✍️ פרסום מאמר חדש';
-    if (typeof editingId !== 'undefined') window.editingId = null;
-  }
+/* ═══════════════════════════════════════════════
+   CONSTANTS & DEFAULTS
+═══════════════════════════════════════════════ */
+const PASS        = 'argaman2025';
+const LS_ART      = 'argaman_articles';
+const LS_WS       = 'argaman_workshops';
+const LS_PR       = 'argaman_prices';
+const LS_NOTES    = 'argaman_pricing_notes';
 
-  const origEdit = window.adminEditArticle;
-  window.adminEditArticle = function(id) {
-    if (origEdit) origEdit(id);
-    const title = document.getElementById('form-title');
-    if (title) title.textContent = '✏️ עריכת מאמר';
-    document.getElementById('article-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+const DEF_WS = [
+  {
+    id: 'w1', active: true,
+    name: 'סדנת זוגות "מחדש"',
+    schedule: 'יום שישי, 09:00–17:00',
+    capacity: '6–8 זוגות',
+    duration: 'יום שלם',
+    description: 'סדנה יום-שלמה לזוגות שרוצים לחזק את הקשר, להעמיק את האינטימיות ולצאת עם כלים מעשיים שישנו את הדינמיקה ביניהם. בסביבה חמה ובטוחה, עם זוגות אחרים שמבינים.',
+    items: ['תקשורת זוגית עמוקה', 'חיזוק האינטימיות הרגשית', 'כלים מעשיים ליום-יום', 'פתרון קונפליקטים'],
+    date: '',
+    color: 'linear-gradient(135deg,#1B3A6B,#2a5298)',
+    wa: 'שלום, אני מעוניין/ת להירשם לסדנת זוגות מחדש'
+  },
+  {
+    id: 'w2', active: true,
+    name: 'קבוצת גברים "ביטחון"',
+    schedule: '8 מפגשים שבועיים',
+    capacity: '6–8 משתתפים',
+    duration: '2 שעות למפגש',
+    description: 'קבוצה ייחודית לגברים המתמודדים עם ביטחון עצמי, מיניות וזוגיות. מרחב בטוח שבו גברים מדברים בפתיחות על מה שבדרך כלל שומרים לעצמם — ומגלים שהם לא לבד.',
+    items: ['דימוי עצמי וביטחון גברי', 'מיניות גברית בריאה', 'בניית יחסים אמיתיים', 'ביטוי רגשי בריא'],
+    date: '',
+    color: 'linear-gradient(135deg,#2C3E7A,#4a6fac)',
+    wa: 'שלום, אני מעוניין להצטרף לקבוצת גברים ביטחון'
+  },
+  {
+    id: 'w3', active: true,
+    name: 'סדנת "שפה זוגית"',
+    schedule: '3 ערבים',
+    capacity: 'עד 5 זוגות',
+    duration: '3 שעות לערב',
+    description: 'ורקשופ מרוכז ואינטנסיבי לשיפור התקשורת הזוגית. שלושה ערבים שישנו את השפה שבה אתם מדברים זה עם זה — ויביאו לקירבה שלא הכרתם.',
+    items: ['תקשורת מקרבת (NVC)', 'הקשבה פעילה אמיתית', 'ביטוי צרכים ורגשות', 'פתרון ויכוחים חוזרים'],
+    date: '',
+    color: 'linear-gradient(135deg,#6B3A1B,#a85c30)',
+    wa: 'שלום, אני מעוניין/ת להירשם לסדנת שפה זוגית'
+  }
+];
+
+const DEF_PR = [
+  {
+    id: 'p1', icon: '🤝', featured: false,
+    name: 'פגישת היכרות',
+    amount: '', note: 'שיחה טלפונית חינמית',
+    description: 'שיחה ראשונה להכיר, להבין ולתכנן את הדרך יחד — ללא התחייבות',
+    features: ['60 דקות', 'הערכה ראשונית', 'המלצה לתהליך מותאם', 'ללא התחייבות להמשך']
+  },
+  {
+    id: 'p2', icon: '🌱', featured: true,
+    name: 'תהליך זוגי / אישי',
+    amount: '', note: 'לפגישה',
+    description: 'מפגשים שבועיים עם כלים מעשיים לשינוי אמיתי ומתמשך',
+    features: ['60–90 דקות לפגישה', 'תוכנית מותאמת אישית', 'כלים לעבודה בין פגישות', 'ליווי שוטף בוואטסאפ', 'גמישות בתדירות']
+  },
+  {
+    id: 'p3', icon: '👥', featured: false,
+    name: 'חבילת סדנה / קבוצה',
+    amount: '', note: 'לסדנה',
+    description: 'סדנאות קבוצתיות לזוגות ויחידים — למידה משותפת וחיבור אנושי',
+    features: ['מפגש קבוצתי', 'חומרי לימוד', 'רשת תמיכה של משתתפים', 'עלות נמוכה יחסית לפרטני']
+  }
+];
+
+const DEF_NOTES = 'המחירים כוללים מע"מ\nביטול עד 24 שעות לפני — ללא חיוב\nתשלום במזומן, העברה בנקאית או Bit\nניתן לשאול על הנחות ותנאים מיוחדים';
+
+/* ═══════════════════════════════════════════════
+   UTILS
+═══════════════════════════════════════════════ */
+const G = id => document.getElementById(id);
+const H = s  => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function toast(msg, type='ok') {
+  const el = G('toastEl');
+  el.textContent = (type==='ok' ? '✓ ' : '✗ ') + msg;
+  el.className = 'toast show ' + type;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className = 'toast', 2800);
+}
+
+function getWS()   { try { return JSON.parse(localStorage.getItem(LS_WS))  || DEF_WS; } catch { return DEF_WS; } }
+function getPR()   { try { return JSON.parse(localStorage.getItem(LS_PR))  || DEF_PR; } catch { return DEF_PR; } }
+function getArts() { try { return JSON.parse(localStorage.getItem(LS_ART)) || [];      } catch { return [];      } }
+
+function saveWS(d) { localStorage.setItem(LS_WS, JSON.stringify(d)); refreshStats(); }
+function savePR(d) { localStorage.setItem(LS_PR, JSON.stringify(d)); }
+
+function refreshStats() {
+  const arts = getArts();
+  G('chipArticles').textContent = arts.length + ' מאמרים';
+  const t = new Date();
+  G('chipSaved').textContent = '✓ ' + t.getHours() + ':' + String(t.getMinutes()).padStart(2,'0');
+}
+
+/* ═══════════════════════════════════════════════
+   AUTH
+═══════════════════════════════════════════════ */
+function checkAuth() {
+  if (sessionStorage.getItem('argaman_adm') === '1') boot();
+}
+
+G('authForm').addEventListener('submit', e => {
+  e.preventDefault();
+  if (G('passIn').value === PASS) {
+    sessionStorage.setItem('argaman_adm', '1');
+    G('authErr').style.display = 'none';
+    boot();
+  } else {
+    G('authErr').style.display = 'block';
+    G('passIn').select();
+  }
+});
+
+G('logoutBtn').addEventListener('click', () => {
+  sessionStorage.removeItem('argaman_adm');
+  location.reload();
+});
+
+function boot() {
+  G('authWrap').style.display  = 'none';
+  G('dashboard').style.display = 'block';
+  refreshStats();
+  renderArtsTable();
+  renderWsGrid();
+  renderPrGrid();
+  G('pricingNotes').value = localStorage.getItem(LS_NOTES) || DEF_NOTES;
+}
+
+/* ═══════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════ */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => { b.classList.remove('on'); b.setAttribute('aria-selected','false'); });
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    btn.setAttribute('aria-selected','true');
+    G(btn.dataset.target).classList.add('on');
+  });
+});
+
+/* ═══════════════════════════════════════════════
+   ARTICLES
+═══════════════════════════════════════════════ */
+let artEditId = null;
+
+G('artImg').addEventListener('change', function() {
+  const file = this.files[0];
+  if (!file) return;
+  if (file.size > 524288) { toast('התמונה גדולה מ-500KB', 'err'); this.value = ''; return; }
+  const r = new FileReader();
+  r.onload = ev => {
+    G('imgPrev').src = ev.target.result;
+    G('imgPrev').style.display = 'block';
+    G('imgPh').style.display = 'none';
   };
+  r.readAsDataURL(file);
+});
+
+G('artForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const title   = G('artTitle').value.trim();
+  const content = G('artContent').value.trim();
+  if (!title)   { toast('נא להכניס כותרת', 'err'); G('artTitle').focus(); return; }
+  if (!content) { toast('נא להכניס תוכן',  'err'); G('artContent').focus(); return; }
+
+  const arts = getArts();
+  const img  = G('imgPrev').src && G('imgPrev').style.display !== 'none' ? G('imgPrev').src : '';
+
+  if (artEditId) {
+    const idx = arts.findIndex(a => String(a.id) === String(artEditId));
+    if (idx > -1) {
+      arts[idx] = { ...arts[idx], title, category: G('artCat').value, excerpt: G('artExcerpt').value.trim(), content, image: img };
+      localStorage.setItem(LS_ART, JSON.stringify(arts));
+      toast('המאמר עודכן בהצלחה');
+    }
+  } else {
+    const article = {
+      id: Date.now(), title, category: G('artCat').value,
+      excerpt: G('artExcerpt').value.trim(), content, image: img,
+      date: new Date().toISOString()
+    };
+    arts.unshift(article);
+    localStorage.setItem(LS_ART, JSON.stringify(arts));
+    toast('המאמר פורסם בהצלחה');
+  }
+  cancelArt();
+  renderArtsTable();
+  refreshStats();
+});
+
+function renderArtsTable() {
+  const arts = getArts();
+  const tbody = G('artsTbody');
+  if (!arts.length) {
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty"><div class="ico">📝</div><h3>אין מאמרים עדיין</h3><p>פרסמו מאמר ראשון ↑</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = arts.map(a => {
+    const dt = isNaN(+a.id) ? (a.date ? new Date(a.date).toLocaleDateString('he-IL') : '—') : new Date(+a.id).toLocaleDateString('he-IL');
+    return `<tr>
+      <td><div class="tbl-title" title="${H(a.title)}">${H(a.title)}</div></td>
+      <td><span class="badge b-blue">${H(a.category||'כללי')}</span></td>
+      <td style="font-size:0.82rem;color:var(--muted);white-space:nowrap">${dt}</td>
+      <td>
+        <div class="bgroup">
+          <button class="btn btn-ghost btn-sm" onclick="editArt('${a.id}')">✏️ עריכה</button>
+          <a href="article.html?id=${a.id}" target="_blank" class="btn btn-ghost btn-sm">👁</a>
+          <button class="btn btn-red btn-sm" onclick="delArt('${a.id}')">🗑</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function editArt(id) {
+  const arts = getArts();
+  const a = arts.find(x => String(x.id) === String(id));
+  if (!a) return;
+  artEditId = id;
+  G('artTitle').value   = a.title;
+  G('artCat').value     = a.category || 'זוגיות';
+  G('artExcerpt').value = a.excerpt  || '';
+  G('artContent').value = a.content  || '';
+  if (a.image) { G('imgPrev').src = a.image; G('imgPrev').style.display = 'block'; G('imgPh').style.display = 'none'; }
+  G('artFormTitle').textContent  = '✏️ עריכת מאמר';
+  G('artSubmitBtn').textContent  = 'שמור שינויים ←';
+  document.querySelector('[data-target="pArticles"]').click();
+  G('artForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function delArt(id) {
+  if (!confirm('למחוק את המאמר לצמיתות?')) return;
+  const arts = getArts().filter(a => String(a.id) !== String(id));
+  localStorage.setItem(LS_ART, JSON.stringify(arts));
+  renderArtsTable();
+  refreshStats();
+  toast('המאמר נמחק');
+}
+
+function cancelArt() {
+  artEditId = null;
+  G('artForm').reset();
+  G('artEditId').value = '';
+  G('imgPrev').src = ''; G('imgPrev').style.display = 'none'; G('imgPh').style.display = '';
+  G('artFormTitle').textContent = '✍️ פרסום מאמר חדש';
+  G('artSubmitBtn').textContent = 'פרסם מאמר ←';
+}
+
+/* ─── EXPORT ─────────────────────────────── */
+function exportData() {
+  const data = {
+    exported: new Date().toISOString(),
+    articles:  getArts(),
+    workshops: getWS(),
+    prices:    getPR(),
+    notes:     localStorage.getItem(LS_NOTES) || DEF_NOTES
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'argaman-backup-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  toast('גיבוי יוצא בהצלחה');
+}
+
+/* ═══════════════════════════════════════════════
+   WORKSHOPS
+═══════════════════════════════════════════════ */
+let wsEditId = null;
+
+function renderWsGrid() {
+  const list = getWS();
+  G('wsGrid').innerHTML = list.map(w => `
+    <div class="ws-card${wsEditId===w.id?' sel':''}" id="wsc-${w.id}">
+      <div class="ws-card-hd" style="background:${w.color}">
+        <h4>${H(w.name)}</h4>
+        <div class="status">${w.active ? '● פעיל' : '○ מוסתר'}</div>
+      </div>
+      <div class="ws-card-body">
+        <div class="ws-meta">
+          📅 ${H(w.schedule)} &nbsp;·&nbsp; 👥 ${H(w.capacity)} &nbsp;·&nbsp; ⏱ ${H(w.duration)}
+        </div>
+        <div class="ws-date">
+          <span>📆 מועד הבא:</span>
+          ${w.date ? `<strong>${H(w.date)}</strong>` : '<span class="no-date">לא הוגדר!</span>'}
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="openWsEd('${w.id}')">✏️ עריכה</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openWsEd(id) {
+  const w = getWS().find(x => x.id === id);
+  if (!w) return;
+  wsEditId = id;
+  G('wsEdId').value       = id;
+  G('wsEditorName').textContent = w.name;
+  G('wsName').value       = w.name;
+  G('wsDate').value       = w.date       || '';
+  G('wsSchedule').value   = w.schedule   || '';
+  G('wsCapacity').value   = w.capacity   || '';
+  G('wsDuration').value   = w.duration   || '';
+  G('wsDesc').value       = w.description|| '';
+  G('wsItems').value      = (w.items||[]).join('\n');
+  G('wsWa').value         = w.wa         || '';
+  G('wsActive').checked   = !!w.active;
+  const p = G('wsEditor');
+  p.classList.add('open');
+  p.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  renderWsGrid();
+}
+
+function closeWsEd() {
+  wsEditId = null;
+  G('wsEditor').classList.remove('open');
+  renderWsGrid();
+}
+
+function saveWorkshop() {
+  const id   = G('wsEdId').value;
+  const list = getWS();
+  const idx  = list.findIndex(w => w.id === id);
+  if (idx === -1) return;
+  list[idx] = {
+    ...list[idx],
+    name:        G('wsName').value.trim(),
+    date:        G('wsDate').value.trim(),
+    schedule:    G('wsSchedule').value.trim(),
+    capacity:    G('wsCapacity').value.trim(),
+    duration:    G('wsDuration').value.trim(),
+    description: G('wsDesc').value.trim(),
+    items:       G('wsItems').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    wa:          G('wsWa').value.trim(),
+    active:      G('wsActive').checked
+  };
+  saveWS(list);
+  closeWsEd();
+  toast('הסדנה עודכנה בהצלחה');
+}
+
+/* ═══════════════════════════════════════════════
+   PRICES
+═══════════════════════════════════════════════ */
+let prEditId = null;
+
+function renderPrGrid() {
+  const list = getPR();
+  G('priceGrid').innerHTML = list.map(p => `
+    <div class="price-card${p.featured?' featured-card':''}${prEditId===p.id?' sel':''}" id="prc-${p.id}">
+      <div class="price-card-hd">
+        <h4>${p.icon} ${H(p.name)}</h4>
+        ${p.featured ? '<span class="badge b-gold">⭐ פופולרי</span>' : ''}
+      </div>
+      <div class="price-card-body">
+        <div class="price-amount">${p.amount ? '₪'+p.amount : '<span style="color:var(--muted);font-size:0.9rem">— מחיר לא הוגדר —</span>'}</div>
+        <div class="price-note">${H(p.note)}</div>
+        <ul class="price-feats">
+          ${(p.features||[]).slice(0,3).map(f=>`<li>${H(f)}</li>`).join('')}
+          ${p.features.length>3?`<li style="color:var(--navy);font-weight:700">+ עוד ${p.features.length-3}</li>`:''}
+        </ul>
+        <button class="btn btn-outline btn-sm" onclick="openPrEd('${p.id}')">✏️ עריכה</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openPrEd(id) {
+  const p = getPR().find(x => x.id === id);
+  if (!p) return;
+  prEditId = id;
+  G('prEdId').value          = id;
+  G('priceEditorName').textContent = p.name;
+  G('prName').value          = p.name;
+  G('prIcon').value          = p.icon;
+  G('prAmount').value        = p.amount  || '';
+  G('prNote').value          = p.note    || '';
+  G('prDesc').value          = p.description || '';
+  G('prFeats').value         = (p.features||[]).join('\n');
+  G('prFeat').checked        = !!p.featured;
+  const panel = G('priceEditor');
+  panel.classList.add('open');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  renderPrGrid();
+}
+
+function closePrEd() {
+  prEditId = null;
+  G('priceEditor').classList.remove('open');
+  renderPrGrid();
+}
+
+function savePrice() {
+  const id   = G('prEdId').value;
+  const list = getPR();
+  const idx  = list.findIndex(p => p.id === id);
+  if (idx === -1) return;
+  list[idx] = {
+    ...list[idx],
+    name:        G('prName').value.trim(),
+    icon:        G('prIcon').value.trim(),
+    amount:      G('prAmount').value.trim(),
+    note:        G('prNote').value.trim(),
+    description: G('prDesc').value.trim(),
+    features:    G('prFeats').value.split('\n').map(s=>s.trim()).filter(Boolean),
+    featured:    G('prFeat').checked
+  };
+  savePR(list);
+  closePrEd();
+  renderPrGrid();
+  toast('המחיר עודכן בהצלחה');
+}
+
+function savePricingNotes() {
+  localStorage.setItem(LS_NOTES, G('pricingNotes').value);
+  toast('הערות התמחור נשמרו');
+}
+
+/* ═══════════════════════════════════════════════
+   START
+═══════════════════════════════════════════════ */
+checkAuth();
 </script>
 </body>
 </html>

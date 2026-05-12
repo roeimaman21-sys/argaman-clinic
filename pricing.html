@@ -88,7 +88,7 @@
     <div class="container">
       <h2 id="pricing-heading" class="sr-only">חבילות תמחור</h2>
 
-      <div class="grid-3" style="align-items:stretch;margin-bottom:3rem">
+      <div class="grid-3" style="align-items:stretch;margin-bottom:3rem" id="pricing-list">
 
         <!-- CARD 1: INTRO -->
         <div class="pricing-card" data-aos="fade-up" data-aos-delay="0">
@@ -240,5 +240,58 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="script.js"></script>
+<script>
+(function() {
+  var LS_PR    = 'argaman_prices';
+  var LS_NOTES = 'argaman_pricing_notes';
+  function H(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  try {
+    /* ── PRICES ── */
+    var stored = localStorage.getItem(LS_PR);
+    if (stored) {
+      var list = JSON.parse(stored);
+      var container = document.getElementById('pricing-list');
+      if (container && list && list.length) {
+        container.innerHTML = list.map(function(p, i) {
+          var delay = i * 100;
+          var feats = (p.features || []).map(function(f) {
+            return '<li>' + H(f) + '</li>';
+          }).join('');
+          var priceHtml = p.amount
+            ? '<span class="pricing-number">₪' + H(p.amount) + '</span><span class="pricing-period"> / ' + H(p.note) + '</span>'
+            : '<span style="font-size:0.95rem;color:var(--color-text-muted)">לפרטי מחיר — צרו קשר</span>';
+          var isFeat = !!p.featured;
+          var btnHtml = p.id === 'p3'
+            ? '<a href="workshops.html" class="btn btn-outline" style="width:100%;justify-content:center">לפרטים על הסדנאות</a>'
+            : '<a href="https://wa.me/972506415222" class="btn ' + (isFeat ? 'btn-primary' : 'btn-outline') + '" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer">' + (isFeat ? 'התחילו תהליך ←' : 'קבעו פגישת היכרות') + '</a>';
+
+          return '<div class="pricing-card' + (isFeat ? ' featured' : '') + '" data-aos="fade-up" data-aos-delay="' + delay + '">' +
+            (isFeat ? '<div class="pricing-popular">הכי פופולרי</div>' : '') +
+            '<div style="font-size:2.5rem;margin-bottom:0.75rem">' + H(p.icon) + '</div>' +
+            '<h3>' + H(p.name) + '</h3>' +
+            '<div class="pricing-price">' + priceHtml + '</div>' +
+            '<p class="pricing-desc">' + H(p.description) + '</p>' +
+            '<ul class="pricing-features">' + feats + '</ul>' +
+            btnHtml +
+          '</div>';
+        }).join('');
+      }
+    }
+
+    /* ── NOTES ── */
+    var notesStored = localStorage.getItem(LS_NOTES);
+    if (notesStored) {
+      var notesEl = document.querySelector('.section ul[style*="flex-direction:column"]');
+      if (notesEl) {
+        var lines = notesStored.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+        notesEl.innerHTML = lines.map(function(l) {
+          return '<li>✓ ' + H(l) + '</li>';
+        }).join('');
+      }
+    }
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>

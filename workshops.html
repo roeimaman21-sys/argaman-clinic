@@ -88,7 +88,7 @@
   <section class="section" aria-labelledby="workshops-heading">
     <div class="container">
       <h2 id="workshops-heading" class="sr-only">רשימת סדנאות</h2>
-      <div style="display:flex;flex-direction:column;gap:3rem">
+      <div style="display:flex;flex-direction:column;gap:3rem" id="workshops-list">
 
         <!-- WORKSHOP 1 -->
         <div class="workshop-card" data-aos="fade-up">
@@ -276,5 +276,61 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="script.js"></script>
+<script>
+(function() {
+  var LS_WS = 'argaman_workshops';
+  var DEF_COLORS = [
+    'linear-gradient(135deg,#1B3A6B,#2a5298)',
+    'linear-gradient(135deg,#2C3E7A,#4a6fac)',
+    'linear-gradient(135deg,#6B3A1B,#a85c30)'
+  ];
+  function H(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  try {
+    var stored = localStorage.getItem(LS_WS);
+    if (!stored) return;
+    var list = JSON.parse(stored);
+    if (!list || !list.length) return;
+
+    var container = document.getElementById('workshops-list');
+    if (!container) return;
+
+    var html = list.filter(function(w){ return w.active !== false; }).map(function(w, i) {
+      var color = w.color || DEF_COLORS[i % DEF_COLORS.length];
+      var items = (w.items || []).map(function(it) {
+        return '<li style="display:flex;gap:0.5rem;font-size:0.95rem"><span style="color:var(--color-gold);font-weight:700">✓</span> ' + H(it) + '</li>';
+      }).join('');
+      var dateHtml = w.date
+        ? '<strong style="color:var(--color-primary)">' + H(w.date) + '</strong>'
+        : '<strong style="color:#e74c3c">טרם נקבע — פנו לברר</strong>';
+
+      return '<div class="workshop-card" data-aos="fade-up">' +
+        '<div class="workshop-img" style="background:' + color + '">' +
+          '<h3>' + H(w.name) + '</h3>' +
+        '</div>' +
+        '<div class="workshop-body">' +
+          '<div class="workshop-meta">' +
+            '<span>📅 ' + H(w.schedule) + '</span>' +
+            '<span>👥 ' + H(w.capacity) + '</span>' +
+            '<span>⏱ ' + H(w.duration) + '</span>' +
+          '</div>' +
+          '<p>' + H(w.description) + '</p>' +
+          '<div style="margin:1.25rem 0">' +
+            '<strong style="font-size:0.85rem;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.06em;display:block;margin-bottom:0.6rem">מה לומדים?</strong>' +
+            '<ul style="display:flex;flex-direction:column;gap:0.4rem">' + items + '</ul>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem;padding:0.85rem 1rem;background:var(--color-bg-light);border-radius:var(--radius-md)">' +
+            '<span style="font-size:0.9rem;color:var(--color-text-muted)">📆 מועד הבא:</span>' +
+            dateHtml +
+          '</div>' +
+          '<a href="https://wa.me/972506415222?text=' + encodeURIComponent(w.wa || 'שלום, רציתי לשאול על ' + w.name) + '" class="btn btn-primary" target="_blank" rel="noopener noreferrer">להרשמה ופרטים ←</a>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    if (html) container.innerHTML = html;
+  } catch(e) {}
+})();
+</script>
 </body>
 </html>
