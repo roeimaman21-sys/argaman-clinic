@@ -17,6 +17,22 @@
   <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <style>
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-9px); }
+    }
+    @keyframes dotPulse {
+      0%, 100% { box-shadow: 0 0 0 2px var(--color-gold); }
+      50% { box-shadow: 0 0 0 7px rgba(201,168,76,0.25); }
+    }
+    @keyframes lineGrow {
+      from { transform: scaleY(0); transform-origin: top; }
+      to { transform: scaleY(1); transform-origin: top; }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
     .process-track {
       position: relative;
       padding-right: 3rem;
@@ -29,7 +45,8 @@
       bottom: 0;
       width: 2px;
       background: linear-gradient(to bottom, var(--color-gold), var(--color-primary));
-      opacity: 0.3;
+      opacity: 0.35;
+      animation: lineGrow 1.2s ease-out both;
     }
     .process-track-item {
       position: relative;
@@ -38,11 +55,13 @@
       padding: 1.75rem 2rem;
       box-shadow: var(--shadow-sm);
       margin-bottom: 1.5rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-right-color 0.3s ease;
+      border-right: 3px solid transparent;
     }
     .process-track-item:hover {
-      transform: translateX(-6px);
+      transform: translateX(-8px);
       box-shadow: var(--shadow-md);
+      border-right-color: var(--color-gold);
     }
     .process-track-item::before {
       content: '';
@@ -54,7 +73,7 @@
       background: var(--color-gold);
       border-radius: 50%;
       border: 3px solid white;
-      box-shadow: 0 0 0 2px var(--color-gold);
+      animation: dotPulse 2.5s ease-in-out infinite;
     }
     .track-num {
       display: inline-flex;
@@ -69,12 +88,39 @@
       font-size: 0.9rem;
       margin-bottom: 0.75rem;
       flex-shrink: 0;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
+    .process-track-item:hover .track-num {
+      transform: scale(1.15);
+      background: var(--color-gold);
+    }
+    .step-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--color-primary), #2a5298);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      margin: 0 auto 1.25rem;
+      animation: iconFloat 3.5s ease-in-out infinite;
+      box-shadow: 0 8px 24px rgba(27,58,107,0.25);
+      transition: transform 0.3s ease;
+    }
+    .step-icon:hover { animation-play-state: paused; transform: scale(1.12); }
+    .step-icon-delay-1 { animation-delay: 0.6s; }
+    .step-icon-delay-2 { animation-delay: 1.2s; }
     .comparison-card {
       background: white;
       border-radius: var(--radius-lg);
       overflow: hidden;
       box-shadow: var(--shadow-md);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .comparison-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.14);
     }
     .comparison-card-header {
       padding: 1.5rem 2rem;
@@ -91,13 +137,20 @@
       padding: 0.75rem 0;
       border-bottom: 1px solid var(--color-border);
       line-height: 1.6;
+      transition: background 0.2s ease;
     }
+    .comparison-item:hover { background: rgba(201,168,76,0.05); border-radius: 4px; }
     .comparison-item:last-child { border-bottom: none; }
     .process-phase {
       border-radius: var(--radius-lg);
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       margin-bottom: 2rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .process-phase:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
     }
     .process-phase-header {
       padding: 1.25rem 1.75rem;
@@ -108,6 +161,8 @@
       font-weight: 700;
       font-size: 1.05rem;
     }
+    .process-phase-header span { transition: transform 0.3s ease; }
+    .process-phase:hover .process-phase-header span { transform: scale(1.25) rotate(-5deg); }
     .process-phase-body {
       background: white;
       padding: 1.5rem 1.75rem;
@@ -118,7 +173,9 @@
       overflow: hidden;
       box-shadow: var(--shadow-sm);
       margin-bottom: 0.75rem;
+      transition: box-shadow 0.3s ease;
     }
+    .faq-accordion-item:hover { box-shadow: var(--shadow-md); }
     .faq-accordion-btn {
       width: 100%;
       text-align: right;
@@ -134,7 +191,9 @@
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
+      transition: background 0.2s ease;
     }
+    .faq-accordion-btn:hover { background: rgba(27,58,107,0.03); }
     .faq-accordion-btn .arrow {
       flex-shrink: 0;
       transition: transform 0.3s ease;
@@ -208,18 +267,18 @@
         <p class="section-sub">פשוט, נינוח, וללא לחץ</p>
       </div>
       <div class="grid grid-3" style="margin-top: 3rem;">
-        <div data-aos="fade-up" data-aos-delay="0" style="text-align: center; padding: 2rem;">
-          <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--color-primary), #2a5298); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.25rem;">📱</div>
+        <div data-aos="zoom-in" data-aos-delay="0" style="text-align: center; padding: 2rem;">
+          <div class="step-icon">📱</div>
           <h3>פונים ב-WhatsApp</h3>
           <p style="color: var(--color-text-light); line-height: 1.7;">שולחים הודעה קצרה — "שלום, רציתי לשאול על תהליך הליווי". אפשר גם להתקשר. מגיבים תוך שעה.</p>
         </div>
-        <div data-aos="fade-up" data-aos-delay="100" style="text-align: center; padding: 2rem;">
-          <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--color-primary), #2a5298); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.25rem;">💬</div>
+        <div data-aos="zoom-in" data-aos-delay="150" style="text-align: center; padding: 2rem;">
+          <div class="step-icon step-icon-delay-1">💬</div>
           <h3>שיחת היכרות קצרה</h3>
           <p style="color: var(--color-text-light); line-height: 1.7;">שיחה קצרה של 10-15 דקות — ללא עלות. מבינים מה מביא אתכם ורואים אם יש התאמה.</p>
         </div>
-        <div data-aos="fade-up" data-aos-delay="200" style="text-align: center; padding: 2rem;">
-          <div style="width: 70px; height: 70px; background: linear-gradient(135deg, var(--color-primary), #2a5298); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1.25rem;">📅</div>
+        <div data-aos="zoom-in" data-aos-delay="300" style="text-align: center; padding: 2rem;">
+          <div class="step-icon step-icon-delay-2">📅</div>
           <h3>קובעים פגישה</h3>
           <p style="color: var(--color-text-light); line-height: 1.7;">קובעים זמן נוח — פנים אל פנים בבית שמש או אונליין. פגישה ראשונה ללא התחייבות להמשיך.</p>
         </div>
@@ -243,7 +302,7 @@
         <!-- COUPLES -->
         <div class="comparison-card" data-aos="fade-right">
           <div class="comparison-card-header" style="background: linear-gradient(135deg, var(--color-primary), #2a5298);">
-            💑 ליווי לזוגות
+            🫂 ליווי לזוגות
           </div>
           <div class="comparison-card-body">
             <p style="color: var(--color-text-light); margin-bottom: 1.25rem; line-height: 1.7;">כשמגיעים כזוג, שניכם הלקוח. המטרה היא לשפר את הדינמיקה ביניכם — לא "לתקן" אחד על חשבון השני.</p>
@@ -315,10 +374,10 @@
       </div>
 
       <div class="grid grid-2" style="margin-top: 3rem; gap: 4rem; align-items: start;">
-        <div data-aos="fade-right">
+        <div>
           <div class="process-track">
 
-            <div class="process-track-item">
+            <div class="process-track-item" data-aos="fade-right" data-aos-delay="0">
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <span class="track-num">1</span>
                 <h3 style="margin: 0;">שלב ההיכרות והמיפוי</h3>
@@ -329,7 +388,7 @@
               </div>
             </div>
 
-            <div class="process-track-item">
+            <div class="process-track-item" data-aos="fade-right" data-aos-delay="120">
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <span class="track-num">2</span>
                 <h3 style="margin: 0;">שלב הכלים והמיומנויות</h3>
@@ -340,7 +399,7 @@
               </div>
             </div>
 
-            <div class="process-track-item">
+            <div class="process-track-item" data-aos="fade-right" data-aos-delay="240">
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <span class="track-num">3</span>
                 <h3 style="margin: 0;">שלב העבודה העמוקה</h3>
@@ -351,7 +410,7 @@
               </div>
             </div>
 
-            <div class="process-track-item">
+            <div class="process-track-item" data-aos="fade-right" data-aos-delay="360">
               <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem;">
                 <span class="track-num">4</span>
                 <h3 style="margin: 0;">שלב הייצוב וסיום</h3>
@@ -409,11 +468,11 @@
         <h2>מה ייחודי לכל תחום?</h2>
         <p class="section-sub">כל נושא מחייב גישה מעט שונה — הנה מה שכדאי לדעת</p>
       </div>
-      <div style="margin-top: 2.5rem; display: grid; gap: 1.25rem;" data-aos="fade-up">
+      <div style="margin-top: 2.5rem; display: grid; gap: 1.25rem;">
 
-        <div class="process-phase">
+        <div class="process-phase" data-aos="fade-up" data-aos-delay="0">
           <div class="process-phase-header" style="background: linear-gradient(135deg, var(--color-primary), #2a5298);">
-            <span style="font-size: 1.5rem;">💑</span>
+            <span style="font-size: 1.5rem;">🫂</span>
             ייעוץ זוגי ונישואין
           </div>
           <div class="process-phase-body">
@@ -429,7 +488,7 @@
           </div>
         </div>
 
-        <div class="process-phase">
+        <div class="process-phase" data-aos="fade-up" data-aos-delay="100">
           <div class="process-phase-header" style="background: linear-gradient(135deg, #4a1a4a, #7a2d7a);">
             <span style="font-size: 1.5rem;">🌹</span>
             ייעוץ מיני
@@ -447,7 +506,7 @@
           </div>
         </div>
 
-        <div class="process-phase">
+        <div class="process-phase" data-aos="fade-up" data-aos-delay="200">
           <div class="process-phase-header" style="background: linear-gradient(135deg, #0a1f3c, #2d6b6b);">
             <span style="font-size: 1.5rem;">🕊</span>
             ריפוי טראומה
@@ -465,7 +524,7 @@
           </div>
         </div>
 
-        <div class="process-phase">
+        <div class="process-phase" data-aos="fade-up" data-aos-delay="300">
           <div class="process-phase-header" style="background: linear-gradient(135deg, #1a3a1a, #2d5a2d);">
             <span style="font-size: 1.5rem;">🌱</span>
             ייעוץ אישי
@@ -497,7 +556,7 @@
       </div>
       <div style="max-width: 750px; margin: 2.5rem auto 0;" id="processFaq">
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="0">
           <button class="faq-accordion-btn">
             האם הפגישה הראשונה מחייבת אותי להמשיך?
             <span class="arrow">▼</span>
@@ -507,7 +566,7 @@
           </div>
         </div>
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="80">
           <button class="faq-accordion-btn">
             מה קורה אם אחד מבני הזוג לא רוצה לבוא?
             <span class="arrow">▼</span>
@@ -517,7 +576,7 @@
           </div>
         </div>
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="160">
           <button class="faq-accordion-btn">
             האם אתה עובד עם LGBTQ+?
             <span class="arrow">▼</span>
@@ -527,7 +586,7 @@
           </div>
         </div>
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="240">
           <button class="faq-accordion-btn">
             כמה עולה פגישה?
             <span class="arrow">▼</span>
@@ -537,7 +596,7 @@
           </div>
         </div>
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="320">
           <button class="faq-accordion-btn">
             האם אפשר לקבוע בשעות ערב?
             <span class="arrow">▼</span>
@@ -547,7 +606,7 @@
           </div>
         </div>
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="400">
           <button class="faq-accordion-btn">
             מה ההבדל בין ייעוץ לפסיכולוגיה?
             <span class="arrow">▼</span>
@@ -557,7 +616,7 @@
           </div>
         </div>
 
-        <div class="faq-accordion-item">
+        <div class="faq-accordion-item" data-aos="fade-up" data-aos-delay="480">
           <button class="faq-accordion-btn">
             האם ייעוץ אונליין יעיל כמו פנים אל פנים?
             <span class="arrow">▼</span>
