@@ -43,12 +43,14 @@
   const daysBetween = (a,b) => Math.floor((new Date(b) - new Date(a)) / 86400000);
 
   function getModal() {
-    if (typeof modal === 'function') return modal;
-    return (t,h,opts) => alert(t);
+    // Prefer openModal(title, content, opts) — correct signature
+    if (typeof openModal === 'function') return openModal;
+    if (typeof modal === 'function') return (title, content, opts) => modal(content, Object.assign({ title, size:'lg' }, opts||{}));
+    return (t,h,opts) => alert(t + '\n' + (h||'').replace(/<[^>]+>/g,' ').slice(0,500));
   }
-  function closeModal() {
-    const m = document.querySelector('.modal-backdrop, .modal-overlay');
-    if (m) m.remove();
+  function closeModalSafe() {
+    if (typeof window.closeModal === 'function') return window.closeModal();
+    document.querySelectorAll('.modal-bg, .modal-backdrop, .modal-overlay').forEach(m => m.remove());
   }
 
   // SVG chart helpers
@@ -710,18 +712,12 @@
     // 11. Capacity Utilization
     capacity(root) {
       const sessions = State.sessions || [];
-      const wh = (function(){ try { return JSON.parse(localStorage.getItem('argaman_working_hours')); } catch { return null; }})() || {};
-      const sessDur = (wh.sessionDuration||60) + (wh.buffer||15);
-
-      // Available slots per week
-      let weeklySlots = 0;
-      for (let i = 0; i < 7; i++) {
-        const day = wh[i];
-        if (!day) continue;
-        const start = parseInt(day.start.split(':')[0]);
-        const end = parseInt(day.end.split(':')[0]);
-        weeklySlots += Math.floor((end - start) * 60 / sessDur);
-      }
+      // Reasonable default for clinic: 6 days × 10h × 1.25h per session = ~48 slots/week
+      // Adjustable by changing this value below
+      const SESSION_DURATION_MIN = 75; // 60 min session + 15 min buffer
+      const WORKING_DAYS = 6; // Sun-Fri
+      const WORKING_HOURS_PER_DAY = 10; // 09:00-19:00
+      const weeklySlots = Math.floor(WORKING_DAYS * WORKING_HOURS_PER_DAY * 60 / SESSION_DURATION_MIN);
 
       // Sessions per week (last 4 weeks)
       const weeks = [];
@@ -1003,17 +999,8 @@
         });
       }
 
-      // Check 6: Capacity
-      const wh = JSON.parse(localStorage.getItem('argaman_working_hours')||'{}');
-      const sessDur = (wh.sessionDuration||60) + (wh.buffer||15);
-      let weeklySlots = 0;
-      for (let i = 0; i < 7; i++) {
-        const day = wh[i];
-        if (!day) continue;
-        const startH = parseInt(day.start.split(':')[0]);
-        const endH = parseInt(day.end.split(':')[0]);
-        weeklySlots += Math.floor((endH - startH) * 60 / sessDur);
-      }
+      // Check 6: Capacity (using sensible defaults — 6 days × 10h, 75min per slot)
+      const weeklySlots = Math.floor(6 * 10 * 60 / 75); // ~48 slots/week
       const last4WeeksSess = s.filter(x => {
         const d = new Date(x.date);
         return d >= daysAgo(28) && d <= now;

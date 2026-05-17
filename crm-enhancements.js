@@ -43,15 +43,18 @@
   const uid = () => 'id_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2,8);
 
   function getModal() {
-    if (typeof modal === 'function') return modal;
+    // Prefer openModal(title, content, opts) — correct signature
     if (typeof openModal === 'function') return openModal;
+    // Fallback: adapt modal(html, opts) → (title, content, opts)
+    if (typeof modal === 'function') return (title, content, opts) => modal(content, Object.assign({ title, size:'lg' }, opts||{}));
     return (t,h) => { alert(t+'\n\n'+(h||'').replace(/<[^>]+>/g,' ').slice(0,500)); };
   }
-  function toast(msg, type='success') {
-    if (typeof showToast === 'function') return showToast(msg, type);
+  // Local toast — delegates to global window.toast() (existing admin helper)
+  function toast(msg, type) {
+    type = type || 'success';
+    // Avoid infinite recursion (we are NOT window.toast since we're inside IIFE)
     if (typeof window.toast === 'function' && window.toast !== toast) return window.toast(msg, type);
     console.log('[CRM+]', msg);
-    // Fallback visual
     const t = document.createElement('div');
     t.textContent = msg;
     t.style.cssText = `position:fixed;bottom:1rem;right:1rem;background:${type==='error'?'#dc2626':'#16a34a'};color:#fff;padding:.75rem 1.5rem;border-radius:8px;z-index:99999;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.15)`;
@@ -59,8 +62,8 @@
     setTimeout(() => t.remove(), 3000);
   }
   function closeModal() {
-    const m = document.querySelector('.modal-backdrop, .modal-overlay');
-    if (m) m.remove();
+    if (typeof window.closeModal === 'function' && window.closeModal !== closeModal) return window.closeModal();
+    document.querySelectorAll('.modal-bg, .modal-backdrop, .modal-overlay').forEach(m => m.remove());
   }
 
   // =====================================================
@@ -948,118 +951,6 @@
   };
 
   // =====================================================
-  // MODULE 9: WORKING HOURS / CONFLICT DETECTION
-  // =====================================================
-  const Schedule = {
-    LS: 'argaman_working_hours',
-    DEFAULT: {
-      0: { start:'09:00', end:'21:00' }, // Sun
-      1: { start:'09:00', end:'21:00' },
-      2: { start:'09:00', end:'21:00' },
-      3: { start:'09:00', end:'21:00' },
-      4: { start:'09:00', end:'21:00' },
-      5: { start:'09:00', end:'13:00' }, // Fri
-      6: null, // Sat — closed
-      blockedDates: [],
-      sessionDuration: 60,
-      buffer: 15
-    },
-
-    get() {
-      try { return JSON.parse(localStorage.getItem(this.LS)) || this.DEFAULT; }
-      catch { return this.DEFAULT; }
-    },
-
-    set(config) {
-      localStorage.setItem(this.LS, JSON.stringify(config));
-      Security.log('working_hours_updated');
-    },
-
-    hasConflict(date, time, excludeId) {
-      const sd = new Date(date + 'T' + time);
-      const dur = this.get().sessionDuration;
-      const buf = this.get().buffer;
-      const ed = new Date(sd); ed.setMinutes(sd.getMinutes() + dur + buf);
-      return (State.sessions||[]).find(s => {
-        if (s.id === excludeId) return false;
-        if (s.status === 'cancelled') return false;
-        if (s.date !== date) return false;
-        if (!s.time) return false;
-        const osd = new Date(s.date + 'T' + s.time);
-        const oed = new Date(osd); oed.setMinutes(osd.getMinutes() + dur);
-        return (sd < oed && ed > osd);
-      });
-    },
-
-    openConfig() {
-      const wh = this.get();
-      const days = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-      const html = `
-        <p>הגדירו את שעות העבודה והחסימות:</p>
-        <table style="width:100%;font-size:.9rem">
-          <thead><tr><th style="text-align:right;padding:.4rem">יום</th><th>פתוח</th><th>התחלה</th><th>סיום</th></tr></thead>
-          <tbody>
-            ${days.map((d,i) => {
-              const day = wh[i];
-              return `<tr style="border-bottom:1px solid #f3f4f6">
-                <td style="padding:.4rem"><strong>${d}</strong></td>
-                <td style="padding:.4rem;text-align:center"><input type="checkbox" data-wh-day="${i}" ${day?'checked':''}></td>
-                <td style="padding:.4rem"><input type="time" data-wh-start="${i}" value="${day?.start||'09:00'}" style="padding:.25rem;border:1px solid #e5e7eb;border-radius:4px" ${!day?'disabled':''}></td>
-                <td style="padding:.4rem"><input type="time" data-wh-end="${i}" value="${day?.end||'21:00'}" style="padding:.25rem;border:1px solid #e5e7eb;border-radius:4px" ${!day?'disabled':''}></td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem">
-          <div>
-            <label style="font-weight:600">משך פגישה (דק׳)</label>
-            <input type="number" id="wh-duration" value="${wh.sessionDuration||60}" style="width:100%;padding:.4rem;border:1px solid #e5e7eb;border-radius:6px">
-          </div>
-          <div>
-            <label style="font-weight:600">חיץ בין פגישות (דק׳)</label>
-            <input type="number" id="wh-buffer" value="${wh.buffer||15}" style="width:100%;padding:.4rem;border:1px solid #e5e7eb;border-radius:6px">
-          </div>
-        </div>
-        <div style="margin-top:1rem">
-          <label style="font-weight:600">ימי חופש (פסיק בין תאריכים, פורמט YYYY-MM-DD)</label>
-          <input type="text" id="wh-blocked" value="${(wh.blockedDates||[]).join(', ')}" placeholder="2026-04-13, 2026-05-14" style="width:100%;padding:.4rem;border:1px solid #e5e7eb;border-radius:6px;font-family:monospace">
-        </div>
-        <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem">
-          <button onclick="CRMPlus.closeModal()" style="padding:.5rem 1rem;background:#f3f4f6;color:#374151;border:0;border-radius:8px;cursor:pointer">בטל</button>
-          <button onclick="CRMPlus.Schedule.saveConfig()" style="padding:.5rem 1.5rem;background:#1B3A6B;color:#fff;border:0;border-radius:8px;cursor:pointer;font-weight:700">💾 שמור</button>
-        </div>
-      `;
-      getModal()('⚙️ שעות עבודה והגדרות יומן', html, { size:'lg' });
-      // Wire checkbox enable/disable
-      $$('input[data-wh-day]').forEach(cb => {
-        cb.addEventListener('change', e => {
-          const i = e.target.dataset.whDay;
-          const start = document.querySelector(`input[data-wh-start="${i}"]`);
-          const end = document.querySelector(`input[data-wh-end="${i}"]`);
-          start.disabled = end.disabled = !e.target.checked;
-        });
-      });
-    },
-
-    saveConfig() {
-      const config = {};
-      for (let i = 0; i < 7; i++) {
-        const enabled = document.querySelector(`input[data-wh-day="${i}"]`).checked;
-        config[i] = enabled ? {
-          start: document.querySelector(`input[data-wh-start="${i}"]`).value,
-          end: document.querySelector(`input[data-wh-end="${i}"]`).value
-        } : null;
-      }
-      config.sessionDuration = parseInt($('#wh-duration').value) || 60;
-      config.buffer = parseInt($('#wh-buffer').value) || 15;
-      config.blockedDates = $('#wh-blocked').value.split(',').map(x => x.trim()).filter(Boolean);
-      this.set(config);
-      toast('הגדרות יומן נשמרו ✓');
-      closeModal();
-    }
-  };
-
-  // =====================================================
   // MODULE 10: CONVERSION FUNNEL
   // =====================================================
   const Funnel = {
@@ -1243,7 +1134,7 @@
   // =====================================================
   window.CRMPlus = {
     Security, Outcomes, Recurring, Voice, Documents, Backup,
-    ICalFeed, Notifications, Schedule, Funnel, Bulk,
+    ICalFeed, Notifications, Funnel, Bulk,
     closeModal,
 
     init() {
@@ -1258,7 +1149,6 @@
       window.openImport = () => Backup.importAll();
       window.openICalExport = () => ICalFeed.download();
       window.openNotifications = () => Notifications.open();
-      window.openWorkingHours = () => Schedule.openConfig();
       window.openConversionFunnel = () => Funnel.open();
       window.openAuditLog = () => Security.viewAuditLog();
       window.openSetup2FA = () => Security.setup2FA();

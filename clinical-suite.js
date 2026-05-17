@@ -13,11 +13,20 @@
    ===================================================== */
 (function(){
   'use strict';
-  if (typeof State === 'undefined') {
-    console.warn('[ClinicalSuite] State not found — waiting for admin to load');
-    return;
+
+  // Wait for State to be defined by admin.html before initializing
+  function waitForState(attempts) {
+    if (typeof State !== 'undefined') return start();
+    if (attempts > 60) return console.warn('[ClinicalSuite] State never appeared');
+    setTimeout(() => waitForState(attempts+1), 250);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => waitForState(0));
+  } else {
+    waitForState(0);
   }
 
+  function start(){
   // ─── Constants ───
   const METHODS = [
     { k:'flash', l:'FLASH', c:'#8B4C8C' },
@@ -55,15 +64,19 @@
   const ils = n => '₪' + Number(n||0).toLocaleString('he-IL');
 
   function getModal() {
-    // Reuse existing modal() if exists
-    if (typeof modal === 'function') return modal;
+    // Prefer openModal(title, content, opts) — has the right signature
     if (typeof openModal === 'function') return openModal;
-    return (html) => { alert('Modal system not available'); };
+    // Fallback to modal(html, opts) — adapt signature
+    if (typeof modal === 'function') return (title, content, opts) => modal(content, Object.assign({ title, size:'lg' }, opts||{}));
+    return (t,h) => alert(t + '\n' + (h||'').replace(/<[^>]+>/g,' ').slice(0,500));
   }
   function showToast(msg, type='success') {
     if (typeof toast === 'function') return toast(msg, type);
-    if (typeof showSuccess === 'function' && type==='success') return showSuccess(msg);
     console.log('[ClinicalSuite]', msg);
+  }
+  function closeModalSafe() {
+    if (typeof closeModal === 'function') return closeModal();
+    document.querySelectorAll('.modal-bg, .modal-backdrop, .modal-overlay').forEach(m => m.remove());
   }
 
   // =====================================================
@@ -174,8 +187,7 @@
       save(LS.sessions, State.sessions);
       showToast('רשומה נשמרה ✓');
       // Close modal if exists
-      const m = document.querySelector('.modal-backdrop, .modal-overlay');
-      if (m) m.remove();
+      closeModalSafe();
       // Refresh sessions view if open
       if (typeof renderSessionsView === 'function' && document.getElementById('sessions-view')) {
         try { renderSessionsView('list'); } catch(e){}
@@ -642,8 +654,7 @@
       c.treatment.updatedAt = new Date().toISOString();
       save(LS.clients, State.clients);
       showToast('תוכנית טיפול נשמרה ✓');
-      const m = document.querySelector('.modal-backdrop, .modal-overlay');
-      if (m) m.remove();
+      closeModalSafe();
     },
 
     renderTimeline(clientId) {
@@ -723,10 +734,6 @@
     }
   };
 
-  // Auto-init when DOM ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => window.ClinicalSuite.init());
-  } else {
-    window.ClinicalSuite.init();
-  }
+  window.ClinicalSuite.init();
+  } // end start()
 })();
