@@ -1,15 +1,21 @@
 ﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-  <!-- GA4 | REPLACE: G-XXXXXXXXXX -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <!-- GA4 | REPLACE: G-QCQRJBKEY7 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QCQRJBKEY7"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-QCQRJBKEY7');</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — עמוד לא נמצא | קליניקת ארגמן</title>
   <meta name="description" content="העמוד שחיפשתם לא נמצא. חזרו לדף הבית של קליניקת ארגמן.">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#1B3A6B">
+  <link rel="dns-prefetch" href="https://www.googletagmanager.com">
+  <link rel="dns-prefetch" href="https://www.google-analytics.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -43,16 +49,39 @@
         </a>
       </div>
 
-      <div style="margin-top:3rem;display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap">
-        <a href="services.html" style="color:rgba(255,255,255,0.55);font-size:0.9rem;transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">שירותים</a>
-        <a href="process.html">תהליך הליווי</a>
-        <a href="about.html" style="color:rgba(255,255,255,0.55);font-size:0.9rem;transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">אודות גל</a>
-        <a href="blog.html" style="color:rgba(255,255,255,0.55);font-size:0.9rem;transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">מאמרים</a>
-        <a href="faq.html" style="color:rgba(255,255,255,0.55);font-size:0.9rem;transition:color 0.2s" onmouseover="this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.color='rgba(255,255,255,0.55)'">שאלות נפוצות</a>
+      <!-- Search box -->
+      <div style="max-width:480px;margin:2rem auto 0;position:relative">
+        <input type="search" id="search-404" placeholder="מה אתם מחפשים? חפשו באתר..." style="width:100%;padding:.85rem 1.25rem;border-radius:30px;border:2px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:white;font-size:1rem;direction:rtl">
+        <button onclick="search404()" style="position:absolute;left:.5rem;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.2);border:0;color:white;padding:.4rem .8rem;border-radius:20px;cursor:pointer;font-size:.85rem">חיפוש</button>
       </div>
 
+      <!-- Popular pages -->
+      <div style="margin-top:3rem;text-align:right;max-width:520px;margin-left:auto;margin-right:auto">
+        <p style="color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:1rem;text-align:center">📚 דפים פופולריים:</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.5rem">
+          <a href="services.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none;transition:all .2s" onmouseover="this.style.background='rgba(255,255,255,.15)'" onmouseout="this.style.background='rgba(255,255,255,.08)'">🌿 שירותים</a>
+          <a href="pricing.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">💰 מחירים</a>
+          <a href="blog.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">📖 מאמרים</a>
+          <a href="faq.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">❓ שאלות נפוצות</a>
+          <a href="about.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">👤 אודות גל</a>
+          <a href="zugiyut-test.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">🎯 מבחן זוגיות</a>
+          <a href="process.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">🔄 תהליך</a>
+          <a href="workshops.html" style="color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);padding:.5rem .75rem;border-radius:8px;font-size:.85rem;text-decoration:none">🧡 סדנאות</a>
+        </div>
+      </div>
+
+      <script>
+        function search404(){
+          const q = document.getElementById('search-404').value.trim();
+          if (!q) return;
+          // Try Google site: search
+          window.location.href = 'https://www.google.com/search?q=site%3Aargamanclinic.com+' + encodeURIComponent(q);
+        }
+        document.getElementById('search-404')?.addEventListener('keydown', e => { if (e.key === 'Enter') search404(); });
+      </script>
+
       <p style="color:rgba(255,255,255,0.3);font-size:0.82rem;margin-top:2.5rem">
-        © 2025 קליניקת ארגמן
+        © 2026 קליניקת ארגמן
       </p>
 
     </div>
@@ -66,5 +95,6 @@
 </a>
 
 <script src="script.js"></script>
+<script src="consent.js"></script>
 </body>
 </html>

@@ -1,0 +1,24 @@
+/* קליניקת ארגמן — בעלי האתר */
+
+[CLINIC]
+Name:    קליניקת ארגמן (Argaman Clinic)
+Owner:   גל ממן (Gal Maman)
+Title:   יועץ זוגי, מיני, משפחתי ואישי
+Phone:   050-641-5222
+Email:   argamanclinic@gmail.com
+Address: דרך יצחק רבין 8, בית שמש, ישראל
+URL:     https://argamanclinic.com
+
+[CREDENTIALS]
+13 הסמכות מקצועיות · 10 שנות ניסיון
+- מוסמך ייעוץ נישואין ומשפחה (תוכנית תלת-שנתית)
+- מוסמך תפקוד זוגי מיני
+- FLASH Technique
+- עיבוד בילטרלי (דו-צדדי)
+- שיטת הילד הפנימי
+- טכניקת רגרסיה
+- הנחיית קבוצות
+
+[SITE]
+Language: Hebrew (he-IL)
+Last update: 2026

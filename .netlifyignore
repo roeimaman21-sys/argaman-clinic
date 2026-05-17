@@ -1,0 +1,43 @@
+.git/
+IMG-CURATED.md
+IMG_7278.JPG
+IMG_7279.JPG
+SECURITY.md
+SEO-GUIDE.md
+blog-articles-meta.json
+city-data.js
+city-pages-meta.json
+debug-mobile.js
+fix-blog-images.js
+generate-blog-articles-v2.js
+generate-blog-articles-v3.js
+generate-blog-articles.js
+generate-city-pages-v2.js
+generate-city-pages-v3.js
+generate-city-pages-v4.js
+generate-city-pages.js
+generate-og.js
+generate-pdf.js
+guide-source.html
+lighthouse-test.js
+new-articles-svgs.json
+node_modules/
+og-source.html
+optimize-images.js
+package-lock.json
+package.json
+screenshots/
+test-responsive.js
+workshop1.png
+workshop2.png
+workshop3.png
+סדנא 1.png
+סדנא 2.png
+סדנא 3.png
+GAL-HANDOFF.md
+generate-blog-articles-v4.js
+SUPABASE-UPDATE-SQL.md
+workshop1.jpg
+workshop2.jpg
+workshop3.jpg
+PERFORMANCE-BASELINE.md

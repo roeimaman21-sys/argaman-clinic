@@ -1,0 +1,812 @@
+[
+  {
+    "slug": "yeutz-zugi-beit-shemesh",
+    "city": "בית שמש",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "local",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "yeutz-mini-beit-shemesh",
+    "city": "בית שמש",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "local",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "tipul-trauma-beit-shemesh",
+    "city": "בית שמש",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "local",
+    "sizeKB": "22.1"
+  },
+  {
+    "slug": "yeutz-zugi-jerusalem",
+    "city": "ירושלים",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "yeutz-mini-jerusalem",
+    "city": "ירושלים",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "tipul-trauma-jerusalem",
+    "city": "ירושלים",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.2"
+  },
+  {
+    "slug": "yeutz-zugi-modiin",
+    "city": "מודיעין",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "yeutz-mini-modiin",
+    "city": "מודיעין",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "tipul-trauma-modiin",
+    "city": "מודיעין",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.1"
+  },
+  {
+    "slug": "yeutz-zugi-online",
+    "city": "אונליין",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "yeutz-mini-online",
+    "city": "אונליין",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "tipul-trauma-online",
+    "city": "אונליין",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.0"
+  },
+  {
+    "slug": "yeutz-zugi-rehovot",
+    "city": "רחובות",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "yeutz-mini-rehovot",
+    "city": "רחובות",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "tipul-trauma-rehovot",
+    "city": "רחובות",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.0"
+  },
+  {
+    "slug": "yeutz-zugi-ramla",
+    "city": "רמלה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.0"
+  },
+  {
+    "slug": "yeutz-mini-ramla",
+    "city": "רמלה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "tipul-trauma-ramla",
+    "city": "רמלה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "21.8"
+  },
+  {
+    "slug": "yeutz-zugi-mevasseret-zion",
+    "city": "מבשרת ציון",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "yeutz-mini-mevasseret-zion",
+    "city": "מבשרת ציון",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.6"
+  },
+  {
+    "slug": "tipul-trauma-mevasseret-zion",
+    "city": "מבשרת ציון",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.3"
+  },
+  {
+    "slug": "yeutz-zugi-tzur-hadassah",
+    "city": "צור הדסה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "yeutz-mini-tzur-hadassah",
+    "city": "צור הדסה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "tipul-trauma-tzur-hadassah",
+    "city": "צור הדסה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.1"
+  },
+  {
+    "slug": "yeutz-zugi-elad",
+    "city": "אלעד",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "yeutz-mini-elad",
+    "city": "אלעד",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "tipul-trauma-elad",
+    "city": "אלעד",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "21.9"
+  },
+  {
+    "slug": "yeutz-zugi-shoham",
+    "city": "שוהם",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "yeutz-mini-shoham",
+    "city": "שוהם",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "tipul-trauma-shoham",
+    "city": "שוהם",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "21.9"
+  },
+  {
+    "slug": "yeutz-zugi-rosh-haayin",
+    "city": "ראש העין",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "yeutz-mini-rosh-haayin",
+    "city": "ראש העין",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "tipul-trauma-rosh-haayin",
+    "city": "ראש העין",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.1"
+  },
+  {
+    "slug": "yeutz-zugi-petah-tikva",
+    "city": "פתח תקווה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "yeutz-mini-petah-tikva",
+    "city": "פתח תקווה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "tipul-trauma-petah-tikva",
+    "city": "פתח תקווה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.2"
+  },
+  {
+    "slug": "yeutz-zugi-tel-aviv",
+    "city": "תל אביב",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "yeutz-mini-tel-aviv",
+    "city": "תל אביב",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "tipul-trauma-tel-aviv",
+    "city": "תל אביב",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.0"
+  },
+  {
+    "slug": "yeutz-zugi-bnei-brak",
+    "city": "בני ברק",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "yeutz-mini-bnei-brak",
+    "city": "בני ברק",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "tipul-trauma-bnei-brak",
+    "city": "בני ברק",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.1"
+  },
+  {
+    "slug": "yeutz-zugi-holon",
+    "city": "חולון",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.0"
+  },
+  {
+    "slug": "yeutz-mini-holon",
+    "city": "חולון",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "tipul-trauma-holon",
+    "city": "חולון",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.8"
+  },
+  {
+    "slug": "yeutz-zugi-rishon-lezion",
+    "city": "ראשון לציון",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "yeutz-mini-rishon-lezion",
+    "city": "ראשון לציון",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.6"
+  },
+  {
+    "slug": "tipul-trauma-rishon-lezion",
+    "city": "ראשון לציון",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.3"
+  },
+  {
+    "slug": "yeutz-zugi-netanya",
+    "city": "נתניה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.0"
+  },
+  {
+    "slug": "yeutz-mini-netanya",
+    "city": "נתניה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "tipul-trauma-netanya",
+    "city": "נתניה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.7"
+  },
+  {
+    "slug": "yeutz-zugi-haifa",
+    "city": "חיפה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "20.9"
+  },
+  {
+    "slug": "yeutz-mini-haifa",
+    "city": "חיפה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.0"
+  },
+  {
+    "slug": "tipul-trauma-haifa",
+    "city": "חיפה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.7"
+  },
+  {
+    "slug": "yeutz-zugi-beer-sheva",
+    "city": "באר שבע",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "yeutz-mini-beer-sheva",
+    "city": "באר שבע",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "tipul-trauma-beer-sheva",
+    "city": "באר שבע",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.0"
+  },
+  {
+    "slug": "yeutz-zugi-ashdod",
+    "city": "אשדוד",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.0"
+  },
+  {
+    "slug": "yeutz-mini-ashdod",
+    "city": "אשדוד",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "tipul-trauma-ashdod",
+    "city": "אשדוד",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.8"
+  },
+  {
+    "slug": "yeutz-zugi-givat-shmuel",
+    "city": "גבעת שמואל",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "yeutz-mini-givat-shmuel",
+    "city": "גבעת שמואל",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.6"
+  },
+  {
+    "slug": "tipul-trauma-givat-shmuel",
+    "city": "גבעת שמואל",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.3"
+  },
+  {
+    "slug": "yeutz-zugi-hod-hasharon",
+    "city": "הוד השרון",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.4"
+  },
+  {
+    "slug": "yeutz-mini-hod-hasharon",
+    "city": "הוד השרון",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "tipul-trauma-hod-hasharon",
+    "city": "הוד השרון",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.2"
+  },
+  {
+    "slug": "yeutz-zugi-ramat-gan",
+    "city": "רמת גן",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "yeutz-mini-ramat-gan",
+    "city": "רמת גן",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "tipul-trauma-ramat-gan",
+    "city": "רמת גן",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.9"
+  },
+  {
+    "slug": "yeutz-zugi-givatayim",
+    "city": "גבעתיים",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "yeutz-mini-givatayim",
+    "city": "גבעתיים",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "tipul-trauma-givatayim",
+    "city": "גבעתיים",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.0"
+  },
+  {
+    "slug": "yeutz-zugi-kfar-saba",
+    "city": "כפר סבא",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "yeutz-mini-kfar-saba",
+    "city": "כפר סבא",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.3"
+  },
+  {
+    "slug": "tipul-trauma-kfar-saba",
+    "city": "כפר סבא",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "22.0"
+  },
+  {
+    "slug": "yeutz-zugi-raanana",
+    "city": "רעננה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "yeutz-mini-raanana",
+    "city": "רעננה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "tipul-trauma-raanana",
+    "city": "רעננה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.9"
+  },
+  {
+    "slug": "yeutz-zugi-herzliya",
+    "city": "הרצליה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "online",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "yeutz-mini-herzliya",
+    "city": "הרצליה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "online",
+    "sizeKB": "21.2"
+  },
+  {
+    "slug": "tipul-trauma-herzliya",
+    "city": "הרצליה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "online",
+    "sizeKB": "21.9"
+  },
+  {
+    "slug": "yeutz-zugi-beitar-illit",
+    "city": "ביתר עילית",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.5"
+  },
+  {
+    "slug": "yeutz-mini-beitar-illit",
+    "city": "ביתר עילית",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.6"
+  },
+  {
+    "slug": "tipul-trauma-beitar-illit",
+    "city": "ביתר עילית",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.3"
+  },
+  {
+    "slug": "yeutz-zugi-maale-adumim",
+    "city": "מעלה אדומים",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.6"
+  },
+  {
+    "slug": "yeutz-mini-maale-adumim",
+    "city": "מעלה אדומים",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.7"
+  },
+  {
+    "slug": "tipul-trauma-maale-adumim",
+    "city": "מעלה אדומים",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "22.4"
+  },
+  {
+    "slug": "yeutz-zugi-yavne",
+    "city": "יבנה",
+    "type": "yeutz-zugi",
+    "typeTitle": "ייעוץ זוגי",
+    "icon": "❤️",
+    "focus": "travel",
+    "sizeKB": "21.0"
+  },
+  {
+    "slug": "yeutz-mini-yavne",
+    "city": "יבנה",
+    "type": "yeutz-mini",
+    "typeTitle": "ייעוץ מיני",
+    "icon": "💞",
+    "focus": "travel",
+    "sizeKB": "21.1"
+  },
+  {
+    "slug": "tipul-trauma-yavne",
+    "city": "יבנה",
+    "type": "tipul-trauma",
+    "typeTitle": "טיפול בטראומה",
+    "icon": "🛡️",
+    "focus": "travel",
+    "sizeKB": "21.8"
+  }
+]

@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8">
+<title>5 שאלות שכל זוג צריך לשאול את עצמו</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Heebo', sans-serif; color: #1a1a1a; line-height: 1.7; background: white; }
+  .page { width: 210mm; min-height: 297mm; padding: 0; page-break-after: always; position: relative; }
+  .page:last-child { page-break-after: auto; }
+
+  /* COVER */
+  .cover {
+    background: linear-gradient(135deg, #0F2347 0%, #1B3A6B 50%, #2C3E7A 100%);
+    color: white;
+    padding: 60mm 25mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 297mm;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute; top: -100px; left: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,168,76,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .cover::after {
+    content: '';
+    position: absolute; bottom: -150px; right: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .cover-brand {
+    font-size: 14pt; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #C9A84C; margin-bottom: 6mm; position: relative;
+  }
+  .cover-brand small { display: block; font-size: 9pt; font-weight: 400; letter-spacing: 0.08em; color: rgba(255,255,255,0.7); text-transform: none; margin-top: 1mm; }
+  .cover-title {
+    font-size: 38pt; font-weight: 900; line-height: 1.15; margin-bottom: 8mm;
+    position: relative;
+  }
+  .cover-title span { color: #C9A84C; }
+  .cover-subtitle {
+    font-size: 14pt; color: rgba(255,255,255,0.85); line-height: 1.6; max-width: 130mm;
+    position: relative;
+  }
+  .cover-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.2);
+    color: #C9A84C;
+    padding: 3mm 8mm;
+    border-radius: 50px;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 8mm;
+    position: relative;
+  }
+  .cover-footer {
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 6mm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cover-footer strong { color: white; font-size: 11pt; font-weight: 700; }
+  .cover-footer small { color: rgba(255,255,255,0.6); font-size: 9pt; }
+
+  /* CONTENT PAGES */
+  .content {
+    padding: 20mm 22mm;
+    min-height: 297mm;
+  }
+  .intro-page { background: white; }
+  .intro-tag {
+    display: inline-block;
+    background: #C9A84C;
+    color: #1a1a1a;
+    padding: 2mm 6mm;
+    border-radius: 50px;
+    font-size: 9pt;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    margin-bottom: 6mm;
+  }
+  .intro-title {
+    font-size: 26pt; font-weight: 900; color: #1B3A6B; line-height: 1.25;
+    margin-bottom: 8mm;
+  }
+  .intro-para {
+    font-size: 12pt; line-height: 1.85; color: #2a2a2a; margin-bottom: 5mm;
+  }
+  .intro-para strong { color: #1B3A6B; }
+  .intro-quote {
+    background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.03));
+    border-right: 4px solid #C9A84C;
+    padding: 6mm 8mm;
+    margin: 8mm 0;
+    border-radius: 4px;
+    font-size: 12pt;
+    font-style: italic;
+    color: #1a1a1a;
+    line-height: 1.8;
+  }
+  .how-to-use {
+    background: #f7f5ee;
+    border-radius: 8px;
+    padding: 7mm 8mm;
+    margin-top: 8mm;
+  }
+  .how-to-use h3 {
+    font-size: 13pt; font-weight: 800; color: #1B3A6B; margin-bottom: 3mm;
+    display: flex; align-items: center; gap: 3mm;
+  }
+  .how-to-use ol { padding-right: 5mm; margin-top: 3mm; }
+  .how-to-use li { font-size: 11pt; line-height: 1.7; margin-bottom: 2mm; color: #2a2a2a; }
+
+  /* QUESTION PAGES */
+  .q-page {
+    padding: 18mm 20mm;
+    min-height: 297mm;
+    position: relative;
+  }
+  .q-header {
+    display: flex; align-items: center; gap: 6mm; margin-bottom: 10mm;
+    padding-bottom: 6mm; border-bottom: 2px solid #f0e9d6;
+  }
+  .q-number {
+    width: 22mm; height: 22mm;
+    background: linear-gradient(135deg, #C9A84C 0%, #b8933f 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22pt; font-weight: 900;
+    flex-shrink: 0;
+    box-shadow: 0 8px 20px rgba(201,168,76,0.3);
+  }
+  .q-label {
+    font-size: 9pt; font-weight: 800; color: #C9A84C;
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1mm;
+  }
+  .q-mini-title {
+    font-size: 14pt; font-weight: 700; color: #1B3A6B;
+  }
+  .q-question {
+    font-size: 22pt; font-weight: 800; color: #1B3A6B; line-height: 1.4;
+    margin-bottom: 8mm; padding: 6mm; background: linear-gradient(135deg, rgba(27,58,107,0.05), rgba(201,168,76,0.05));
+    border-radius: 12px;
+    border-right: 5px solid #C9A84C;
+  }
+  .q-section { margin-bottom: 7mm; }
+  .q-section-title {
+    font-size: 12pt; font-weight: 800; color: #C9A84C;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3mm;
+    display: flex; align-items: center; gap: 2mm;
+  }
+  .q-body { font-size: 11.5pt; line-height: 1.85; color: #2a2a2a; }
+  .q-body strong { color: #1B3A6B; }
+  .q-body p { margin-bottom: 3mm; }
+  .q-practice {
+    background: #1B3A6B;
+    color: white;
+    padding: 6mm 7mm;
+    border-radius: 10px;
+    margin-top: 6mm;
+  }
+  .q-practice .q-section-title { color: #C9A84C; margin-bottom: 2mm; }
+  .q-practice p { color: rgba(255,255,255,0.92); font-size: 11pt; }
+  .q-footer {
+    position: absolute; bottom: 10mm; right: 20mm; left: 20mm;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 9pt; color: #8a8a8a;
+    border-top: 1px solid #e0e0e0; padding-top: 4mm;
+  }
+
+  /* FINAL PAGE */
+  .final-page {
+    background: linear-gradient(135deg, #0F2347 0%, #1B3A6B 50%, #2C3E7A 100%);
+    color: white;
+    padding: 40mm 22mm;
+    min-height: 297mm;
+    display: flex; flex-direction: column; justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-page::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(201,168,76,0.2) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .final-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.2);
+    color: #C9A84C;
+    padding: 2mm 6mm;
+    border-radius: 50px;
+    font-size: 10pt;
+    font-weight: 700;
+    margin-bottom: 6mm;
+    align-self: center;
+    position: relative;
+  }
+  .final-title {
+    font-size: 30pt; font-weight: 900; line-height: 1.3; margin-bottom: 8mm;
+    position: relative;
+  }
+  .final-title span { color: #C9A84C; }
+  .final-text {
+    font-size: 13pt; line-height: 1.85; color: rgba(255,255,255,0.88);
+    max-width: 130mm; margin: 0 auto 10mm; position: relative;
+  }
+  .final-cta {
+    background: #25D366;
+    color: white;
+    padding: 5mm 10mm;
+    border-radius: 50px;
+    font-size: 14pt;
+    font-weight: 800;
+    display: inline-block;
+    text-decoration: none;
+    box-shadow: 0 10px 30px rgba(37,211,102,0.3);
+    margin-bottom: 8mm;
+    position: relative;
+  }
+  .final-contact {
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 8mm 10mm;
+    max-width: 130mm;
+    margin: 0 auto;
+    position: relative;
+  }
+  .final-contact-item {
+    display: flex; align-items: center; justify-content: center; gap: 3mm;
+    margin-bottom: 3mm;
+    font-size: 11pt;
+    color: rgba(255,255,255,0.85);
+  }
+  .final-contact-item strong { color: #C9A84C; font-size: 11pt; }
+  .final-credentials {
+    margin-top: 10mm;
+    padding-top: 8mm;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    font-size: 9pt;
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    position: relative;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+  <div>
+    <div class="cover-brand">קליניקת ארגמן<small>גל ממן · יועץ זוגי, מיני, משפחתי ואישי</small></div>
+    <div class="cover-tag">🎁 מדריך חינמי לזוגות</div>
+    <h1 class="cover-title">5 שאלות שכל זוג<br>צריך לשאול<br><span>את עצמו</span></h1>
+    <p class="cover-subtitle">חמש שאלות פשוטות שיפתחו את השיחה החשובה ביותר שלא הייתה לכם — ויחזירו אתכם זה לזה.</p>
+  </div>
+  <div class="cover-footer">
+    <strong>argamanclinic.com</strong>
+    <small>10 שנות ניסיון · 13 הסמכות מקצועיות</small>
+  </div>
+</div>
+
+<!-- INTRO PAGE -->
+<div class="page content intro-page">
+  <span class="intro-tag">לפני שמתחילים</span>
+  <h2 class="intro-title">מילה אישית לפני שאתם פותחים את המדריך</h2>
+  <p class="intro-para">בעשר השנים שאני יושב מול זוגות, גיליתי דבר אחד שחוזר על עצמו: <strong>הזוגיות לא נשברת בגלל וויכוחים גדולים. היא נשברת בגלל שיחות שמעולם לא קרו.</strong></p>
+  <p class="intro-para">הציפיות שלא דוברו, הצרכים שלא נאמרו, הפחדים שכולם רואים אבל אף אחד לא מזכיר — אלה הדברים שמרחיקים אנשים שאוהבים זה את זה. לא כי הם לא רוצים להיות קרובים, אלא כי לא ידעו איך לפתוח את השיחה.</p>
+  <p class="intro-para">המדריך הזה הוא לא טיפול. הוא לא ייעוץ. הוא <strong>חמש דלתות</strong> — חמש שאלות שאם תשאלו אותן בכנות, יקרה משהו. לפעמים זה יהיה חיבוק. לפעמים זאת תהיה דמעה. ולפעמים זה יהיה רגע שתבינו כמה אתם חשובים אחד לשני.</p>
+  <div class="intro-quote">
+    "השאלה הנכונה, ברגע הנכון, יכולה לשנות מערכת יחסים שלמה. וזה לא רק משפט יפה — זה מה שראיתי קורה שוב ושוב."
+  </div>
+  <div class="how-to-use">
+    <h3>📖 איך להשתמש במדריך</h3>
+    <ol>
+      <li><strong>קראו ביחד</strong> — לא כל אחד לעצמו. שבו זה ליד זה.</li>
+      <li><strong>אל תמהרו</strong> — שאלה אחת ביום או בשבוע. תנו לתשובה לנשום.</li>
+      <li><strong>אל תשפטו את התשובה</strong> — האזינו, גם אם זה כואב.</li>
+      <li><strong>אם השיחה נסגרת</strong> — קחו הפסקה וחזרו אליה. זה לא תחרות.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- QUESTION 1 -->
+<div class="page q-page">
+  <div class="q-header">
+    <div class="q-number">1</div>
+    <div>
+      <div class="q-label">שאלה ראשונה · על הקשבה</div>
+      <div class="q-mini-title">להקשיב באמת — לא לחכות לתורי לדבר</div>
+    </div>
+  </div>
+  <div class="q-question">"מתי בפעם האחרונה הקשבת לי בלי לחשוב על מה להגיב?"</div>
+
+  <div class="q-section">
+    <div class="q-section-title">⟵ למה השאלה הזו</div>
+    <div class="q-body">
+      <p>רוב הזוגות לא חיים בריב — הם חיים בתחושה ש<strong>הצד השני לא באמת שומע אותם</strong>. אנחנו לא מקשיבים כדי להבין, אנחנו מקשיבים כדי לענות. בזמן שהוא מדבר, הראש שלנו כבר בונה את התשובה.</p>
+      <p>וכשאדם מרגיש שלא שומעים אותו לאורך זמן, הוא מפסיק לנסות. השתיקה הזוגית לא מתחילה ממריבה — היא מתחילה מהרגע שמישהו ויתר על להיות מובן.</p>
+    </div>
+  </div>
+
+  <div class="q-practice">
+    <div class="q-section-title">🎯 איך לתרגל השבוע</div>
+    <p><strong>תרגיל 5 הדקות:</strong> פעם ביום, אחד מכם מקבל 5 דקות לדבר על משהו שעובר עליו. הצד השני לא עונה, לא מציע פתרונות — רק מקשיב. בסוף שואל שאלה אחת: "הבנתי נכון שאתה/את מרגיש/ה ___ ?" זהו. בלי לתקן, בלי לייעץ.</p>
+  </div>
+
+  <div class="q-footer">
+    <span>5 שאלות שכל זוג צריך לשאול את עצמו</span>
+    <span>קליניקת ארגמן · argamanclinic.com</span>
+  </div>
+</div>
+
+<!-- QUESTION 2 -->
+<div class="page q-page">
+  <div class="q-header">
+    <div class="q-number">2</div>
+    <div>
+      <div class="q-label">שאלה שנייה · על צרכים</div>
+      <div class="q-mini-title">הצורך שלא ביקשת — הופך לטינה</div>
+    </div>
+  </div>
+  <div class="q-question">"איזה דבר אחד שאת/ה צריכ/ה ממני — אבל אף פעם לא ביקשת?"</div>
+
+  <div class="q-section">
+    <div class="q-section-title">⟵ למה השאלה הזו</div>
+    <div class="q-body">
+      <p>אנחנו מצפים מבן/בת הזוג <strong>לקרוא את המחשבות שלנו</strong>. "אם הוא אוהב אותי הוא ידע מה אני צריכה." "אם היא רואה אותי באמת היא תבין." זו אחת המלכודות הגדולות של הזוגיות.</p>
+      <p>צורך שלא נאמר — הופך לציפייה. ציפייה שלא מתממשת — הופכת לאכזבה. אכזבה שמצטברת — הופכת לטינה. וטינה שמצטברת לאורך זמן הורסת את הקרבה לגמרי. <strong>כל זה התחיל מצורך אחד שלא ביקשנו.</strong></p>
+    </div>
+  </div>
+
+  <div class="q-practice">
+    <div class="q-section-title">🎯 איך לתרגל השבוע</div>
+    <p><strong>תרגיל "הצורך הקטן":</strong> כל אחד כותב על דף 3 דברים שהוא/היא היו רוצים מהצד השני — ולא ביקשו. לא דברים גדולים, דברים קטנים: "שתשאלי אותי איך היה לי היום", "שתחבק אותי גם בלי סיבה", "שתשבחי אותי לפעמים". מחליפים דפים. בוחרים אחד להתחיל ממנו השבוע.</p>
+  </div>
+
+  <div class="q-footer">
+    <span>5 שאלות שכל זוג צריך לשאול את עצמו</span>
+    <span>קליניקת ארגמן · argamanclinic.com</span>
+  </div>
+</div>
+
+<!-- QUESTION 3 -->
+<div class="page q-page">
+  <div class="q-header">
+    <div class="q-number">3</div>
+    <div>
+      <div class="q-label">שאלה שלישית · על חלומות</div>
+      <div class="q-mini-title">לזכור שיש מאחורי בן/בת הזוג גם אדם</div>
+    </div>
+  </div>
+  <div class="q-question">"מה החלום הכי גדול שלך עכשיו — ומתי אמרת לי עליו לאחרונה?"</div>
+
+  <div class="q-section">
+    <div class="q-section-title">⟵ למה השאלה הזו</div>
+    <div class="q-body">
+      <p>לאורך הזמן אנחנו מפסיקים לראות זה את זה. השגרה, הילדים, העבודה, החובות — והפרטנר הופך ל"זה שגר איתי". אנחנו יודעים מה הוא אוהב לארוחת ערב, אבל לא יודעים <strong>מה הוא חולם עליו עכשיו</strong>.</p>
+      <p>זוגות שנשארים קרובים לאורך עשרות שנים יש להם דבר אחד במשותף: הם <strong>סקרנים לגבי הפנים</strong> של בן/בת הזוג. הם יודעים מה הוא רוצה להגשים, ממה הוא פוחד, מה השתנה אצלו השנה. החלום של בן הזוג שלך השנה — אולי שונה ממה שהיה לפני 5 שנים.</p>
+    </div>
+  </div>
+
+  <div class="q-practice">
+    <div class="q-section-title">🎯 איך לתרגל השבוע</div>
+    <p><strong>שיחת החלום:</strong> ערב אחד, בלי טלפונים, בלי טלוויזיה. כל אחד מספר 10 דקות על דבר אחד שהוא חולם עליו עכשיו — קטן או גדול. הצד השני שואל שאלות (לא נותן עצות, לא מסביר למה זה לא יעבוד). זה הכל. תופתעו כמה אתם לא יודעים זה על זה.</p>
+  </div>
+
+  <div class="q-footer">
+    <span>5 שאלות שכל זוג צריך לשאול את עצמו</span>
+    <span>קליניקת ארגמן · argamanclinic.com</span>
+  </div>
+</div>
+
+<!-- QUESTION 4 -->
+<div class="page q-page">
+  <div class="q-header">
+    <div class="q-number">4</div>
+    <div>
+      <div class="q-label">שאלה רביעית · על הילד הפנימי</div>
+      <div class="q-mini-title">הילד שהיינו — עדיין מנהל את הזוגיות</div>
+    </div>
+  </div>
+  <div class="q-question">"איזה דפוס מהילדות שלי — אני רואה שמשפיע על הזוגיות שלנו?"</div>
+
+  <div class="q-section">
+    <div class="q-section-title">⟵ למה השאלה הזו</div>
+    <div class="q-body">
+      <p>הרבה מהוויכוחים הזוגיים הם <strong>לא על מה שאנחנו רבים עליו</strong>. הם על משהו עמוק יותר — פצע ישן שמתעורר. כשהיא לא עונה לטלפון, אני מרגיש נטוש כמו ילד. כשהוא מבקר אותי, אני מרגישה את ההורה הקריטי שלי. אנחנו מגיבים <strong>מתוך הילד שהיינו</strong>, לא מתוך המבוגר שאנחנו.</p>
+      <p>הזוגיות הופכת לבטוחה יותר ברגע שכל אחד מבין את <strong>הטריגרים שלו ושלה</strong> — ויודע לאמר "זה לא בגלל מה שעשית עכשיו, זה נוגע במשהו ישן בתוכי". זה לא מבטל את הוויכוח. זה משנה את האווירה לחלוטין.</p>
+    </div>
+  </div>
+
+  <div class="q-practice">
+    <div class="q-section-title">🎯 איך לתרגל השבוע</div>
+    <p><strong>זיהוי הטריגר:</strong> בפעם הבאה שתרגישו רגש עז בזוגיות (כעס, פגיעה, פחד) — עצרו רגע ושאלו: "מה זה מזכיר לי?". אולי תזכרו רגע מהילדות. אולי לא. בלי לחץ. כשתרגישו בנוח — שתפו את הצד השני. "כשאת/ה ___, זה מזכיר לי כש___ ".</p>
+  </div>
+
+  <div class="q-footer">
+    <span>5 שאלות שכל זוג צריך לשאול את עצמו</span>
+    <span>קליניקת ארגמן · argamanclinic.com</span>
+  </div>
+</div>
+
+<!-- QUESTION 5 -->
+<div class="page q-page">
+  <div class="q-header">
+    <div class="q-number">5</div>
+    <div>
+      <div class="q-label">שאלה חמישית · על אחריות</div>
+      <div class="q-mini-title">השינוי האמיתי מתחיל מ-50% שלכם</div>
+    </div>
+  </div>
+  <div class="q-question">"מה ה-50% שלי באתגרים שיש בזוגיות שלנו?"</div>
+
+  <div class="q-section">
+    <div class="q-section-title">⟵ למה השאלה הזו</div>
+    <div class="q-body">
+      <p>זו השאלה הקשה ביותר. וגם <strong>החשובה ביותר</strong>. כל זוג שמגיע אליי בא עם רשימה ארוכה של מה שהצד השני עושה לא נכון. וזה אנושי לחלוטין — אנחנו רואים את התרומה של הזולת בקלות, ואת שלנו בקושי.</p>
+      <p>אבל הנה האמת: <strong>כל דינמיקה זוגית בנויה משני הצדדים</strong>. אם הוא נסגר — אולי זה כי היא לוחצת. אם היא לוחצת — אולי זה כי הוא נסגר. הסיבה והתוצאה מתערבבות עד שאין יודעים מי התחיל. וזה לא חשוב. <strong>מה שחשוב הוא — מה החלק שלך?</strong></p>
+      <p>ברגע שאחד מבני הזוג עוצר ושואל את עצמו "מה אני תורם/ת לזה?" — הדינמיקה מתחילה לזוז. כי כשאחד משתנה, הריקוד חייב להשתנות.</p>
+    </div>
+  </div>
+
+  <div class="q-practice">
+    <div class="q-section-title">🎯 איך לתרגל השבוע</div>
+    <p><strong>החלפת הזרקור:</strong> חשבו על המריבה האחרונה. במקום לחשוב "מה הוא/היא עשו לי" — שאלו את עצמכם 3 שאלות: "איך אני נכנסתי לזה?", "איזה דבר אני יכול/ה לעשות אחרת בפעם הבאה?", "מה אני יכול/ה להגיד לעצמי שיעזור לי לא להגיב כמו פעם?". כתבו את התשובות. תשמרו לעצמכם.</p>
+  </div>
+
+  <div class="q-footer">
+    <span>5 שאלות שכל זוג צריך לשאול את עצמו</span>
+    <span>קליניקת ארגמן · argamanclinic.com</span>
+  </div>
+</div>
+
+<!-- FINAL PAGE -->
+<div class="page final-page">
+  <span class="final-tag">🌿 הצעד הבא</span>
+  <h2 class="final-title">המדריך הזה הוא ההתחלה.<br><span>הצעד הבא הוא שלכם.</span></h2>
+  <p class="final-text">חמש השאלות האלה יכולות לפתוח דלתות שהיו סגורות שנים. אבל לפעמים — כשהוויכוחים חוזרים, כשהקרבה נעלמה, או כשהפצעים ישנים מדי — צריך מישהו שילווה אתכם בדרך. <strong style="color:#C9A84C">פגישת היכרות ראשונה — חינמית וללא התחייבות.</strong></p>
+  <a href="https://wa.me/972506415222" class="final-cta">📱 לשיחת ייעוץ חינמית בוואטסאפ</a>
+  <div class="final-contact">
+    <div class="final-contact-item"><strong>📞 טלפון</strong> · 050-641-5222</div>
+    <div class="final-contact-item"><strong>✉ מייל</strong> · argamanclinic@gmail.com</div>
+    <div class="final-contact-item"><strong>📍 כתובת</strong> · דרך יצחק רבין 8, בית שמש</div>
+    <div class="final-contact-item"><strong>🌐 אתר</strong> · argamanclinic.com</div>
+  </div>
+  <div class="final-credentials">
+    גל ממן · יועץ זוגי, מיני, משפחתי ואישי · 10 שנות ניסיון · 13 הסמכות מקצועיות<br>
+    מוסמך ייעוץ נישואין ומשפחה · מוסמך תפקוד זוגי מיני · FLASH Technique · עיבוד בילטרלי · שיטת הילד הפנימי · טכניקת רגרסיה
+  </div>
+</div>
+
+</body>
+</html>

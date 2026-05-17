@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>https://argamanclinic.com/</loc>
+    <image:image>
+      <image:loc>https://argamanclinic.com/gal.jpg</image:loc>
+      <image:caption>גל ממן — יועץ זוגי, מיני, משפחתי ואישי</image:caption>
+      <image:title>גל ממן — יועץ זוגי בית שמש</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://argamanclinic.com/og-image.jpg</image:loc>
+      <image:caption>קליניקת ארגמן — ייעוץ זוגי, מיני ואישי</image:caption>
+      <image:title>קליניקת ארגמן</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://argamanclinic.com/logo.jpg</image:loc>
+      <image:caption>לוגו קליניקת ארגמן</image:caption>
+      <image:title>קליניקת ארגמן</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://argamanclinic.com/about.html</loc>
+    <image:image>
+      <image:loc>https://argamanclinic.com/gal.jpg</image:loc>
+      <image:caption>גל ממן — 10 שנות ניסיון, 13 הסמכות מקצועיות</image:caption>
+      <image:title>גל ממן יועץ זוגי</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://argamanclinic.com/workshops.html</loc>
+    <image:image>
+      <image:loc>https://argamanclinic.com/og-image.jpg</image:loc>
+      <image:caption>סדנאות זוגיות וקבוצות גברים — קליניקת ארגמן</image:caption>
+      <image:title>סדנאות זוגיות</image:title>
+    </image:image>
+  </url>
+
+</urlset>

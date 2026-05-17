@@ -1,0 +1,9 @@
+# Local Netlify folder
+.netlify
+
+# Archived/unused assets — not deployed
+_unused/
+_build/
+*.bak
+.DS_Store
+Thumbs.db

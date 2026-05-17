@@ -71,8 +71,11 @@ function initMobileMenu() {
   const closeBtn  = document.querySelector('.drawer-close');
   if (!hamburger || !drawer) return;
 
-  const open  = () => { hamburger.classList.add('open'); drawer.classList.add('open'); overlay && overlay.classList.add('show'); document.body.style.overflow = 'hidden'; hamburger.setAttribute('aria-expanded','true'); };
-  const close = () => { hamburger.classList.remove('open'); drawer.classList.remove('open'); overlay && overlay.classList.remove('show'); document.body.style.overflow = ''; hamburger.setAttribute('aria-expanded','false'); };
+  drawer.setAttribute('role', 'dialog');
+  drawer.setAttribute('aria-modal', 'true');
+  drawer.setAttribute('aria-label', 'תפריט ניווט');
+  const open  = () => { hamburger.classList.add('open'); drawer.classList.add('open'); overlay && overlay.classList.add('show'); document.body.style.overflow = 'hidden'; hamburger.setAttribute('aria-expanded','true'); const firstLink = drawer.querySelector('a,button'); firstLink && firstLink.focus(); };
+  const close = () => { hamburger.classList.remove('open'); drawer.classList.remove('open'); overlay && overlay.classList.remove('show'); document.body.style.overflow = ''; hamburger.setAttribute('aria-expanded','false'); hamburger.focus(); };
 
   hamburger.addEventListener('click', () => drawer.classList.contains('open') ? close() : open());
   closeBtn && closeBtn.addEventListener('click', close);
@@ -104,16 +107,11 @@ function setActiveNavLink() {
    LEAD MAGNET (index.html)
    ===================================================== */
 function initLeadMagnet() {
-  const form    = document.getElementById('lead-form');
-  const success = document.getElementById('lead-success');
+  const form = document.getElementById('lead-form');
   if (!form) return;
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    const email = form.querySelector('input[type="email"]').value.trim();
-    if (!email) return;
-    localStorage.setItem('argaman_lead_email', email);
-    form.classList.add('hidden');
-    success && success.classList.add('show');
+  form.addEventListener('submit', () => {
+    const email = (form.querySelector('input[type="email"]') || {}).value;
+    if (email) try { localStorage.setItem('argaman_lead_email', email.trim()); } catch (_) {}
   });
 }
 
@@ -123,17 +121,18 @@ function initLeadMagnet() {
 function initAccordion() {
   const btns = document.querySelectorAll('.accordion-btn');
   btns.forEach(btn => {
+    const body = btn.nextElementSibling;
+    if (body) body.setAttribute('aria-hidden', 'true');
     btn.addEventListener('click', () => {
-      const body      = btn.nextElementSibling;
       const expanded  = btn.getAttribute('aria-expanded') === 'true';
       btns.forEach(b => {
         b.setAttribute('aria-expanded', 'false');
         const sib = b.nextElementSibling;
-        if (sib) sib.classList.remove('open');
+        if (sib) { sib.classList.remove('open'); sib.setAttribute('aria-hidden', 'true'); }
       });
       if (!expanded) {
         btn.setAttribute('aria-expanded', 'true');
-        body && body.classList.add('open');
+        if (body) { body.classList.add('open'); body.setAttribute('aria-hidden', 'false'); }
       }
     });
   });
@@ -147,9 +146,11 @@ function initFilter(btnSelector, itemSelector, dataAttr) {
   const items = document.querySelectorAll(itemSelector);
   if (!btns.length) return;
   btns.forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.classList.contains('active') ? 'true' : 'false');
     btn.addEventListener('click', () => {
-      btns.forEach(b => b.classList.remove('active'));
+      btns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       const filter = btn.dataset.filter || 'all';
       items.forEach(item => {
         const cat = item.dataset[dataAttr] || '';
@@ -251,9 +252,11 @@ function initBlog() {
 
   const filterBtns = document.querySelectorAll('.blog-filter .filter-btn');
   filterBtns.forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.classList.contains('active') ? 'true' : 'false');
     btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
       btn.classList.add('active');
+      btn.setAttribute('aria-pressed', 'true');
       const cat = btn.dataset.filter || 'all';
       filtered = (cat === 'all') ? allArticles : allArticles.filter(a => a.category === cat);
       currentPage = 1;
@@ -574,3 +577,201 @@ document.addEventListener('DOMContentLoaded', () => {
   initCounters();
   initMagneticButtons();
 });
+
+/* =====================================================
+   ARTICLE ENHANCEMENTS — TOC, Reading Progress, Reading Time
+   Auto-activates on any page containing <article> with 3+ H2s.
+   ===================================================== */
+function initArticleEnhancements() {
+  const article = document.querySelector('article');
+  if (!article) return;
+  const h2s = article.querySelectorAll('h2');
+  if (h2s.length < 3) return;
+
+  // 1. Slugify IDs on H2s for anchor links
+  h2s.forEach((h, i) => {
+    if (!h.id) h.id = 'sec-' + (i + 1);
+  });
+
+  // 2. Reading Time (calculate from word count, Hebrew = ~200 wpm)
+  const text = article.innerText || article.textContent || '';
+  const words = text.trim().split(/\s+/).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+
+  // 3. Table of Contents — insert after first paragraph
+  const toc = document.createElement('nav');
+  toc.className = 'article-toc';
+  toc.setAttribute('aria-label', 'תוכן עניינים');
+  toc.innerHTML = '<details open><summary><strong>📑 תוכן עניינים</strong> · <span style="color:#6b7280;font-weight:400">⏱ ' + minutes + ' דק׳ קריאה</span></summary><ol>' +
+    Array.from(h2s).map(h => '<li><a href="#' + h.id + '">' + h.textContent.trim() + '</a></li>').join('') +
+    '</ol></details>';
+  const firstP = article.querySelector('p');
+  if (firstP && firstP.nextSibling) {
+    firstP.parentNode.insertBefore(toc, firstP.nextSibling);
+  } else {
+    article.insertBefore(toc, article.firstChild);
+  }
+
+  // 4. Reading Progress Bar (top sticky)
+  const bar = document.createElement('div');
+  bar.id = 'reading-progress';
+  bar.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(bar);
+  function updateProgress() {
+    const rect = article.getBoundingClientRect();
+    const total = article.scrollHeight - window.innerHeight;
+    const scrolled = Math.max(0, -rect.top);
+    const pct = total > 0 ? Math.min(100, (scrolled / total) * 100) : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // 5. Smooth scroll for TOC links
+  toc.addEventListener('click', e => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    const id = a.getAttribute('href').slice(1);
+    const t = document.getElementById(id);
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); history.pushState(null, '', '#' + id); }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initArticleEnhancements);
+
+/* =====================================================
+   PWA INSTALL PROMPT — gentle, dismissable banner
+   ===================================================== */
+(function() {
+  if (location.pathname.endsWith('/admin.html')) return;
+  let deferredPrompt;
+  const DISMISS_KEY = 'argaman_pwa_dismissed';
+  const SEEN_KEY = 'argaman_pwa_seen_count';
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    // Only show if not dismissed recently
+    const dismissed = localStorage.getItem(DISMISS_KEY);
+    if (dismissed && (Date.now() - parseInt(dismissed)) < 1000 * 60 * 60 * 24 * 30) return; // 30 days
+    // Count visits: only show after 3rd visit
+    const seen = parseInt(localStorage.getItem(SEEN_KEY) || '0') + 1;
+    localStorage.setItem(SEEN_KEY, String(seen));
+    if (seen < 3) return;
+    showInstallBanner();
+  });
+
+  function showInstallBanner() {
+    if (document.getElementById('pwa-install-banner')) return;
+    const b = document.createElement('div');
+    b.id = 'pwa-install-banner';
+    b.setAttribute('role', 'dialog');
+    b.setAttribute('aria-label', 'התקנת אפליקציה');
+    b.innerHTML =
+      '<div class="pwa-content">' +
+        '<div class="pwa-icon">📱</div>' +
+        '<div class="pwa-text">' +
+          '<strong>התקינו את האפליקציה</strong>' +
+          '<small>גישה מהירה למאמרים, קוויז ופניות — בלי דפדפן</small>' +
+        '</div>' +
+        '<div class="pwa-buttons">' +
+          '<button class="pwa-btn-install" id="pwa-install">התקן</button>' +
+          '<button class="pwa-btn-dismiss" id="pwa-dismiss" aria-label="סגור">✕</button>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(b);
+    setTimeout(() => b.classList.add('pwa-visible'), 100);
+    document.getElementById('pwa-install').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (typeof gtag === 'function') gtag('event', 'pwa_prompt_' + outcome);
+      deferredPrompt = null;
+      hideInstallBanner();
+    });
+    document.getElementById('pwa-dismiss').addEventListener('click', () => {
+      localStorage.setItem(DISMISS_KEY, String(Date.now()));
+      hideInstallBanner();
+    });
+  }
+
+  function hideInstallBanner() {
+    const b = document.getElementById('pwa-install-banner');
+    if (b) {
+      b.classList.remove('pwa-visible');
+      setTimeout(() => b.remove(), 300);
+    }
+  }
+})();
+
+/* =====================================================
+   EXIT-INTENT LEAD CAPTURE — desktop only, once per visit
+   ===================================================== */
+(function() {
+  if (location.pathname.endsWith('/admin.html') || location.pathname.endsWith('/contact.html') || location.pathname.endsWith('/thank-you.html')) return;
+  const SEEN_KEY = 'argaman_exit_intent_shown';
+  let shown = false;
+
+  // Only desktop (touch devices have no mouseleave-to-top signal)
+  if ('ontouchstart' in window) return;
+
+  // Wait for page to stabilize
+  setTimeout(() => {
+    document.addEventListener('mouseleave', (e) => {
+      if (shown) return;
+      if (e.clientY > 5) return; // only top edge
+      if (sessionStorage.getItem(SEEN_KEY)) return;
+      const dismissed = localStorage.getItem('argaman_exit_dismissed');
+      if (dismissed && (Date.now() - parseInt(dismissed)) < 1000 * 60 * 60 * 24 * 7) return; // 7 days
+      shown = true;
+      sessionStorage.setItem(SEEN_KEY, '1');
+      showExitPopup();
+    });
+  }, 10000); // wait 10s after page load before arming
+
+  function showExitPopup() {
+    if (document.getElementById('exit-popup')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'exit-popup';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-label', 'הצעה לפני שעוזבים');
+    overlay.innerHTML =
+      '<div class="exit-modal">' +
+        '<button class="exit-close" id="exit-close" aria-label="סגור">✕</button>' +
+        '<div class="exit-icon">💛</div>' +
+        '<h2 class="exit-title">רגע לפני שעוזבים</h2>' +
+        '<p class="exit-msg">אם הגעתם הנה — כנראה שמשהו בקשר שלכם מטריד. <strong>שיחת היכרות חינמית של 15 דקות</strong> יכולה לעזור להבין אם תהליך מתאים לכם — בלי התחייבות.</p>' +
+        '<div class="exit-actions">' +
+          '<a href="https://wa.me/972506415222?text=שלום, הייתי באתר ומעוניין/ת בשיחת היכרות" target="_blank" rel="noopener noreferrer" class="exit-btn-primary" id="exit-wa">📱 שיחת היכרות חינמית</a>' +
+          '<a href="quiz.html" class="exit-btn-secondary" id="exit-quiz">📋 או עשו קוויז קודם</a>' +
+        '</div>' +
+        '<p class="exit-small">לחיצה על "סגור" לא תציג את ההודעה שוב במשך שבוע.</p>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    setTimeout(() => overlay.classList.add('exit-visible'), 50);
+
+    function close() {
+      localStorage.setItem('argaman_exit_dismissed', String(Date.now()));
+      overlay.classList.remove('exit-visible');
+      setTimeout(() => overlay.remove(), 300);
+      if (typeof gtag === 'function') gtag('event', 'exit_intent_dismiss');
+    }
+    document.getElementById('exit-close').addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    document.getElementById('exit-wa').addEventListener('click', () => {
+      if (typeof gtag === 'function') gtag('event', 'exit_intent_whatsapp');
+    });
+    document.getElementById('exit-quiz').addEventListener('click', () => {
+      if (typeof gtag === 'function') gtag('event', 'exit_intent_quiz');
+    });
+  }
+})();
+
+/* ─── PWA Service Worker registration ─── */
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('[PWA] Registered:', reg.scope))
+      .catch(err => console.log('[PWA] Registration failed:', err));
+  });
+}

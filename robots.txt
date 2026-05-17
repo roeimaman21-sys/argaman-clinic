@@ -1,6 +1,83 @@
+# robots.txt — קליניקת ארגמן
+# https://argamanclinic.com
+# Updated: 2026-05-17
+
 User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /thank-you.html
+Disallow: /thank-you-guide.html
+Disallow: /guide-source.html
+Disallow: /og-source.html
+Disallow: /article.html
+Disallow: /404.html
+Disallow: /node_modules/
+Disallow: /*.json$
+Disallow: /*?utm_*
+Disallow: /*?fbclid=*
+Disallow: /*?gclid=*
+Disallow: /*?ref=*
+Crawl-delay: 5
 
-Sitemap: https://argamanclinic.co.il/sitemap.xml
+# Google
+User-agent: Googlebot
+Allow: /
+Allow: /*.jpg
+Allow: /*.png
+Allow: /*.webp
+Allow: /*.css
+Allow: /*.js
+Disallow: /admin.html
+Disallow: /thank-you.html
+Disallow: /thank-you-guide.html
+
+# Google Images
+User-agent: Googlebot-Image
+Allow: /
+Disallow: /admin.html
+
+# Bing
+User-agent: Bingbot
+Allow: /
+Disallow: /admin.html
+Disallow: /thank-you.html
+Disallow: /thank-you-guide.html
+
+# Facebook (Open Graph)
+User-agent: facebookexternalhit
+Allow: /
+
+# Twitter
+User-agent: Twitterbot
+Allow: /
+
+# LinkedIn
+User-agent: LinkedInBot
+Allow: /
+
+# Block AI scrapers (optional - allow if you want AI to know about the site)
+User-agent: GPTBot
+Disallow: /admin.html
+Disallow: /thank-you*
+
+User-agent: ChatGPT-User
+Disallow: /admin.html
+
+User-agent: anthropic-ai
+Disallow: /admin.html
+
+# Bad bots
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+Sitemap: https://argamanclinic.com/sitemap.xml
+Sitemap: https://argamanclinic.com/sitemap-images.xml

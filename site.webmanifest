@@ -1,0 +1,42 @@
+{
+  "name": "קליניקת ארגמן — גל ממן",
+  "short_name": "ארגמן",
+  "description": "ייעוץ זוגי, מיני, משפחתי ואישי — גל ממן, בית שמש",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "theme_color": "#1B3A6B",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "he",
+  "dir": "rtl",
+  "categories": ["health", "lifestyle", "medical"],
+  "shortcuts": [
+    {
+      "name": "וואטסאפ",
+      "short_name": "WhatsApp",
+      "description": "שיחה ישירה בוואטסאפ",
+      "url": "https://wa.me/972506415222",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "מבחן זוגיות",
+      "short_name": "מבחן",
+      "description": "מבחן זוגיות חינמי 2 דקות",
+      "url": "/zugiyut-test.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "צור קשר",
+      "short_name": "קשר",
+      "description": "פנייה דרך הטופס",
+      "url": "/contact.html",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "prefer_related_applications": false
+}

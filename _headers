@@ -1,0 +1,50 @@
+/*
+  # Security Headers — קליניקת ארגמן
+  # תואם תקנות הגנת הפרטיות (אבטחת מידע) התשע"ז-2017
+  # תקני OWASP 2024, Mozilla Observatory A+
+
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  X-XSS-Protection: 1; mode=block
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=(), accelerometer=(), gyroscope=(), magnetometer=(), midi=(), serial=()
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://unpkg.com https://www.googletagmanager.com https://www.google-analytics.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://www.clarity.ms https://c.bing.com https://www.google-analytics.com https://analytics.google.com https://formsubmit.co https://*.supabase.co wss://*.supabase.co; frame-src https://maps.google.com https://www.google.com https://www.youtube.com; form-action 'self' https://formsubmit.co; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; upgrade-insecure-requests; block-all-mixed-content;
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Resource-Policy: same-origin
+  Cross-Origin-Embedder-Policy: credentialless
+
+# CRM panel — extra strict
+/admin.html
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  Cache-Control: no-store, no-cache, must-revalidate, private, max-age=0
+  Pragma: no-cache
+  Expires: 0
+  X-Frame-Options: DENY
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://formsubmit.co https://api.qrserver.com https://cdn.jsdelivr.net https://unpkg.com; frame-ancestors 'none'; form-action 'self' https://formsubmit.co; base-uri 'self'; object-src 'none';
+  Clear-Site-Data: "cache"
+
+# Crypto utilities — strict
+/crypto-utils.js
+  Cache-Control: no-store, no-cache, must-revalidate
+  X-Content-Type-Options: nosniff
+
+# Thank-you pages — no indexing
+/thank-you.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/thank-you-guide.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+/404.html
+  X-Robots-Tag: noindex, nofollow
+
+/article.html
+  X-Robots-Tag: noindex, nofollow, noarchive
+
+# Robots & sitemap — short cache
+/robots.txt
+  Cache-Control: public, max-age=3600
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600

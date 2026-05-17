@@ -1,0 +1,66 @@
+[build]
+  publish = "."
+  # _unused/ and _build/ excluded via .gitignore (Netlify-from-Git only deploys tracked files)
+
+# Redirect HTTP → HTTPS
+[[redirects]]
+  from = "http://argamanclinic.com/*"
+  to   = "https://argamanclinic.com/:splat"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "http://www.argamanclinic.com/*"
+  to   = "https://argamanclinic.com/:splat"
+  status = 301
+  force  = true
+
+# www → non-www
+[[redirects]]
+  from = "https://www.argamanclinic.com/*"
+  to   = "https://argamanclinic.com/:splat"
+  status = 301
+  force  = true
+
+# Custom 404
+[[redirects]]
+  from   = "/*"
+  to     = "/404.html"
+  status = 404
+
+# Cache headers — images
+[[headers]]
+  for = "/*.jpg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.webp"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.pdf"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"
+
+# Security headers — managed in _headers file for consistency
+# (intentionally NOT duplicated here to avoid conflicts/overrides)
+
+[build.environment]
+  NODE_VERSION = "18"

@@ -1,0 +1,25 @@
+⚠️ ISSUES FOUND:
+
+mobile/home: HORIZONTAL SCROLL detected
+mobile/home: 5 tap targets <32px: 📞 050-641-5222, ✉ argamanclinic@gmail.com, 📍 פתחו ב-Google Maps ←, אודות גל, שירותים
+mobile/about: HORIZONTAL SCROLL detected
+mobile/about: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+mobile/services: HORIZONTAL SCROLL detected
+mobile/services: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+mobile/service-couples: 5 tap targets <32px: 📱 לשיחת ייעוץ חינמית, אודות גל, שירותים, תהליך הליווי, מחירים
+mobile/service-trauma: HORIZONTAL SCROLL detected
+mobile/service-trauma: 5 tap targets <32px: ראשי, אודות, שירותים, תהליך הליווי, מאמרים
+mobile/pricing: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+mobile/workshops: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+mobile/contact: 5 tap targets <32px: מדיניות הפרטיות, 050-641-5222, argamanclinic@gmail.com, 📍 פתחו ב-Google Maps ←, אודות גל
+mobile/faq: 5 tap targets <32px: המחירים, לפרטי המחירים ←, אודות גל, שירותים, תהליך הליווי
+tablet/home: HORIZONTAL SCROLL detected
+tablet/home: 5 tap targets <32px: 📞 050-641-5222, ✉ argamanclinic@gmail.com, 📍 פתחו ב-Google Maps ←, אודות גל, שירותים
+tablet/about: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+tablet/services: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+tablet/service-couples: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, מחירים, מאמרים
+tablet/service-trauma: 5 tap targets <32px: ראשי, אודות, שירותים, תהליך הליווי, מאמרים
+tablet/pricing: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+tablet/workshops: 5 tap targets <32px: אודות גל, שירותים, תהליך הליווי, סדנאות, מחירים
+tablet/contact: 5 tap targets <32px: מדיניות הפרטיות, 050-641-5222, argamanclinic@gmail.com, 📍 פתחו ב-Google Maps ←, אודות גל
+tablet/faq: 5 tap targets <32px: המחירים, לפרטי המחירים ←, אודות גל, שירותים, תהליך הליווי

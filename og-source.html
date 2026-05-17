@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 630px; font-family: 'Heebo', sans-serif; overflow: hidden; }
+  .card {
+    width: 1200px;
+    height: 630px;
+    background: linear-gradient(135deg, #0F2347 0%, #1B3A6B 50%, #2C3E7A 100%);
+    color: white;
+    padding: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute; top: -150px; left: -150px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(201,168,76,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .card::after {
+    content: '';
+    position: absolute; bottom: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(201,168,76,0.18) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .brand {
+    position: relative;
+    font-size: 22px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #C9A84C;
+  }
+  .brand small {
+    display: block; font-size: 14px; font-weight: 400; letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.7); text-transform: none; margin-top: 4px;
+  }
+  .main { position: relative; }
+  .tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.2);
+    color: #C9A84C;
+    padding: 8px 22px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 24px;
+  }
+  h1 {
+    font-size: 72px; font-weight: 900; line-height: 1.1; margin-bottom: 22px;
+  }
+  h1 span { color: #C9A84C; }
+  p {
+    font-size: 24px; color: rgba(255,255,255,0.88); line-height: 1.4; max-width: 850px;
+  }
+  .footer {
+    position: relative;
+    border-top: 1px solid rgba(255,255,255,0.18);
+    padding-top: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-left { display: flex; flex-direction: column; gap: 4px; }
+  .footer-left strong { font-size: 22px; font-weight: 800; color: white; }
+  .footer-left small { font-size: 16px; color: rgba(255,255,255,0.6); }
+  .footer-right { font-size: 16px; color: rgba(255,255,255,0.6); text-align: left; }
+  .footer-right b { color: #C9A84C; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="brand">קליניקת ארגמן<small>גל ממן · יועץ זוגי, מיני, משפחתי ואישי</small></div>
+
+  <div class="main">
+    <div class="tag">10 שנות ניסיון · 13 הסמכות מקצועיות</div>
+    <h1>הזוגיות. האינטימיות.<br>החיים. — <span>יכולים להיראות אחרת.</span></h1>
+    <p>ייעוץ זוגי, מיני, משפחתי ואישי וריפוי טראומה — גישה חמה, סודיות מוחלטת, ושיטות מוכחות. פגישת היכרות ראשונה ללא עלות.</p>
+  </div>
+
+  <div class="footer">
+    <div class="footer-left">
+      <strong>argamanclinic.com</strong>
+      <small>📍 דרך יצחק רבין 8, בית שמש · 📱 050-641-5222</small>
+    </div>
+    <div class="footer-right">
+      <b>FLASH Technique · עיבוד בילטרלי</b><br>
+      <b>שיטת הילד הפנימי · טכניקת רגרסיה</b>
+    </div>
+  </div>
+</div>
+</body>
+</html>
