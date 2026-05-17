@@ -19,6 +19,7 @@
   <script src="clinical-suite.js" defer></script>
   <script src="crm-enhancements.js" defer></script>
   <script src="reports-engine.js" defer></script>
+  <script src="crm-extensions.js" defer></script>
   <!-- Quill — Rich text editor -->
   <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
@@ -368,6 +369,7 @@
     <a class="nav-link" onclick="openConversionFunnel()" style="cursor:pointer"><span class="icon">📈</span> משפך המרה</a>
     <a class="nav-link" onclick="openNotifications()" style="cursor:pointer"><span class="icon">🔔</span> התראות <span class="badge" id="crm-notif-badge" style="display:none;background:#dc2626;color:#fff;border-radius:50px;padding:0 .4rem;font-size:.7rem"></span></a>
     <a class="nav-link" onclick="openDocumentTemplates(null)" style="cursor:pointer"><span class="icon">📄</span> מסמכים</a>
+    <a class="nav-link" onclick="openResources()" style="cursor:pointer"><span class="icon">📚</span> ספריית משאבים</a>
     <a class="nav-link" onclick="openICalExport()" style="cursor:pointer"><span class="icon">📤</span> ייצוא ל-Calendar</a>
     <a class="nav-link" onclick="openBackup()" style="cursor:pointer"><span class="icon">💾</span> גיבוי מלא</a>
     <a class="nav-link" onclick="openAuditLog()" style="cursor:pointer"><span class="icon">📋</span> יומן פעולות</a>
@@ -2558,6 +2560,9 @@ function viewClient(id){
       <button class="btn btn-sm" style="background:#fff7ed;color:#854d0e;border:1px solid #C9A84C" onclick="openRecurringSessions('${c.id}')">🔄 פגישות חוזרות</button>
       <button class="btn btn-sm" style="background:#f9fafb;color:#1B3A6B;border:1px solid #e5e7eb" onclick="openDocumentTemplates('${c.id}')">📄 מסמכים</button>
       <button class="btn btn-sm" style="background:#fef3c7;color:#854d0e;border:1px solid #C9A84C" onclick="openClientPersonalReport('${c.id}')">📊 דוח אישי ללקוח</button>
+      <button class="btn btn-sm" style="background:#fee2e2;color:#dc2626;border:1px solid #dc2626" onclick="openRiskAssessment('${c.id}')">🚨 הערכת סיכון</button>
+      <button class="btn btn-sm" style="background:#f3e8ff;color:#7c3aed;border:1px solid #7c3aed" onclick="openGenogram('${c.id}')">🌳 Genogram</button>
+      <button class="btn btn-sm" style="background:#dcfce7;color:#16a34a;border:1px solid #16a34a" onclick="openGoalTracker('${c.id}')">📊 מעקב יעדים</button>
       ${c.treatment?.primaryMethod ? `<span class="badge" style="background:#fef3c7;color:#854d0e;padding:.2rem .6rem;border-radius:50px;font-size:.8rem">🧭 ${(window.ClinicalSuite?.METHODS||[]).find(m=>m.k===c.treatment.primaryMethod)?.l||c.treatment.primaryMethod}</span>` : ''}
     </div>
 
