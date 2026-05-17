@@ -824,6 +824,259 @@
   };
 
   // =====================================================
+  // MODULE 6: CLIENT PORTAL (Magic-link snapshot)
+  // =====================================================
+  const ClientPortal = {
+    generate(clientId) {
+      const c = (State.clients||[]).find(x => x.id === clientId);
+      if (!c) return showToast('לקוח לא נמצא','error');
+
+      const allSess = (State.sessions||[]).filter(s => s.clientId === clientId);
+      const completed = allSess.filter(s => s.status === 'completed');
+      const paid = completed.filter(s => s.paid);
+      const now = new Date();
+      const upcoming = allSess.filter(s => s.status === 'scheduled' && new Date(s.date) >= now).sort((a,b) => a.date.localeCompare(b.date)).slice(0, 5);
+      const totalPaid = paid.reduce((sum,s) => sum + Number(s.price||0), 0);
+      const outstanding = completed.filter(s => !s.paid && s.price).reduce((sum,s) => sum + Number(s.price), 0);
+
+      // Outcome data
+      const outcomes = JSON.parse(localStorage.getItem('argaman_outcomes')||'[]').filter(o => o.clientId === clientId);
+      const phq = outcomes.filter(o => o.type === 'PHQ-9').sort((a,b) => a.date.localeCompare(b.date)).map(o => ({ label: new Date(o.date).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}), value: o.total }));
+      const gad = outcomes.filter(o => o.type === 'GAD-7').sort((a,b) => a.date.localeCompare(b.date)).map(o => ({ label: new Date(o.date).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}), value: o.total }));
+      const ors = outcomes.filter(o => o.type === 'ORS').sort((a,b) => a.date.localeCompare(b.date)).map(o => ({ label: new Date(o.date).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}), value: o.total }));
+
+      const startDate = c.createdAt || c.startDate;
+      const months = startDate ? Math.max(1, Math.round((now - new Date(startDate)) / (1000*60*60*24*30))) : 0;
+
+      const bundle = {
+        v: 1,
+        name: c.name,
+        firstName: (c.name||'').split(' ')[0],
+        startDate,
+        generated: new Date().toISOString(),
+        stats: {
+          sessionsCompleted: completed.length,
+          totalMonths: months,
+          goalsAchieved: (c.treatment?.goals||[]).filter(g => g.status === 'achieved').length,
+          totalGoals: (c.treatment?.goals||[]).length,
+          nextSession: upcoming[0] ? { date: upcoming[0].date, time: upcoming[0].time } : null
+        },
+        upcoming: upcoming.map(s => ({ date: s.date, time: s.time, location: s.location })),
+        goals: (c.treatment?.goals||[]).map(g => ({ text: g.text, progress: g.progress||0, status: g.status })),
+        outcomes: { phq, gad, ors },
+        payments: { totalPaid, outstanding }
+      };
+
+      // Show generator dialog with options
+      this._showGeneratorDialog(c, bundle);
+    },
+
+    _showGeneratorDialog(c, bundle) {
+      const html = `
+        <p>צור קישור פרטי עבור <strong>${esc(c.name||'')}</strong>.</p>
+        <p style="font-size:.85rem;color:#6b7280">הקישור מכיל snapshot של הלקוח: פגישות, יעדים, מדדים, תשלומים. רק מי שיש לו את הקישור — יראה את התוכן.</p>
+
+        <div style="margin:1rem 0">
+          <label style="font-weight:600">💌 הודעה אישית (אופציונלי)</label>
+          <textarea id="portal-note" rows="3" placeholder="לדוגמה: היי, שלחתי לך סיכום של איפה אנחנו עומדים. נשתמע בפגישה הבאה!" style="width:100%;padding:.6rem;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;margin-top:.25rem"></textarea>
+        </div>
+
+        <div style="background:#f9fafb;padding:.75rem;border-radius:8px;font-size:.85rem;margin-bottom:1rem">
+          <strong style="color:#1B3A6B">תוכן הקישור:</strong>
+          <ul style="margin:.4rem 0 0;padding-right:1.25rem;color:#6b7280">
+            <li>${bundle.stats.sessionsCompleted} פגישות שהושלמו</li>
+            <li>${bundle.upcoming.length} פגישות עתידיות</li>
+            <li>${bundle.goals.length} יעדי טיפול עם progress</li>
+            <li>${bundle.outcomes.phq.length + bundle.outcomes.gad.length + bundle.outcomes.ors.length} מדידות outcome</li>
+            <li>סיכום תשלומים</li>
+          </ul>
+        </div>
+
+        <div style="display:flex;gap:.5rem;justify-content:flex-end;flex-wrap:wrap">
+          <button onclick="window.CRMExtensions.closeModalSafe()" style="padding:.5rem 1rem;background:#f3f4f6;color:#374151;border:0;border-radius:8px;cursor:pointer">בטל</button>
+          <button onclick="window.CRMExtensions.ClientPortal._copy('${c.id}')" style="padding:.5rem 1.25rem;background:#1B3A6B;color:#fff;border:0;border-radius:8px;cursor:pointer;font-weight:700">📋 צור והעתק קישור</button>
+          <button onclick="window.CRMExtensions.ClientPortal._whatsapp('${c.id}')" style="padding:.5rem 1.25rem;background:#25D366;color:#fff;border:0;border-radius:8px;cursor:pointer;font-weight:700">📱 שלח ב-WhatsApp</button>
+        </div>
+      `;
+      getModal()('🌐 פורטל לקוח — ' + esc(c.name||''), html, { size:'md' });
+      // Store bundle for use after note input
+      this._pendingBundle = bundle;
+    },
+
+    _buildLink(clientId) {
+      const c = (State.clients||[]).find(x => x.id === clientId);
+      const note = $('#portal-note')?.value.trim();
+      const bundle = this._pendingBundle;
+      if (note) bundle.note = note;
+      // Encode as base64url
+      const json = JSON.stringify(bundle);
+      const b64 = btoa(unescape(encodeURIComponent(json))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+      const url = `https://argamanclinic.com/portal.html#d=${b64}`;
+      audit('portal_link_generated', { clientId, bundleSize: json.length });
+      return { url, c, sizeKB: Math.round(json.length / 1024) };
+    },
+
+    _copy(clientId) {
+      const { url, sizeKB } = this._buildLink(clientId);
+      navigator.clipboard.writeText(url).then(() => {
+        showToast(`✓ הועתק (${sizeKB}KB). הדבק בכל מקום ושלח ללקוח`);
+        closeModalSafe();
+      }).catch(() => {
+        // Fallback: show URL in modal
+        const html = `<p>הקישור (העתק ידנית):</p>
+        <textarea readonly style="width:100%;height:100px;padding:.5rem;border:1px solid #e5e7eb;border-radius:6px;font-family:monospace;font-size:.75rem">${url}</textarea>`;
+        getModal()('📋 קישור פורטל', html, { size:'md' });
+      });
+    },
+
+    _whatsapp(clientId) {
+      const { url, c } = this._buildLink(clientId);
+      if (!c.phone) return showToast('אין מספר טלפון ללקוח','error');
+      const msg = encodeURIComponent(`שלום ${(c.name||'').split(' ')[0]}, הנה הפורטל האישי שלך:\n\n${url}\n\nתוכל לראות שם את הפגישות הקרובות, ההתקדמות והתשלומים. שמור את הקישור 🙏`);
+      const phone = c.phone.replace(/\D/g,'').replace(/^0/,'972');
+      window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+      closeModalSafe();
+      showToast('נפתח WhatsApp');
+    }
+  };
+
+  // =====================================================
+  // MODULE 7: TIME TRACKER (per-session stopwatch)
+  // =====================================================
+  const TimeTracker = {
+    LS: 'argaman_time_logs',
+    activeKey: 'argaman_active_timer',
+
+    isRunning() {
+      try { return !!JSON.parse(localStorage.getItem(this.activeKey)); } catch { return false; }
+    },
+
+    start(sessionId, label) {
+      const c = (State.clients||[]).find(x => (State.sessions||[]).find(s => s.id === sessionId)?.clientId === x.id);
+      const active = { sessionId, label: label || (c?.name||'פגישה'), startedAt: new Date().toISOString() };
+      localStorage.setItem(this.activeKey, JSON.stringify(active));
+      audit('timer_start', { sessionId });
+      this._showTimerBar();
+      showToast('⏱ טיימר התחיל');
+    },
+
+    stop() {
+      let active;
+      try { active = JSON.parse(localStorage.getItem(this.activeKey)); } catch {}
+      if (!active) return showToast('אין טיימר פעיל','error');
+      const startedAt = new Date(active.startedAt);
+      const endedAt = new Date();
+      const durationMin = Math.round((endedAt - startedAt) / 60000);
+      const log = JSON.parse(localStorage.getItem(this.LS)||'[]');
+      log.push({ id: uid(), ...active, endedAt: endedAt.toISOString(), durationMin });
+      localStorage.setItem(this.LS, JSON.stringify(log.slice(-1000)));
+      localStorage.removeItem(this.activeKey);
+      audit('timer_stop', { sessionId: active.sessionId, durationMin });
+      const bar = document.getElementById('timer-bar');
+      if (bar) bar.remove();
+      showToast(`⏹ ${durationMin} דקות נרשמו`);
+    },
+
+    _showTimerBar() {
+      if (document.getElementById('timer-bar')) return;
+      const active = JSON.parse(localStorage.getItem(this.activeKey));
+      if (!active) return;
+      const bar = document.createElement('div');
+      bar.id = 'timer-bar';
+      bar.style.cssText = 'position:fixed;bottom:1rem;left:1rem;background:#dc2626;color:#fff;padding:.6rem 1rem;border-radius:50px;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:9998;display:flex;align-items:center;gap:.5rem;font-weight:600;animation:pulse 2s infinite';
+      bar.innerHTML = `<span>⏱</span><span id="timer-elapsed">00:00</span><span style="opacity:.8;font-weight:400">· ${esc(active.label)}</span><button onclick="window.CRMExtensions.TimeTracker.stop()" style="background:#fff;color:#dc2626;border:0;padding:.2rem .6rem;border-radius:50px;cursor:pointer;font-weight:700;font-family:inherit">⏹ עצור</button>`;
+      document.body.appendChild(bar);
+      const styleEl = document.createElement('style');
+      styleEl.textContent = '@keyframes pulse{0%,100%{opacity:1}50%{opacity:.85}}';
+      document.head.appendChild(styleEl);
+      const update = () => {
+        const a = JSON.parse(localStorage.getItem(this.activeKey)||'null');
+        if (!a) { clearInterval(t); bar.remove(); return; }
+        const sec = Math.floor((Date.now() - new Date(a.startedAt)) / 1000);
+        const el = document.getElementById('timer-elapsed');
+        if (el) el.textContent = `${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')}`;
+      };
+      const t = setInterval(update, 1000);
+      update();
+    },
+
+    summary() {
+      const log = JSON.parse(localStorage.getItem(this.LS)||'[]');
+      const now = new Date();
+      const weekAgo = new Date(now); weekAgo.setDate(weekAgo.getDate()-7);
+      const thisWeek = log.filter(l => new Date(l.startedAt) >= weekAgo);
+      const totalMin = thisWeek.reduce((s,l) => s+l.durationMin, 0);
+      const html = `
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.75rem;margin-bottom:1rem">
+          <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:10px"><div style="font-size:.8rem;color:#6b7280">השבוע</div><div style="font-size:1.8rem;font-weight:800;color:#1B3A6B">${(totalMin/60).toFixed(1)}<small style="font-size:1rem">ש׳</small></div></div>
+          <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:10px"><div style="font-size:.8rem;color:#6b7280">פגישות השבוע</div><div style="font-size:1.8rem;font-weight:800;color:#1B3A6B">${thisWeek.length}</div></div>
+          <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:10px"><div style="font-size:.8rem;color:#6b7280">ממוצע פגישה</div><div style="font-size:1.8rem;font-weight:800;color:#1B3A6B">${thisWeek.length?Math.round(totalMin/thisWeek.length):0}<small style="font-size:1rem">דק׳</small></div></div>
+        </div>
+        <h3 style="color:#1B3A6B">פגישות אחרונות</h3>
+        ${log.slice(-20).reverse().map(l => `
+          <div style="padding:.5rem;border-bottom:1px solid #f3f4f6;display:flex;justify-content:space-between;align-items:center;font-size:.85rem">
+            <span><strong>${esc(l.label)}</strong> <small style="color:#6b7280">${fmtDt(l.startedAt)}</small></span>
+            <strong style="color:#1B3A6B">${l.durationMin} דק׳</strong>
+          </div>
+        `).join('') || '<p style="color:#6b7280">אין רשומות עדיין</p>'}
+      `;
+      getModal()('⏱ סיכום זמני עבודה', html, { size:'lg' });
+    }
+  };
+
+  // =====================================================
+  // MODULE 8: KEYBOARD SHORTCUTS
+  // =====================================================
+  const Hotkeys = {
+    init() {
+      document.addEventListener('keydown', (e) => {
+        // Ignore in input/textarea
+        if (e.target.matches('input, textarea, select, [contenteditable]')) return;
+        // Cmd/Ctrl + N → quick add lead
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'n') {
+          e.preventDefault();
+          if (typeof window.quickAddLead === 'function') window.quickAddLead();
+        }
+        // Cmd/Ctrl + R → open Reports Hub (override page refresh — confirm first)
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'r') {
+          e.preventDefault();
+          if (typeof window.openReportsHub === 'function') window.openReportsHub();
+        }
+        // Cmd/Ctrl + Shift + T → time tracker summary
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 't') {
+          e.preventDefault();
+          TimeTracker.summary();
+        }
+        // ? → show help
+        if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
+          e.preventDefault();
+          this.showHelp();
+        }
+        // Esc → close modal
+        if (e.key === 'Escape') {
+          closeModalSafe();
+        }
+      });
+      console.log('[Hotkeys] ✓ enabled');
+    },
+
+    showHelp() {
+      const html = `
+        <p>קיצורי דרך פעילים:</p>
+        <table style="width:100%;margin:1rem 0">
+          <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+N</kbd></td><td>ליד חדש מהיר</td></tr>
+          <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+Shift+R</kbd></td><td>מרכז דוחות BI</td></tr>
+          <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+Shift+T</kbd></td><td>סיכום זמני עבודה</td></tr>
+          <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+K</kbd></td><td>חיפוש גלובלי (קיים)</td></tr>
+          <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Esc</kbd></td><td>סגור מודל</td></tr>
+          <tr><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">?</kbd></td><td>הצג עזרה זו</td></tr>
+        </table>
+      `;
+      getModal()('⌨️ קיצורי דרך', html, { size:'md' });
+    }
+  };
+
+  // =====================================================
   // PUBLIC INTERFACE
   // =====================================================
   window.CRMExtensions = {
@@ -832,6 +1085,9 @@
     Resources,
     Genogram,
     GoalTracker,
+    ClientPortal,
+    TimeTracker,
+    Hotkeys,
     closeModalSafe,
 
     init() {
@@ -842,7 +1098,15 @@
       window.openResources = () => Resources.open();
       window.openGenogram = id => Genogram.open(id);
       window.openGoalTracker = id => GoalTracker.open(id);
-      console.log('[CRMExtensions] ✓ 5 modules loaded');
+      window.openClientPortal = id => ClientPortal.generate(id);
+      window.startTimer = (sessionId, label) => TimeTracker.start(sessionId, label);
+      window.stopTimer = () => TimeTracker.stop();
+      window.openTimerSummary = () => TimeTracker.summary();
+      window.openHotkeysHelp = () => Hotkeys.showHelp();
+      Hotkeys.init();
+      // Restore running timer bar if any
+      if (TimeTracker.isRunning()) TimeTracker._showTimerBar();
+      console.log('[CRMExtensions] ✓ 8 modules loaded');
     }
   };
 

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>פורטל לקוח | קליניקת ארגמן</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="googlebot" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Heebo',Arial,sans-serif;background:linear-gradient(135deg,#f9fafb,#eff4ff);color:#1f2937;line-height:1.6;min-height:100vh}
+    .wrap{max-width:760px;margin:0 auto;padding:1rem}
+    .hero{background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;padding:2rem 1.5rem;border-radius:18px;margin-bottom:1.5rem;box-shadow:0 10px 30px rgba(27,58,107,.2)}
+    .hero h1{font-size:1.8rem;margin-bottom:.25rem}
+    .hero p{opacity:.92;font-size:1rem}
+    .hero .badge{display:inline-block;background:#C9A84C;color:#1B3A6B;padding:.25rem .75rem;border-radius:50px;font-size:.75rem;font-weight:700;margin-top:.5rem}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:1.25rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+    .card h2{color:#1B3A6B;font-size:1.1rem;margin-bottom:.75rem;border-bottom:2px solid #C9A84C;padding-bottom:.4rem;display:flex;align-items:center;gap:.5rem}
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.75rem;margin-top:.5rem}
+    .kpi{background:#f9fafb;padding:.75rem;border-radius:10px;text-align:center;border:1px solid #e5e7eb}
+    .kpi-label{font-size:.75rem;color:#6b7280}
+    .kpi-value{font-size:1.6rem;font-weight:800;color:#1B3A6B;line-height:1.1}
+    .session-list{list-style:none;padding:0}
+    .session-list li{padding:.65rem;background:#f9fafb;border-radius:8px;margin-bottom:.4rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
+    .session-time{font-weight:600;color:#1B3A6B}
+    .goal{background:#f9fafb;padding:.75rem;border-radius:10px;margin-bottom:.5rem}
+    .goal-header{display:flex;justify-content:space-between;margin-bottom:.4rem}
+    .progress-bar{height:10px;background:#e5e7eb;border-radius:5px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,#1B3A6B,#C9A84C);transition:width .5s}
+    .progress-fill.done{background:#16a34a}
+    .chart-wrap{background:#fafafa;border-radius:10px;padding:.5rem;margin-top:.5rem}
+    .cta-section{background:linear-gradient(135deg,#C9A84C,#a8882e);color:#1B3A6B;padding:1.5rem;border-radius:14px;text-align:center;margin-top:1rem}
+    .cta-section h3{margin-bottom:.5rem}
+    .cta-btn{display:inline-block;background:#fff;color:#1B3A6B;padding:.75rem 1.5rem;border-radius:50px;font-weight:700;text-decoration:none;margin-top:.5rem;transition:transform .2s}
+    .cta-btn:hover{transform:translateY(-2px)}
+    .wa-btn{background:#25D366;color:#fff}
+    footer{text-align:center;padding:2rem 1rem;color:#6b7280;font-size:.85rem}
+    .error-box{background:#fee2e2;border-right:4px solid #dc2626;padding:1.5rem;border-radius:12px;color:#991b1b;text-align:center;margin:2rem 0}
+    .empty{color:#6b7280;text-align:center;padding:1rem;font-style:italic}
+    @media print{
+      body{background:#fff}
+      .cta-section,.wa-btn{display:none}
+      .card{box-shadow:none;break-inside:avoid}
+    }
+    .print-btn{background:#fff;border:2px solid #1B3A6B;color:#1B3A6B;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;margin-right:.5rem}
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div id="content">
+    <div class="error-box">
+      <h2>🔄 טוען...</h2>
+      <p>אם המסך לא נטען תוך כמה שניות — ייתכן שהקישור לא תקין.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  קליניקת ארגמן · גל ממן · בית שמש · <a href="https://argamanclinic.com" style="color:#1B3A6B">argamanclinic.com</a>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // Decode bundle from URL fragment
+  function decodeBundle() {
+    try {
+      const hash = location.hash.slice(1);
+      if (!hash) throw new Error('no-data');
+      const params = new URLSearchParams(hash);
+      const data = params.get('d');
+      if (!data) throw new Error('no-data');
+      // Base64URL decode
+      const b64 = data.replace(/-/g,'+').replace(/_/g,'/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      return JSON.parse(json);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  function fmtDate(d) {
+    try { return new Date(d).toLocaleDateString('he-IL', { day:'numeric', month:'long', year:'numeric' }); }
+    catch { return d; }
+  }
+  function fmtTime(t) { return t || ''; }
+  function ils(n) { return '₪' + Number(n||0).toLocaleString('he-IL'); }
+  function esc(s) { return String(s||'').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  function svgLineChart(data, label, color) {
+    if (!data || !data.length) return '';
+    const w = 320, h = 100, pad = 25;
+    const vals = data.map(d => d.value);
+    const max = Math.max(...vals, 1);
+    const min = 0;
+    const range = max - min || 1;
+    const dx = data.length > 1 ? (w - pad*2) / (data.length-1) : 0;
+    const y = v => h - pad - ((v-min)/range)*(h-pad*2);
+    const points = data.map((d,i) => `${pad + i*dx},${y(d.value)}`).join(' ');
+    return `<div class="chart-wrap">
+      <strong style="color:#1B3A6B;font-size:.9rem">${esc(label)}</strong>
+      <svg viewBox="0 0 ${w} ${h}" style="width:100%;max-width:400px;height:auto;display:block;margin:.4rem 0">
+        <polyline points="${points}" fill="none" stroke="${color}" stroke-width="2.5"/>
+        ${data.map((d,i) => `<circle cx="${pad + i*dx}" cy="${y(d.value)}" r="3" fill="${color}"/>
+          <text x="${pad + i*dx}" y="${y(d.value)-8}" text-anchor="middle" font-size="10" fill="${color}" font-weight="700">${d.value}</text>
+          <text x="${pad + i*dx}" y="${h-8}" text-anchor="middle" font-size="9" fill="#6b7280">${esc(d.label||'')}</text>`).join('')}
+      </svg>
+      ${data.length >= 2 ? `<p style="font-size:.8rem;color:#6b7280">${data[0].value > data[data.length-1].value ? '▼ שיפור' : data[0].value < data[data.length-1].value ? '▲ עלייה' : '◆ יציב'} מ-${data[0].value} ל-${data[data.length-1].value}</p>` : ''}
+    </div>`;
+  }
+
+  function render(b) {
+    if (!b) {
+      document.getElementById('content').innerHTML = `<div class="error-box">
+        <h2>⚠️ קישור לא תקין</h2>
+        <p>לא ניתן לטעון את הנתונים. צרו קשר עם גל לקבלת קישור חדש.</p>
+        <p style="margin-top:1rem"><a href="https://wa.me/972506415222" style="background:#25D366;color:#fff;padding:.6rem 1.5rem;border-radius:50px;text-decoration:none;font-weight:600">📱 פנו לגל בוואטסאפ</a></p>
+      </div>`;
+      return;
+    }
+
+    // Build hero
+    let html = `
+      <div class="hero">
+        <h1>שלום ${esc(b.firstName || b.name || 'משתמש יקר')} 👋</h1>
+        <p>הפורטל האישי שלך בקליניקת ארגמן</p>
+        ${b.startDate ? `<span class="badge">בקליניקה מאז ${fmtDate(b.startDate)}</span>` : ''}
+        ${b.generated ? `<div style="margin-top:.75rem;font-size:.75rem;opacity:.7">עודכן: ${fmtDate(b.generated)}</div>` : ''}
+      </div>
+    `;
+
+    // Summary KPIs
+    if (b.stats) {
+      html += `<div class="card">
+        <h2>📊 הסיכום שלך</h2>
+        <div class="kpi-grid">
+          ${b.stats.sessionsCompleted !== undefined ? `<div class="kpi"><div class="kpi-label">פגישות שעברנו</div><div class="kpi-value">${b.stats.sessionsCompleted}</div></div>` : ''}
+          ${b.stats.totalMonths !== undefined ? `<div class="kpi"><div class="kpi-label">חודשי תהליך</div><div class="kpi-value">${b.stats.totalMonths}</div></div>` : ''}
+          ${b.stats.goalsAchieved !== undefined ? `<div class="kpi"><div class="kpi-label">יעדים שהושגו</div><div class="kpi-value">${b.stats.goalsAchieved}<small style="font-size:1rem;color:#6b7280">/${b.stats.totalGoals||0}</small></div></div>` : ''}
+          ${b.stats.nextSession ? `<div class="kpi"><div class="kpi-label">פגישה הבאה</div><div class="kpi-value" style="font-size:1rem">${fmtDate(b.stats.nextSession.date)}<br><small>${fmtTime(b.stats.nextSession.time)}</small></div></div>` : ''}
+        </div>
+      </div>`;
+    }
+
+    // Upcoming sessions
+    if (b.upcoming && b.upcoming.length) {
+      html += `<div class="card">
+        <h2>📅 הפגישות הקרובות</h2>
+        <ul class="session-list">
+          ${b.upcoming.map(s => `<li>
+            <div>
+              <div class="session-time">${fmtDate(s.date)}</div>
+              <small style="color:#6b7280">${fmtTime(s.time)} · ${esc(s.location||'בקליניקה')}</small>
+            </div>
+            <a href="https://wa.me/972506415222?text=${encodeURIComponent('שלום, רציתי לדבר על הפגישה ב-' + s.date)}" target="_blank" rel="noopener" style="background:#25D366;color:#fff;padding:.4rem .9rem;border-radius:50px;text-decoration:none;font-size:.85rem">📱 שאלה</a>
+          </li>`).join('')}
+        </ul>
+      </div>`;
+    }
+
+    // Treatment goals + progress
+    if (b.goals && b.goals.length) {
+      html += `<div class="card">
+        <h2>🎯 היעדים שלנו</h2>
+        ${b.goals.map(g => `
+          <div class="goal">
+            <div class="goal-header">
+              <strong>${esc(g.text)}</strong>
+              <span style="color:${g.progress>=100?'#16a34a':'#1B3A6B'};font-weight:700">${g.progress||0}%${g.progress>=100?' ✓':''}</span>
+            </div>
+            <div class="progress-bar"><div class="progress-fill ${g.progress>=100?'done':''}" style="width:${g.progress||0}%"></div></div>
+          </div>
+        `).join('')}
+      </div>`;
+    }
+
+    // Outcome charts
+    if (b.outcomes) {
+      const charts = [];
+      if (b.outcomes.phq && b.outcomes.phq.length >= 2) charts.push(svgLineChart(b.outcomes.phq, 'PHQ-9 (דיכאון) — לאורך זמן', '#1B3A6B'));
+      if (b.outcomes.gad && b.outcomes.gad.length >= 2) charts.push(svgLineChart(b.outcomes.gad, 'GAD-7 (חרדה) — לאורך זמן', '#8B4C8C'));
+      if (b.outcomes.ors && b.outcomes.ors.length >= 2) charts.push(svgLineChart(b.outcomes.ors, 'רווחה כללית (ORS) — לאורך זמן', '#16a34a'));
+      if (charts.length) {
+        html += `<div class="card">
+          <h2>📈 ההתקדמות שלך</h2>
+          ${charts.join('')}
+        </div>`;
+      }
+    }
+
+    // Payment summary
+    if (b.payments) {
+      html += `<div class="card">
+        <h2>💰 סיכום תשלומים</h2>
+        <div class="kpi-grid">
+          <div class="kpi"><div class="kpi-label">שולם סך הכל</div><div class="kpi-value">${ils(b.payments.totalPaid)}</div></div>
+          ${b.payments.outstanding > 0 ? `<div class="kpi" style="background:#fee2e2;border-color:#dc2626"><div class="kpi-label" style="color:#991b1b">חוב פתוח</div><div class="kpi-value" style="color:#dc2626">${ils(b.payments.outstanding)}</div></div>` : ''}
+        </div>
+        ${b.payments.outstanding > 0 ? `<p style="margin-top:.75rem;font-size:.9rem;color:#6b7280">לתשלום ניתן להשתמש ב-Bit / PayBox / העברה — צרו קשר לפרטים.</p>` : '<p style="margin-top:.75rem;color:#16a34a;font-weight:600">✅ אין חובות פתוחים — תודה!</p>'}
+      </div>`;
+    }
+
+    // Resources shared
+    if (b.resources && b.resources.length) {
+      html += `<div class="card">
+        <h2>📚 משאבים אישיים שלך</h2>
+        <ul class="session-list">
+          ${b.resources.map(r => `<li>
+            <div>
+              <strong>${esc(r.title)}</strong>
+              ${r.description ? `<br><small style="color:#6b7280">${esc(r.description)}</small>` : ''}
+            </div>
+            ${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener" style="background:#1B3A6B;color:#fff;padding:.4rem .9rem;border-radius:50px;text-decoration:none;font-size:.85rem">פתח ←</a>` : ''}
+          </li>`).join('')}
+        </ul>
+      </div>`;
+    }
+
+    // Notes from therapist (public-facing only)
+    if (b.note) {
+      html += `<div class="card" style="background:#fef9e7;border-color:#C9A84C">
+        <h2>💌 הודעה אישית</h2>
+        <p style="white-space:pre-wrap">${esc(b.note)}</p>
+      </div>`;
+    }
+
+    // CTA
+    html += `<div class="cta-section">
+      <h3>צריך משהו?</h3>
+      <p style="opacity:.85">אני זמין דרך וואטסאפ לשאלות מהירות, ביטולים או תיאומים.</p>
+      <a href="https://wa.me/972506415222?text=${encodeURIComponent('שלום גל, מ' + (b.firstName||b.name||''))}" target="_blank" rel="noopener" class="cta-btn wa-btn">📱 שיחה עם גל</a>
+    </div>
+
+    <div style="text-align:center;margin-top:1rem;padding:1rem">
+      <button class="print-btn" onclick="window.print()">🖨️ הדפסה / שמירה כ-PDF</button>
+    </div>`;
+
+    document.getElementById('content').innerHTML = html;
+  }
+
+  render(decodeBundle());
+})();
+</script>
+</body>
+</html>

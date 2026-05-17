@@ -370,6 +370,8 @@
     <a class="nav-link" onclick="openNotifications()" style="cursor:pointer"><span class="icon">🔔</span> התראות <span class="badge" id="crm-notif-badge" style="display:none;background:#dc2626;color:#fff;border-radius:50px;padding:0 .4rem;font-size:.7rem"></span></a>
     <a class="nav-link" onclick="openDocumentTemplates(null)" style="cursor:pointer"><span class="icon">📄</span> מסמכים</a>
     <a class="nav-link" onclick="openResources()" style="cursor:pointer"><span class="icon">📚</span> ספריית משאבים</a>
+    <a class="nav-link" onclick="openTimerSummary()" style="cursor:pointer"><span class="icon">⏱</span> שעון עבודה</a>
+    <a class="nav-link" onclick="openHotkeysHelp()" style="cursor:pointer"><span class="icon">⌨️</span> קיצורי דרך</a>
     <a class="nav-link" onclick="openICalExport()" style="cursor:pointer"><span class="icon">📤</span> ייצוא ל-Calendar</a>
     <a class="nav-link" onclick="openBackup()" style="cursor:pointer"><span class="icon">💾</span> גיבוי מלא</a>
     <a class="nav-link" onclick="openAuditLog()" style="cursor:pointer"><span class="icon">📋</span> יומן פעולות</a>
@@ -2563,6 +2565,7 @@ function viewClient(id){
       <button class="btn btn-sm" style="background:#fee2e2;color:#dc2626;border:1px solid #dc2626" onclick="openRiskAssessment('${c.id}')">🚨 הערכת סיכון</button>
       <button class="btn btn-sm" style="background:#f3e8ff;color:#7c3aed;border:1px solid #7c3aed" onclick="openGenogram('${c.id}')">🌳 Genogram</button>
       <button class="btn btn-sm" style="background:#dcfce7;color:#16a34a;border:1px solid #16a34a" onclick="openGoalTracker('${c.id}')">📊 מעקב יעדים</button>
+      <button class="btn btn-sm" style="background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;border:0;font-weight:700" onclick="openClientPortal('${c.id}')">🌐 פורטל לקוח</button>
       ${c.treatment?.primaryMethod ? `<span class="badge" style="background:#fef3c7;color:#854d0e;padding:.2rem .6rem;border-radius:50px;font-size:.8rem">🧭 ${(window.ClinicalSuite?.METHODS||[]).find(m=>m.k===c.treatment.primaryMethod)?.l||c.treatment.primaryMethod}</span>` : ''}
     </div>
 
@@ -2582,6 +2585,7 @@ function viewClient(id){
             <div style="display:flex;gap:.25rem">
               <button class="btn-icon" onclick="openSessionNotes('${s.id}')" title="רשומת פגישה SOAP" style="${s.notesData?.savedAt?'background:#dbeafe;color:#1B3A6B':''}">📔</button>
               ${s.voiceNote?.data ? `<button class="btn-icon" onclick="playVoiceNote('${s.id}')" title="האזנה" style="background:#fef3c7;color:#854d0e">🔊</button>` : `<button class="btn-icon" onclick="startVoiceNote('${s.id}')" title="הקלטה">🎤</button>`}
+              <button class="btn-icon" onclick="startTimer('${s.id}')" title="התחל שעון" style="background:#dcfce7;color:#16a34a">▶️</button>
               <button class="btn-icon" onclick="editSession('${s.id}')">✏</button>
             </div>
           </div>
