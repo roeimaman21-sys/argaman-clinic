@@ -26,8 +26,25 @@
   <script src="crm-performance.js" defer></script>
   <script src="crm-sections.js" defer></script>
   <!-- Quill — Rich text editor -->
-  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+  <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
+  <script>
+    window.ensureQuill = function() {
+      if (window.Quill) return Promise.resolve(window.Quill);
+      if (window.__quillLoading) return window.__quillLoading;
+      window.__quillLoading = new Promise((resolve, reject) => {
+        const css = document.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css';
+        document.head.appendChild(css);
+        const js = document.createElement('script');
+        js.src = 'https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js';
+        js.onload = () => resolve(window.Quill);
+        js.onerror = reject;
+        document.head.appendChild(js);
+      });
+      return window.__quillLoading;
+    };
+  </script>
   <style>
     /* Quill RTL + Hebrew + custom Argaman style */
     .ql-editor{direction:rtl;text-align:right;font-family:'Heebo','Arial',sans-serif;font-size:1rem;line-height:1.7;min-height:400px;background:#fff}
@@ -3144,8 +3161,8 @@ async function editStaticArticle(slug){
     </div>
   `);
 
-  // Initialize Quill editor after modal renders
-  setTimeout(() => {
+  // Initialize Quill editor after modal renders — lazy load if not yet loaded
+  (window.ensureQuill ? window.ensureQuill() : Promise.resolve()).then(() => setTimeout(() => {
     if (typeof Quill === 'undefined'){
       console.error('Quill not loaded');
       const editor = document.getElementById('art-quill-editor');
@@ -3173,7 +3190,7 @@ async function editStaticArticle(slug){
     quill.root.innerHTML = currentBody || '<p>התחל לכתוב את המאמר...</p>';
     // Store reference for save
     window._currentQuill = quill;
-  }, 100);
+  }, 100));
 }
 
 function syncHtmlToQuill(html){
