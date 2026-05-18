@@ -35,6 +35,7 @@
   <script src="payment-tools.js" defer></script>
   <script src="monthly-report.js" defer></script>
   <script src="undo-tools.js" defer></script>
+  <script src="csv-import.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -2759,7 +2760,8 @@ renderers.leads = function(){
         <div class="section-subtitle">${State.leads.length} סה״כ · ${State.leads.filter(l=>l.status==='new').length} חדשים</div>
       </div>
       <div class="flex gap-2">
-        <button class="btn btn-ghost" onclick="exportLeads()">⬇ CSV</button>
+        <button class="btn btn-ghost" onclick="exportLeads()">⬇ ייצא CSV</button>
+        <button class="btn btn-ghost" onclick="window.openCSVImport && window.openCSVImport()">⬆ ייבא CSV</button>
         <button class="btn btn-gold" onclick="quickAddLead()">+ ליד חדש</button>
       </div>
     </div>
