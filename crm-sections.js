@@ -265,7 +265,7 @@
                   ${r.tags?.length ? `<div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-top:.5rem">${r.tags.map(t => `<span style="background:#eff4ff;color:#1B3A6B;padding:.15rem .5rem;border-radius:50px;font-size:.75rem">${esc(t)}</span>`).join('')}</div>` : ''}
                 </div>
                 <div style="display:flex;gap:.4rem">
-                  <button onclick="window.CRMExtensions.Resources.shareTo('${r.id}')" title="שתף" style="background:#dcfce7;color:#16a34a;border:0;padding:.4rem .75rem;border-radius:8px;cursor:pointer;font-weight:600">📤 שתף</button>
+                  <button onclick="window.CRMExtensions.Resources.shareTo('${r.id}')" title="שתף" aria-label="שתף" style="background:#dcfce7;color:#16a34a;border:0;padding:.4rem .75rem;border-radius:8px;cursor:pointer;font-weight:600">📤 שתף</button>
                   <button onclick="if(confirm('למחוק?')){window.CRMExtensions.Resources.save(window.CRMExtensions.Resources.list().filter(x=>x.id!=='${r.id}'));goto('resources')}" title="מחק" style="background:#fee2e2;color:#dc2626;border:0;padding:.4rem .6rem;border-radius:8px;cursor:pointer">🗑️</button>
                 </div>
               </div>

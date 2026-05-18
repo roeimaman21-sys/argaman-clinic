@@ -487,8 +487,8 @@
               ${r.tags?.length ? `<div style="display:flex;gap:.25rem;flex-wrap:wrap;margin-top:.4rem">${r.tags.map(t => `<span style="background:#eff4ff;color:#1B3A6B;padding:.1rem .5rem;border-radius:50px;font-size:.7rem">${esc(t)}</span>`).join('')}</div>` : ''}
             </div>
             <div style="display:flex;gap:.25rem">
-              <button onclick="window.CRMExtensions.Resources.shareTo('${r.id}')" title="שתף עם לקוח" style="background:#dcfce7;color:#16a34a;border:0;padding:.3rem .6rem;border-radius:6px;cursor:pointer">📤</button>
-              <button onclick="window.CRMExtensions.Resources.del('${r.id}')" title="מחק" style="background:#fee2e2;color:#dc2626;border:0;padding:.3rem .6rem;border-radius:6px;cursor:pointer">🗑️</button>
+              <button onclick="window.CRMExtensions.Resources.shareTo('${r.id}')" title="שתף עם לקוח" aria-label="שתף עם לקוח" style="background:#dcfce7;color:#16a34a;border:0;padding:.3rem .6rem;border-radius:6px;cursor:pointer">📤</button>
+              <button onclick="window.CRMExtensions.Resources.del('${r.id}')" title="מחק" aria-label="מחק" style="background:#fee2e2;color:#dc2626;border:0;padding:.3rem .6rem;border-radius:6px;cursor:pointer">🗑️</button>
             </div>
           </div>
         </div>

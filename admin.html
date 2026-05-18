@@ -187,7 +187,11 @@
     .btn-danger:hover{filter:brightness(.92)}
     .btn-success{background:var(--green);color:white}
     .btn-sm{padding:.35rem .65rem;font-size:.8rem}
-    .btn-icon{width:32px;height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:var(--gray-100);color:var(--gray-600);border-radius:var(--r-sm);transition:all var(--tx)}
+    .btn-icon{width:32px;height:32px;min-width:32px;min-height:32px;padding:0;display:inline-flex;align-items:center;justify-content:center;background:var(--gray-100);color:var(--gray-600);border-radius:var(--r-sm);transition:all var(--tx)}
+    /* WCAG 2.1 AA mobile touch targets ≥44px */
+    @media (max-width: 768px), (pointer: coarse) {
+      .btn-icon{width:44px;height:44px;min-width:44px;min-height:44px}
+    }
     .btn-icon:hover{background:var(--gray-200);color:var(--gray-800)}
     .btn-icon.danger:hover{background:var(--red-light);color:var(--red)}
     /* BADGES */
@@ -411,8 +415,8 @@
       <kbd style="position:absolute;left:.5rem;top:50%;transform:translateY(-50%);background:#f3f4f6;padding:.15rem .4rem;border-radius:4px;border:1px solid #d1d5db;font-family:monospace;font-size:.7rem;color:#6b7280;pointer-events:none">⌘K</kbd>
     </div>
     <div class="topbar-actions">
-      <button class="topbar-btn" onclick="toggleDarkMode()" title="מצב לילה/יום" style="border:0;cursor:pointer" id="dark-toggle">🌙</button>
-      <button class="topbar-btn" onclick="showShortcutsHelp()" title="קיצורי מקלדת (Shift+?)" style="border:0;cursor:pointer">⌨️</button>
+      <button class="topbar-btn" onclick="toggleDarkMode()" title="מצב לילה/יום" aria-label="מצב לילה/יום" style="border:0;cursor:pointer" id="dark-toggle">🌙</button>
+      <button class="topbar-btn" onclick="showShortcutsHelp()" title="קיצורי מקלדת (Shift+?)" aria-label="קיצורי מקלדת (Shift+?)" style="border:0;cursor:pointer">⌨️</button>
       <span id="sync-status" class="topbar-btn" style="background:var(--gray-100)" title="סטטוס סנכרון">☁️ <span id="sync-text">מתחבר...</span></span>
       <span class="topbar-date" id="topbar-date"></span>
       <a href="index.html" target="_blank" class="topbar-btn">🌐 לאתר</a>
@@ -1697,7 +1701,7 @@ renderers.dashboard = function(){
                   ${s.paid ? '<span class="badge badge-paid">שולם</span>' : ''}
                 </div>
               </div>
-              <button class="btn-icon" onclick="event.stopPropagation();markSessionDone('${s.id}')" title="סמן כבוצעה">✓</button>
+              <button class="btn-icon" onclick="event.stopPropagation();markSessionDone('${s.id}')" title="סמן כבוצעה" aria-label="סמן כבוצעה">✓</button>
             </div>
           </div>`;
         }).join('') : '<div class="card empty">אין פגישות מתוכננות להיום</div>'}
@@ -1794,9 +1798,9 @@ function renderLeadsList(){
         <td class="text-xs text-muted">${fmtRelative(l.createdAt)}</td>
         <td onclick="event.stopPropagation()">
           <div class="row-actions">
-            ${l.phone?`<a class="btn-icon" href="https://wa.me/972${(l.phone||'').replace(/[^0-9]/g,'').replace(/^0/,'')}" target="_blank" title="וואטסאפ">📱</a>`:''}
-            ${l.phone?`<a class="btn-icon" href="tel:${l.phone}" title="חיוג">📞</a>`:''}
-            <button class="btn-icon danger" onclick="deleteLead('${l.id}')" title="מחיקה">🗑</button>
+            ${l.phone?`<a class="btn-icon" href="https://wa.me/972${(l.phone||'').replace(/[^0-9]/g,'').replace(/^0/,'')}" target="_blank" title="וואטסאפ" aria-label="וואטסאפ">📱</a>`:''}
+            ${l.phone?`<a class="btn-icon" href="tel:${l.phone}" title="חיוג" aria-label="חיוג">📞</a>`:''}
+            <button class="btn-icon danger" onclick="deleteLead('${l.id}')" title="מחיקה" aria-label="מחיקה">🗑</button>
           </div>
         </td>
       </tr>
@@ -2031,8 +2035,8 @@ function renderClientsList(statusFilter){
         <td class="text-xs text-muted">${fmtDate(c.startDate)}</td>
         <td onclick="event.stopPropagation()">
           <div class="row-actions">
-            ${c.phone?`<a class="btn-icon" href="https://wa.me/972${c.phone.replace(/[^0-9]/g,'').replace(/^0/,'')}" target="_blank" title="וואטסאפ">📱</a>`:''}
-            <button class="btn-icon" onclick="addSessionForClient('${c.id}')" title="פגישה חדשה">📅</button>
+            ${c.phone?`<a class="btn-icon" href="https://wa.me/972${c.phone.replace(/[^0-9]/g,'').replace(/^0/,'')}" target="_blank" title="וואטסאפ" aria-label="וואטסאפ">📱</a>`:''}
+            <button class="btn-icon" onclick="addSessionForClient('${c.id}')" title="פגישה חדשה" aria-label="פגישה חדשה">📅</button>
           </div>
         </td>
       </tr>`;
@@ -2398,8 +2402,8 @@ function renderDocList(docs){
         <div style="font-size:.75rem;color:#6b7280">${d.type} · ${(d.size/1024).toFixed(0)}KB · ${fmtDate(d.uploaded)}</div>
       </div>
       <div style="display:flex;gap:.4rem">
-        <button class="btn-icon" onclick="downloadDoc(${i})" title="הורד">⬇️</button>
-        <button class="btn-icon btn-danger-icon" onclick="deleteDoc('${i}')" title="מחק">🗑</button>
+        <button class="btn-icon" onclick="downloadDoc(${i})" title="הורד" aria-label="הורד">⬇️</button>
+        <button class="btn-icon btn-danger-icon" onclick="deleteDoc('${i}')" title="מחק" aria-label="מחק">🗑</button>
       </div>
     </div>
   `).join('');
@@ -2594,9 +2598,9 @@ function viewClient(id){
               ${s.paid?'<span class="badge badge-paid">שולם</span>':'<span class="badge badge-unpaid">לא שולם</span>'}
             </div>
             <div style="display:flex;gap:.25rem">
-              <button class="btn-icon" onclick="openSessionNotes('${s.id}')" title="רשומת פגישה SOAP" style="${s.notesData?.savedAt?'background:#dbeafe;color:#1B3A6B':''}">📔</button>
-              ${s.voiceNote?.data ? `<button class="btn-icon" onclick="playVoiceNote('${s.id}')" title="האזנה" style="background:#fef3c7;color:#854d0e">🔊</button>` : `<button class="btn-icon" onclick="startVoiceNote('${s.id}')" title="הקלטה">🎤</button>`}
-              <button class="btn-icon" onclick="startTimer('${s.id}')" title="התחל שעון" style="background:#dcfce7;color:#16a34a">▶️</button>
+              <button class="btn-icon" onclick="openSessionNotes('${s.id}')" title="רשומת פגישה SOAP" aria-label="רשומת פגישה SOAP" style="${s.notesData?.savedAt?'background:#dbeafe;color:#1B3A6B':''}">📔</button>
+              ${s.voiceNote?.data ? `<button class="btn-icon" onclick="playVoiceNote('${s.id}')" title="האזנה" aria-label="האזנה" style="background:#fef3c7;color:#854d0e">🔊</button>` : `<button class="btn-icon" onclick="startVoiceNote('${s.id}')" title="הקלטה" aria-label="הקלטה">🎤</button>`}
+              <button class="btn-icon" onclick="startTimer('${s.id}')" title="התחל שעון" aria-label="התחל שעון" style="background:#dcfce7;color:#16a34a">▶️</button>
               <button class="btn-icon" onclick="editSession('${s.id}')">✏</button>
             </div>
           </div>
@@ -2814,9 +2818,9 @@ renderers.sessions = function(){
         <div class="section-subtitle">${State.sessions.length} סה״כ · ${State.sessions.filter(s=>s.date===new Date().toISOString().slice(0,10)&&s.status==='scheduled').length} היום</div>
       </div>
       <div class="flex gap-2" style="flex-wrap:wrap">
-        <button class="btn btn-sm" onclick="printSessionsView('today')" title="הדפס פגישות היום">🖨️ היום</button>
-        <button class="btn btn-sm" onclick="printSessionsView('week')" title="הדפס פגישות השבוע">🖨️ שבוע</button>
-        <button class="btn btn-sm" onclick="printSessionsView('month')" title="הדפס חודש קדימה">🖨️ חודש</button>
+        <button class="btn btn-sm" onclick="printSessionsView('today')" title="הדפס פגישות היום" aria-label="הדפס פגישות היום">🖨️ היום</button>
+        <button class="btn btn-sm" onclick="printSessionsView('week')" title="הדפס פגישות השבוע" aria-label="הדפס פגישות השבוע">🖨️ שבוע</button>
+        <button class="btn btn-sm" onclick="printSessionsView('month')" title="הדפס חודש קדימה" aria-label="הדפס חודש קדימה">🖨️ חודש</button>
         <button class="btn btn-gold" onclick="addSessionModal()">+ פגישה חדשה</button>
       </div>
     </div>
@@ -3010,8 +3014,8 @@ function renderStaticArticles(){
         <td><span class="badge">${a.category}</span></td>
         <td class="text-xs">${fmtDate(a.date)}</td>
         <td><div class="row-actions">
-          <button class="btn-icon" onclick="editStaticArticle('${a.slug}')" title="ערוך">✏️</button>
-          <a class="btn-icon" href="${a.slug}.html" target="_blank" title="צפה באתר">🔗</a>
+          <button class="btn-icon" onclick="editStaticArticle('${a.slug}')" title="ערוך" aria-label="ערוך">✏️</button>
+          <a class="btn-icon" href="${a.slug}.html" target="_blank" title="צפה באתר" aria-label="צפה באתר">🔗</a>
         </div></td>
       </tr>`;
     }).join('')}</tbody></table></div>`;
@@ -4090,8 +4094,8 @@ renderers['landing-pages'] = function(){
         <p class="page-subtitle">${counts.all} דפים · ${counts.city} עירוניים (${CITY_DATA.length} ערים × ${SERVICE_TYPES.length} סוגים) · ${counts.pillar} שיטות · ${counts.article} מאמרים</p>
       </div>
       <div>
-        <button class="btn btn-sm" onclick="exportLandingPagesCSV()" title="ייצוא לקובץ CSV">⬇️ CSV</button>
-        <button class="btn btn-sm" onclick="bulkUpdateRanks()" title="עדכון מהיר של מיקומים">📊 עדכון אצווה</button>
+        <button class="btn btn-sm" onclick="exportLandingPagesCSV()" title="ייצוא לקובץ CSV" aria-label="ייצוא לקובץ CSV">⬇️ CSV</button>
+        <button class="btn btn-sm" onclick="bulkUpdateRanks()" title="עדכון מהיר של מיקומים" aria-label="עדכון מהיר של מיקומים">📊 עדכון אצווה</button>
       </div>
     </div>
 
@@ -4109,10 +4113,10 @@ renderers['landing-pages'] = function(){
     <div class="lp-toolbar">
       <div class="lp-search-wrap"><input id="lp-search" type="search" placeholder="חיפוש לפי עיר / שירות / מילת מפתח..." value="${st.search}"></div>
       <div class="lp-view-tabs" role="tablist">
-        <button class="${st.view==='cities'?'active':''}" onclick="setLpView('cities')" title="קיבוץ לפי עיר">🏘 ערים</button>
-        <button class="${st.view==='cards'?'active':''}" onclick="setLpView('cards')" title="תצוגת כרטיסים">🎴 כרטיסים</button>
-        <button class="${st.view==='table'?'active':''}" onclick="setLpView('table')" title="טבלה מלאה">📋 טבלה</button>
-        <button class="${st.view==='top'?'active':''}" onclick="setLpView('top')" title="מצטיינים">🏆 מובילים</button>
+        <button class="${st.view==='cities'?'active':''}" onclick="setLpView('cities')" title="קיבוץ לפי עיר" aria-label="קיבוץ לפי עיר">🏘 ערים</button>
+        <button class="${st.view==='cards'?'active':''}" onclick="setLpView('cards')" title="תצוגת כרטיסים" aria-label="תצוגת כרטיסים">🎴 כרטיסים</button>
+        <button class="${st.view==='table'?'active':''}" onclick="setLpView('table')" title="טבלה מלאה" aria-label="טבלה מלאה">📋 טבלה</button>
+        <button class="${st.view==='top'?'active':''}" onclick="setLpView('top')" title="מצטיינים" aria-label="מצטיינים">🏆 מובילים</button>
       </div>
       <select id="lp-sort" onchange="window.__lpState.sort=this.value;renderers['landing-pages']()" style="padding:.4rem;border:1px solid #e5e7eb;border-radius:6px;font-size:.85rem">
         <option value="leads-desc" ${st.sort==='leads-desc'?'selected':''}>מיון: לידים</option>
@@ -4319,7 +4323,7 @@ function renderLpTableView(pages){
           <td>${lpStatusBadge(s.status||'active')}</td>
           <td style="font-size:.75rem;color:#6b7280">${lpRelativeTime(s.lastUpdated)}</td>
           <td><div style="display:flex;gap:.2rem">
-            <button class="btn btn-sm" onclick="quickEditPage('${p.url}')" title="עריכה מלאה">✏️</button>
+            <button class="btn btn-sm" onclick="quickEditPage('${p.url}')" title="עריכה מלאה" aria-label="עריכה מלאה">✏️</button>
             <a class="btn btn-sm" href="${p.url}" target="_blank" title="צפה בדף">🔗</a>
           </div></td>
         </tr>`;
