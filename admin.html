@@ -29,6 +29,7 @@
   <script src="cloud-realtime.js" defer></script>
   <script src="role-guard.js" defer></script>
   <script src="audit-log.js" defer></script>
+  <script src="presence.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -272,6 +273,7 @@
     .toast.info{border-right-color:var(--blue);background:linear-gradient(90deg,#eff6ff,#fff 30%);color:#1e3a8a}
     .toast:hover{transform:translateY(-2px)}
     @keyframes toastIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
     @media (max-width:768px){.toast-wrap{top:auto;bottom:20px;width:calc(100% - 2rem)}.toast{font-size:.85rem;padding:.7rem 1rem}}
     /* RECORDS */
     .record-card{background:white;border-radius:var(--r);padding:1rem 1.25rem;box-shadow:var(--sh-sm);border-right:3px solid var(--gold);transition:all var(--tx);margin-bottom:.75rem}
@@ -551,6 +553,16 @@ async function supaSignIn(email, password){
       try { window.startRealtime(); } catch(e) { console.warn('Realtime start failed', e); }
     }
   }, 1200);
+  // Start presence tracking (who's online now)
+  setTimeout(() => {
+    if (window.Presence && typeof window.Presence.start === 'function') {
+      try { window.Presence.start(); } catch(e) { console.warn('Presence start failed', e); }
+    }
+  }, 2000);
+  // Onboarding wizard for first-time users
+  setTimeout(() => {
+    try { maybeShowOnboarding(); } catch(e) { console.warn('Onboarding failed', e); }
+  }, 2500);
   // Apply role-based UI restrictions (developer can't see PHI)
   setTimeout(() => {
     if (window.RoleGuard && typeof window.RoleGuard.init === 'function') {
@@ -662,6 +674,7 @@ async function cloudPull(){
 }
 
 let pushQueue = {}; let pushTimer = null;
+const _auditDebounce = {};
 async function cloudPush(lsKey, value){
   if (!supa || window.cloudSuppress) return;
   const cloudKey = Object.keys(LS).find(k => LS[k] === lsKey);
@@ -671,11 +684,19 @@ async function cloudPush(lsKey, value){
   setSyncStatus('syncing', 'שומר...');
   pushTimer = setTimeout(async ()=>{
     try {
+      const keysToAudit = Object.keys(pushQueue);
       const rows = Object.entries(pushQueue).map(([key, value]) => ({ key, value }));
       pushQueue = {};
       const { error } = await supa.from('argaman_data').upsert(rows, { onConflict: 'key' });
       if (error) throw error;
       setSyncStatus('synced', 'מסונכרן');
+      // Audit log — debounce per key to 1 entry per 10s
+      const now = Date.now();
+      for (const k of keysToAudit){
+        if (_auditDebounce[k] && now - _auditDebounce[k] < 10000) continue;
+        _auditDebounce[k] = now;
+        try { window.Audit && window.Audit.logAction('update', k, null, null); } catch(_){}
+      }
     } catch (e){
       console.error('cloudPush failed:', e);
       setSyncStatus('error', 'שגיאת שמירה');
@@ -1884,12 +1905,171 @@ renderers.profile = async function(){
       <p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">הסיסמה תשתנה בכל המכשירים מיד.</p>
     </div>
 
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="color:var(--navy);margin-bottom:.75rem">🛡️ אימות דו-שלבי (2FA)</h3>
+      <div id="mfa-status">⏳ טוען...</div>
+    </div>
+
     <div class="card">
       <h3 style="color:var(--navy);margin-bottom:.75rem">📜 היסטוריית התחברויות שלי (אחרונות)</h3>
       <div id="my-login-history">⏳ טוען...</div>
     </div>
   `;
   loadMyLoginHistory();
+  loadMfaStatus();
+};
+
+async function loadMfaStatus(){
+  const el = document.getElementById('mfa-status');
+  if (!el || !window.supa) return;
+  try {
+    const { data, error } = await window.supa.auth.mfa.listFactors();
+    if (error) throw error;
+    const totp = (data?.totp || []).filter(f => f.status === 'verified');
+    if (totp.length > 0){
+      el.innerHTML = `
+        <div style="background:#dcfce7;border-right:4px solid #16a34a;padding:.75rem;border-radius:6px;margin-bottom:.75rem">
+          <strong>✅ 2FA פעיל</strong> — ${totp.length} מכשיר${totp.length===1?'':'ים'} רשומ${totp.length===1?'':'ים'}
+        </div>
+        ${totp.map(f => `<div style="display:flex;justify-content:space-between;padding:.5rem;border-bottom:1px solid #f3f4f6">
+          <span>${escapeHtml(f.friendly_name || 'TOTP')}</span>
+          <button class="btn" style="font-size:.75rem;padding:.2rem .5rem;color:#dc2626" onclick="unenrollMfa('${f.id}')">הסר</button>
+        </div>`).join('')}
+      `;
+    } else {
+      el.innerHTML = `
+        <div style="background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem;border-radius:6px;margin-bottom:.75rem;font-size:.85rem">
+          <strong>⚠️ 2FA לא פעיל</strong> — מומלץ במיוחד לבעלים. סיסמה בלבד = שכבת הגנה אחת.
+        </div>
+        <button class="btn btn-gold" onclick="startMfaEnroll()">🛡️ הפעל אימות דו-שלבי</button>
+      `;
+    }
+  } catch(e){
+    el.innerHTML = `<p style="color:#dc2626">שגיאה: ${escapeHtml(e.message)}</p>`;
+  }
+}
+
+window.startMfaEnroll = async function(){
+  try {
+    const { data, error } = await window.supa.auth.mfa.enroll({
+      factorType: 'totp',
+      friendlyName: navigator.platform + ' ' + new Date().toISOString().slice(0,10)
+    });
+    if (error) throw error;
+    const factorId = data.id;
+    const qr = data.totp.qr_code;
+    const secret = data.totp.secret;
+    const html = `
+      <div class="modal-content" style="max-width:500px">
+        <h2 style="color:var(--navy);margin-bottom:1rem">🛡️ הפעלת 2FA</h2>
+        <ol style="font-size:.85rem;line-height:1.8;padding-right:1.2rem;margin-bottom:1rem">
+          <li>התקן Google Authenticator / Microsoft Authenticator / Authy</li>
+          <li>סרוק את ה-QR עם האפליקציה</li>
+          <li>הזן את הקוד בן 6 הספרות שמופיע באפליקציה</li>
+        </ol>
+        <div style="text-align:center;background:#fff;padding:1rem;border:1px solid #e5e7eb;border-radius:8px;margin-bottom:1rem">
+          <img src="${qr}" alt="QR Code" style="max-width:200px">
+          <div style="font-family:monospace;font-size:.75rem;color:#6b7280;margin-top:.5rem;word-break:break-all">${secret}</div>
+        </div>
+        <input id="mfa-code" placeholder="קוד 6 ספרות" maxlength="6" inputmode="numeric" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:1rem;text-align:center;font-size:1.2rem;letter-spacing:.5rem">
+        <div style="display:flex;gap:.5rem;justify-content:flex-end">
+          <button class="btn" onclick="cancelMfa('${factorId}')">ביטול</button>
+          <button class="btn btn-gold" onclick="verifyMfaEnroll('${factorId}')">אמת והפעל</button>
+        </div>
+      </div>`;
+    modal(html);
+    setTimeout(()=> document.getElementById('mfa-code')?.focus(), 100);
+  } catch(e){
+    toast('שגיאה: ' + e.message, 'error');
+  }
+};
+
+window.verifyMfaEnroll = async function(factorId){
+  const code = document.getElementById('mfa-code').value.trim();
+  if (code.length !== 6){ toast('קוד חייב להיות 6 ספרות','error'); return; }
+  try {
+    const { data: ch, error: chErr } = await window.supa.auth.mfa.challenge({ factorId });
+    if (chErr) throw chErr;
+    const { error: vErr } = await window.supa.auth.mfa.verify({
+      factorId, challengeId: ch.id, code
+    });
+    if (vErr) throw vErr;
+    try { window.Audit && window.Audit.logLogin('2fa_enrolled'); } catch(_){}
+    toast('✅ 2FA הופעל בהצלחה','success');
+    closeModal();
+    loadMfaStatus();
+  } catch(e){
+    try { window.Audit && window.Audit.logLogin('2fa_failed', null, { stage:'enroll' }); } catch(_){}
+    toast('שגיאה: ' + e.message, 'error');
+  }
+};
+
+window.cancelMfa = async function(factorId){
+  try { await window.supa.auth.mfa.unenroll({ factorId }); } catch(_){}
+  closeModal();
+};
+
+/* ─── ONBOARDING WIZARD ─── */
+async function maybeShowOnboarding(){
+  if (!window.supa) return;
+  const user = (await window.supa.auth.getUser())?.data?.user;
+  if (!user) return;
+  const flagKey = 'argaman_onboarded_' + user.id;
+  if (localStorage.getItem(flagKey) === '1') return;
+  const { data: meRow } = await window.supa.from('argaman_users')
+    .select('*').eq('user_id', user.id).maybeSingle();
+  const currentName = meRow?.display_name || '';
+  const roleLabels = { owner:'בעלים', staff:'צוות', developer:'מפתח' };
+  const html = `
+    <div class="modal-content" style="max-width:550px">
+      <div style="background:linear-gradient(135deg,#1B3A6B,#3b82f6);color:#fff;padding:1.5rem;margin:-1.5rem -1.5rem 1rem -1.5rem;border-radius:8px 8px 0 0;text-align:center">
+        <div style="font-size:2.5rem">🎉</div>
+        <h2 style="margin:.5rem 0">ברוך הבא ל-CRM קליניקת ארגמן!</h2>
+        <p style="opacity:.9;font-size:.9rem">תפקידך: <strong>${roleLabels[meRow?.role]||meRow?.role||'משתמש'}</strong></p>
+      </div>
+      <p style="margin-bottom:1rem;color:#374151">נא לאשר את הפרטים שלך לפני שמתחילים:</p>
+      <label style="display:block;font-weight:600;margin-bottom:.3rem">איך תרצה שיקראו לך במערכת?</label>
+      <input id="onb-name" value="${escapeAttr(currentName)}" placeholder="שם תצוגה" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:1rem">
+      <div style="background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem;border-radius:6px;margin-bottom:1rem;font-size:.85rem;color:#78350f">
+        💡 <strong>מומלץ:</strong> לאחר שתסיים, לך ל-👤 הפרופיל שלי → הפעל אימות דו-שלבי (2FA).
+      </div>
+      <div style="display:flex;gap:.5rem;justify-content:flex-end">
+        <button class="btn" onclick="skipOnboarding()">דלג</button>
+        <button class="btn btn-gold" onclick="completeOnboarding()">המשך</button>
+      </div>
+    </div>`;
+  modal(html);
+}
+
+window.skipOnboarding = async function(){
+  const user = (await window.supa.auth.getUser())?.data?.user;
+  if (user) localStorage.setItem('argaman_onboarded_' + user.id, '1');
+  closeModal();
+};
+
+window.completeOnboarding = async function(){
+  const name = document.getElementById('onb-name').value.trim();
+  const user = (await window.supa.auth.getUser())?.data?.user;
+  if (name && user){
+    await window.supa.from('argaman_users')
+      .update({ display_name: name, updated_at: new Date().toISOString() })
+      .eq('user_id', user.id);
+    window.CURRENT_USER_DISPLAY_NAME = name;
+  }
+  if (user) localStorage.setItem('argaman_onboarded_' + user.id, '1');
+  closeModal();
+  toast('✅ הכל מוכן! מועבר לדשבורד...','success');
+  setTimeout(()=> { try { renderers[currentSection]?.(); } catch(_){} }, 500);
+};
+
+window.unenrollMfa = async function(factorId){
+  if (!confirm('להסיר את 2FA? זה יחליש את האבטחה.')) return;
+  try {
+    const { error } = await window.supa.auth.mfa.unenroll({ factorId });
+    if (error) throw error;
+    toast('2FA הוסר','info');
+    loadMfaStatus();
+  } catch(e){ toast('שגיאה: ' + e.message,'error'); }
 };
 
 window.saveMyProfile = async function(){
