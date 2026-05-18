@@ -28,6 +28,7 @@
   <script src="crm-sections.js" defer></script>
   <script src="cloud-realtime.js" defer></script>
   <script src="role-guard.js" defer></script>
+  <script src="audit-log.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -422,7 +423,10 @@
     <a class="nav-link" data-section="marketing"><span class="icon">📣</span> שיווק ו-SEO</a>
 
     <div class="sidebar-section">מערכת</div>
+    <a class="nav-link" data-section="profile"><span class="icon">👤</span> הפרופיל שלי</a>
     <a class="nav-link" data-section="users" data-owner-only="1"><span class="icon">👥</span> ניהול משתמשים</a>
+    <a class="nav-link" data-section="login-history" data-owner-only="1"><span class="icon">📜</span> היסטוריית התחברויות</a>
+    <a class="nav-link" data-section="action-log" data-owner-only="1"><span class="icon">📋</span> יומן פעולות מערכת</a>
     <a class="nav-link" data-section="security"><span class="icon">🔒</span> אבטחה</a>
     <a class="nav-link" data-section="audit"><span class="icon">📋</span> יומן פעולות</a>
     <a class="nav-link" data-section="settings"><span class="icon">⚙️</span> הגדרות</a>
@@ -510,6 +514,7 @@ async function supaResetPassword(){
       redirectTo: window.location.origin + '/admin.html'
     });
     if (error) throw error;
+    try { window.Audit && window.Audit.logLogin('password_reset_requested', email); } catch(_){}
     alert('✉ נשלח אליך מייל עם קישור לאיפוס סיסמה. בדוק תיבת דואר נכנס וגם ספאם.');
   } catch(e) {
     alert('שגיאה: ' + e.message);
@@ -915,6 +920,8 @@ async function doLogin(){
       } else {
         err.textContent = `✗ אימייל או סיסמה שגויים (נותרו ${remaining} ניסיונות)`;
       }
+      // Server-side audit
+      try { window.Audit && window.Audit.logLogin('login_failed', email, { reason: e?.message?.slice(0,200) }); } catch(_){}
       passEl.value = ''; passEl.focus();
       return;
     }
@@ -939,6 +946,7 @@ async function doLogin(){
     sessionStorage.setItem(LS.authed, '1');
     sessionStorage.setItem('argaman_session_started', Date.now().toString());
     ArgSec.auditLog('login_success');
+    try { window.Audit && window.Audit.logLogin('login_success', email); } catch(_){}
 
     // 5) Start session timeout monitor
     ArgSec.startSessionMonitor((reason) => {
@@ -969,9 +977,11 @@ async function doLogin(){
   }
 }
 
-function doLogout(){
+async function doLogout(){
   if (!confirm('לצאת מהמערכת?')) return;
   ArgSec.auditLog('logout');
+  try { await (window.Audit && window.Audit.logLogin('logout')); } catch(_){}
+  try { await window.supa?.auth?.signOut(); } catch(_){}
   ArgSec.stopSessionMonitor();
   SESSION_ENC_KEY = null;
   sessionStorage.removeItem(LS.authed);
@@ -1716,17 +1726,13 @@ window.openAddUserModal = function(){
   const html = `
     <div class="modal-content" style="max-width:500px">
       <h2 style="color:var(--navy);margin-bottom:1rem">➕ הוספת משתמש חדש</h2>
-      <div style="background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem 1rem;border-radius:6px;margin-bottom:1rem;font-size:.85rem;color:#78350f">
-        <strong>⚠️ שים לב:</strong> פעולה זו תיצור משתמש חדש ב-Supabase Auth.<br>
-        אם הרישום ב-Supabase דורש אישור אימייל — המשתמש יקבל מייל אישור.<br>
-        אחרת המשתמש יוכל להיכנס מיד.
+      <div style="background:#dbeafe;border-right:4px solid #2563eb;padding:.75rem 1rem;border-radius:6px;margin-bottom:1rem;font-size:.85rem;color:#1e3a8a">
+        <strong>📧 הזמנה במייל:</strong> נוצר משתמש עם סיסמה אקראית חזקה, והמשתמש יקבל מייל "הגדרת סיסמה" — לוחץ → קובע סיסמה משלו.
       </div>
       <label style="display:block;margin-bottom:.5rem;font-weight:600">שם תצוגה</label>
       <input id="newuser-name" placeholder="לדוגמה: דנה כהן" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
       <label style="display:block;margin-bottom:.5rem;font-weight:600">אימייל</label>
       <input id="newuser-email" type="email" placeholder="user@example.com" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
-      <label style="display:block;margin-bottom:.5rem;font-weight:600">סיסמה זמנית (מינ' 8 תווים)</label>
-      <input id="newuser-pass" type="text" placeholder="המשתמש יוכל לשנות אחרי כניסה ראשונה" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
       <label style="display:block;margin-bottom:.5rem;font-weight:600">תפקיד</label>
       <select id="newuser-role" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:1rem">
         <option value="staff">צוות — רואה הכל</option>
@@ -1744,22 +1750,24 @@ window.openAddUserModal = function(){
 window.saveNewUser = async function(){
   const name = document.getElementById('newuser-name').value.trim();
   const email = document.getElementById('newuser-email').value.trim().toLowerCase();
-  const pass = document.getElementById('newuser-pass').value;
   const role = document.getElementById('newuser-role').value;
-  if (!name || !email || !pass){ toast('יש למלא את כל השדות','error'); return; }
-  if (pass.length < 8){ toast('סיסמה חייבת להיות מינ\' 8 תווים','error'); return; }
+  if (!name || !email){ toast('יש למלא שם ואימייל','error'); return; }
   if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)){ toast('אימייל לא תקין','error'); return; }
   if (!window.supabase || !window.SUPA_URL || !window.SUPA_ANON_KEY){
     toast('Supabase לא מוגדר','error'); return;
   }
-  toast('יוצר משתמש...','info');
+  toast('יוצר משתמש ושולח הזמנה...','info');
   try {
-    // Create temporary client to avoid replacing Gal's session
+    // Generate strong random password (user will reset via email)
+    const randomPass = Array.from(crypto.getRandomValues(new Uint8Array(24)))
+      .map(b => b.toString(36)).join('').slice(0, 32) + 'Aa1!';
+
+    // Temp client so Gal's session stays
     const tempClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY, {
       auth: { persistSession: false, autoRefreshToken: false }
     });
     const { data: signUpData, error: signUpError } = await tempClient.auth.signUp({
-      email, password: pass,
+      email, password: randomPass,
       options: { data: { display_name: name } }
     });
     if (signUpError){
@@ -1768,20 +1776,27 @@ window.saveNewUser = async function(){
     }
     const newUserId = signUpData?.user?.id;
     if (!newUserId){
-      toast('המשתמש נוצר אבל ה-ID לא חזר. בדוק ב-Supabase Dashboard.','warning');
+      toast('המשתמש נוצר אבל ה-ID לא חזר.','warning');
       closeModal();
       return;
     }
-    // Insert role into argaman_users (using Gal's authenticated session)
+    // Insert role + display name into argaman_users (Gal's session)
     const canSeePhi = role !== 'developer';
     const { error: insertError } = await window.supa.from('argaman_users').insert({
       user_id: newUserId, email, role, display_name: name, can_see_phi: canSeePhi
     });
     if (insertError){
-      toast('המשתמש נוצר ב-Auth אבל לא הוקצה תפקיד: ' + insertError.message, 'warning');
-    } else {
-      toast('✅ המשתמש נוצר בהצלחה','success');
+      toast('משתמש נוצר ב-Auth אבל לא הוקצה תפקיד: ' + insertError.message, 'warning');
     }
+    // Send password setup email (acts as invitation)
+    try {
+      await tempClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/admin.html'
+      });
+    } catch(e){ console.warn('Reset email failed:', e); }
+
+    try { window.Audit && window.Audit.logAction('create', 'user', newUserId, name, { role, email }); } catch(_){}
+    toast('✅ המשתמש נוצר. נשלח מייל להגדרת סיסמה.','success');
     closeModal();
     await loadUsersList();
   } catch(e){
@@ -1828,12 +1843,167 @@ window.saveUserEdit = async function(userId){
       display_name: name, role, can_see_phi: phi, updated_at: new Date().toISOString()
     }).eq('user_id', userId);
     if (error) throw error;
+    try { window.Audit && window.Audit.logAction('update', 'user', userId, name, { role, can_see_phi: phi }); } catch(_){}
     toast('✅ עודכן','success');
     closeModal();
     await loadUsersList();
   } catch(e){
     toast('שגיאה: ' + e.message, 'error');
   }
+};
+
+/* ─── PROFILE (every user) ───────────────────── */
+renderers.profile = async function(){
+  const root = document.getElementById('main-content');
+  const user = (await window.supa?.auth?.getUser())?.data?.user;
+  if (!user){ root.innerHTML = '<div class="card">לא מחובר</div>'; return; }
+  const { data: meRow } = await window.supa.from('argaman_users')
+    .select('*').eq('user_id', user.id).maybeSingle();
+  const roleLabels = { owner:'בעלים', staff:'צוות', developer:'מפתח' };
+  const roleColors = { owner:'#1B3A6B', staff:'#16a34a', developer:'#7c3aed' };
+  root.innerHTML = `
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">👤 הפרופיל שלי</h1>
+        <div class="section-subtitle">${escapeHtml(user.email)}</div>
+      </div>
+      <span style="background:${roleColors[meRow?.role]||'#6b7280'};color:#fff;padding:.4rem .9rem;border-radius:50px;font-weight:700">${roleLabels[meRow?.role]||meRow?.role||'משתמש'}</span>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="color:var(--navy);margin-bottom:.75rem">שם תצוגה</h3>
+      <input id="profile-name" value="${escapeAttr(meRow?.display_name||'')}" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
+      <button class="btn btn-gold" onclick="saveMyProfile()">שמור שם</button>
+    </div>
+
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="color:var(--navy);margin-bottom:.75rem">🔐 שינוי סיסמה</h3>
+      <input id="profile-newpass" type="password" placeholder="סיסמה חדשה (מינ' 8 תווים)" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
+      <input id="profile-newpass2" type="password" placeholder="אישור סיסמה" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
+      <button class="btn btn-gold" onclick="changeMyPassword()">שנה סיסמה</button>
+      <p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">הסיסמה תשתנה בכל המכשירים מיד.</p>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--navy);margin-bottom:.75rem">📜 היסטוריית התחברויות שלי (אחרונות)</h3>
+      <div id="my-login-history">⏳ טוען...</div>
+    </div>
+  `;
+  loadMyLoginHistory();
+};
+
+window.saveMyProfile = async function(){
+  const name = document.getElementById('profile-name').value.trim();
+  if (!name){ toast('שם לא יכול להיות ריק','error'); return; }
+  const user = (await window.supa.auth.getUser()).data.user;
+  const { error } = await window.supa.from('argaman_users')
+    .update({ display_name: name, updated_at: new Date().toISOString() })
+    .eq('user_id', user.id);
+  if (error){ toast('שגיאה: ' + error.message,'error'); return; }
+  window.CURRENT_USER_DISPLAY_NAME = name;
+  try { window.Audit && window.Audit.logAction('update','profile',user.id,name); } catch(_){}
+  toast('✅ נשמר','success');
+};
+
+window.changeMyPassword = async function(){
+  const p1 = document.getElementById('profile-newpass').value;
+  const p2 = document.getElementById('profile-newpass2').value;
+  if (p1.length < 8){ toast('מינ\' 8 תווים','error'); return; }
+  if (p1 !== p2){ toast('הסיסמאות לא תואמות','error'); return; }
+  try {
+    const { error } = await window.supa.auth.updateUser({ password: p1 });
+    if (error) throw error;
+    try { window.Audit && window.Audit.logLogin('password_changed'); } catch(_){}
+    toast('✅ הסיסמה עודכנה. בפעם הבאה השתמש בסיסמה החדשה.','success');
+    document.getElementById('profile-newpass').value = '';
+    document.getElementById('profile-newpass2').value = '';
+  } catch(e){ toast('שגיאה: ' + e.message,'error'); }
+};
+
+async function loadMyLoginHistory(){
+  const el = document.getElementById('my-login-history');
+  if (!el || !window.Audit) return;
+  const rows = await window.Audit.getLoginHistory(20);
+  if (rows.length === 0){ el.innerHTML = '<p>אין רשומות עדיין</p>'; return; }
+  const eventLabels = {
+    login_success: '✅ כניסה', login_failed: '❌ ניסיון כושל',
+    logout: '🚪 יציאה', password_reset_requested: '🔑 בקשת איפוס',
+    password_changed: '🔐 שינוי סיסמה', '2fa_enrolled':'🛡️ הופעל 2FA', '2fa_failed':'❌ 2FA נכשל'
+  };
+  el.innerHTML = `<table style="width:100%;font-size:.85rem">
+    <thead><tr style="border-bottom:1px solid #e5e7eb"><th style="text-align:right;padding:.4rem">אירוע</th><th style="text-align:right;padding:.4rem">מתי</th><th style="text-align:right;padding:.4rem">דפדפן</th></tr></thead>
+    <tbody>${rows.map(r=>`<tr style="border-bottom:1px solid #f3f4f6">
+      <td style="padding:.4rem">${eventLabels[r.event]||r.event}</td>
+      <td style="padding:.4rem;color:#6b7280">${new Date(r.created_at).toLocaleString('he-IL')}</td>
+      <td style="padding:.4rem;color:#9ca3af;font-size:.75rem">${escapeHtml((r.user_agent||'').slice(0,60))}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+/* ─── LOGIN HISTORY (owner — sees all) ─── */
+renderers['login-history'] = async function(){
+  if (window.CURRENT_USER_ROLE !== 'owner'){
+    document.getElementById('main-content').innerHTML = '<div class="card"><h2>אין הרשאה</h2></div>'; return;
+  }
+  document.getElementById('main-content').innerHTML = `
+    <div class="section-header"><div>
+      <h1 class="section-title">📜 היסטוריית התחברויות</h1>
+      <div class="section-subtitle">כל הכניסות/יציאות/ניסיונות כושלים — לכל המשתמשים</div>
+    </div></div>
+    <div class="card" id="login-history-card">⏳ טוען...</div>`;
+  const rows = await window.Audit.getLoginHistory(200);
+  const el = document.getElementById('login-history-card');
+  if (rows.length === 0){ el.innerHTML = 'אין רשומות'; return; }
+  const eventLabels = {
+    login_success:'✅ כניסה', login_failed:'❌ ניסיון כושל', logout:'🚪 יציאה',
+    password_reset_requested:'🔑 בקשת איפוס', password_changed:'🔐 שינוי סיסמה'
+  };
+  el.innerHTML = `<table style="width:100%;font-size:.85rem">
+    <thead><tr style="border-bottom:2px solid #e5e7eb">
+      <th style="text-align:right;padding:.5rem">אירוע</th>
+      <th style="text-align:right;padding:.5rem">אימייל</th>
+      <th style="text-align:right;padding:.5rem">מתי</th>
+      <th style="text-align:right;padding:.5rem">דפדפן</th>
+    </tr></thead>
+    <tbody>${rows.map(r=>`<tr style="border-bottom:1px solid #f3f4f6;${r.event==='login_failed'?'background:#fef2f2':''}">
+      <td style="padding:.5rem">${eventLabels[r.event]||r.event}</td>
+      <td style="padding:.5rem">${escapeHtml(r.email||'')}</td>
+      <td style="padding:.5rem;color:#6b7280">${new Date(r.created_at).toLocaleString('he-IL')}</td>
+      <td style="padding:.5rem;color:#9ca3af;font-size:.75rem">${escapeHtml((r.user_agent||'').slice(0,80))}</td>
+    </tr>`).join('')}</tbody></table>`;
+};
+
+/* ─── ACTION LOG (owner — sees all CRUD) ─── */
+renderers['action-log'] = async function(){
+  if (window.CURRENT_USER_ROLE !== 'owner'){
+    document.getElementById('main-content').innerHTML = '<div class="card"><h2>אין הרשאה</h2></div>'; return;
+  }
+  document.getElementById('main-content').innerHTML = `
+    <div class="section-header"><div>
+      <h1 class="section-title">📋 יומן פעולות מערכת</h1>
+      <div class="section-subtitle">תיעוד כל פעולות המשתמשים (תיקון 13)</div>
+    </div></div>
+    <div class="card" id="action-log-card">⏳ טוען...</div>`;
+  const rows = await window.Audit.getActionLog({ limit: 300 });
+  const el = document.getElementById('action-log-card');
+  if (rows.length === 0){ el.innerHTML = 'אין פעולות מתועדות'; return; }
+  const actionEmojis = { create:'➕', update:'✏️', delete:'🗑️', view:'👁', export:'📤' };
+  el.innerHTML = `<table style="width:100%;font-size:.85rem">
+    <thead><tr style="border-bottom:2px solid #e5e7eb">
+      <th style="text-align:right;padding:.5rem">פעולה</th>
+      <th style="text-align:right;padding:.5rem">משתמש</th>
+      <th style="text-align:right;padding:.5rem">תפקיד</th>
+      <th style="text-align:right;padding:.5rem">סוג</th>
+      <th style="text-align:right;padding:.5rem">פריט</th>
+      <th style="text-align:right;padding:.5rem">מתי</th>
+    </tr></thead>
+    <tbody>${rows.map(r=>`<tr style="border-bottom:1px solid #f3f4f6">
+      <td style="padding:.5rem">${actionEmojis[r.action]||''} ${r.action}</td>
+      <td style="padding:.5rem">${escapeHtml(r.user_email||'')}</td>
+      <td style="padding:.5rem"><span style="font-size:.7rem;background:#f3f4f6;padding:.15rem .4rem;border-radius:4px">${r.user_role||''}</span></td>
+      <td style="padding:.5rem;color:#6b7280">${escapeHtml(r.entity_type||'')}</td>
+      <td style="padding:.5rem">${escapeHtml(r.entity_label||r.entity_id||'')}</td>
+      <td style="padding:.5rem;color:#6b7280">${new Date(r.created_at).toLocaleString('he-IL')}</td>
+    </tr>`).join('')}</tbody></table>`;
 };
 
 /* ─── DASHBOARD ───────────────────────────── */
