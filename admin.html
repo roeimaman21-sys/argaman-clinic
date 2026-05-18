@@ -32,6 +32,8 @@
   <script src="presence.js" defer></script>
   <script src="pwa-install.js" defer></script>
   <script src="backup-tools.js" defer></script>
+  <script src="payment-tools.js" defer></script>
+  <script src="monthly-report.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -325,7 +327,31 @@
     @media (max-width:560px){
       .stat-grid{grid-template-columns:1fr}
       .sidebar{width:85vw}
+      .section-header{flex-direction:column;align-items:stretch;gap:.5rem}
+      .section-header button{width:100%}
+      .btn{min-height:44px;font-size:.9rem;padding:.6rem .9rem}  /* Touch target */
+      .nav-link{min-height:48px}
+      input,select,textarea{min-height:44px;font-size:16px}  /* 16px prevents iOS zoom */
+      .modal{margin:.25rem;max-height:calc(100vh - .5rem);max-width:100%}
+      .modal-body{padding:1rem}
+      .modal-header{padding:.75rem 1rem}
+      .modal-close{min-width:44px;min-height:44px}
+      .card{padding:.9rem}
+      .record-card{padding:.6rem .7rem}
+      h1.section-title{font-size:1.3rem}
+      table{font-size:.8rem}
+      table th,table td{padding:.4rem .35rem;white-space:nowrap}
+      /* Horizontal scroll for wide tables */
+      .card > table{display:block;overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
     }
+    /* Quick Actions FAB (floating action button) */
+    .fab-container{position:fixed;bottom:1rem;left:1rem;z-index:30;display:none}
+    @media (max-width:920px){.fab-container{display:flex;flex-direction:column-reverse;gap:.5rem;align-items:flex-start}}
+    .fab{width:56px;height:56px;border-radius:50%;background:var(--gold);color:#1a1a1a;font-size:1.5rem;border:none;box-shadow:0 4px 12px rgba(0,0,0,.25);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}
+    .fab:active{transform:scale(.92)}
+    .fab-sub{width:48px;height:48px;border-radius:50%;background:#fff;color:var(--navy);font-size:1.2rem;border:1px solid #e5e7eb;box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;display:none;align-items:center;justify-content:center;text-decoration:none}
+    .fab-container.open .fab-sub{display:flex}
+    .fab-container.open .fab{transform:rotate(45deg)}
     /* DARK MODE */
     html.dark-mode{filter:invert(.92) hue-rotate(180deg)}
     html.dark-mode img,html.dark-mode video,html.dark-mode iframe,html.dark-mode svg,html.dark-mode .nav-logo-img,html.dark-mode [style*="background-image"],html.dark-mode [style*="linear-gradient"]{filter:invert(1) hue-rotate(180deg)}
@@ -459,6 +485,12 @@
 
 <div id="modal-root"></div>
 <div class="toast-wrap" id="toast-root"></div>
+<div class="fab-container" id="fab-container">
+  <button class="fab-sub" title="ליד מהיר" onclick="quickAddLead(); closeFab()">🎯</button>
+  <button class="fab-sub" title="פתקית" onclick="if(window.openStickyNotes)openStickyNotes(); closeFab()">📌</button>
+  <button class="fab-sub" title="חיפוש" onclick="if(window.openFullSearch)openFullSearch(); closeFab()">🔍</button>
+  <button class="fab" id="fab-main" onclick="document.getElementById('fab-container').classList.toggle('open')">+</button>
+</div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -1558,6 +1590,8 @@ function bindSearch(){
 }
 function openSidebar(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebar-overlay').classList.add('show'); }
 function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebar-overlay').classList.remove('show'); }
+function closeFab(){ document.getElementById('fab-container')?.classList.remove('open'); }
+window.closeFab = closeFab;
 
 function goto(section){
   currentSection = section;
@@ -2556,7 +2590,10 @@ renderers.dashboard = async function(){
         <h1 class="section-title">שלום, ${window.CURRENT_USER_DISPLAY_NAME || 'גל'} 👋</h1>
         <div class="section-subtitle">${new Date().toLocaleDateString('he-IL', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}</div>
       </div>
-      <button class="btn btn-gold" onclick="quickAddLead()">+ ליד מהיר</button>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+        <button class="btn" onclick="window.generateMonthlyReport && window.generateMonthlyReport()">📊 דוח חודשי PDF</button>
+        <button class="btn btn-gold" onclick="quickAddLead()">+ ליד מהיר</button>
+      </div>
     </div>
 
     <div class="stat-grid">
