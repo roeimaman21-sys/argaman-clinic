@@ -34,6 +34,7 @@
   <script src="backup-tools.js" defer></script>
   <script src="payment-tools.js" defer></script>
   <script src="monthly-report.js" defer></script>
+  <script src="undo-tools.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -2949,11 +2950,26 @@ function saveNewLead(){
 }
 
 function deleteLead(id){
-  confirmDialog('למחוק את הליד? לא ניתן לבטל.', ()=>{
-    State.leads = State.leads.filter(l => l.id !== id);
+  const l = State.leads.find(x => x.id === id);
+  if (!l) return;
+  confirmDialog('למחוק את הליד? יש 6 שניות לביטול אחרי המחיקה.', ()=>{
+    const idx = State.leads.findIndex(x => x.id === id);
+    const removed = State.leads.splice(idx, 1)[0];
     save(LS.leads, State.leads);
-    logActivity(`נמחק ליד`);
-    toast('ליד נמחק'); renderers[currentSection](); updateBadges();
+    logActivity(`נמחק ליד: ${removed.name||''}`);
+    closeModal && closeModal();
+    renderers[currentSection](); updateBadges();
+    // Register undo
+    if (window.UndoTools){
+      window.UndoTools.record(`🗑 נמחק ליד "${removed.name||'(ללא שם)'}"`, () => {
+        State.leads.splice(idx, 0, removed);
+        save(LS.leads, State.leads);
+        logActivity(`שוחזר ליד: ${removed.name||''}`);
+        renderers[currentSection](); updateBadges();
+      });
+    } else {
+      toast('ליד נמחק');
+    }
   });
 }
 
@@ -3998,11 +4014,24 @@ function saveClient(id){
   closeModal(); toast('✓ לקוח עודכן'); renderers[currentSection]();
 }
 function deleteClient(id){
-  confirmDialog('למחוק את הלקוח? כל הפגישות שלו ימחקו גם. לא ניתן לבטל.', ()=>{
+  const c = State.clients.find(x => x.id === id);
+  if (!c) return;
+  confirmDialog('למחוק את הלקוח? כל הפגישות שלו ימחקו גם. יש 6 שניות לביטול.', ()=>{
+    const removedClient = State.clients.find(c => c.id === id);
+    const removedSessions = State.sessions.filter(s => s.clientId === id);
     State.clients = State.clients.filter(c => c.id !== id);
     State.sessions = State.sessions.filter(s => s.clientId !== id);
     save(LS.clients, State.clients); save(LS.sessions, State.sessions);
-    closeModal(); toast('לקוח נמחק'); renderers[currentSection]();
+    closeModal(); renderers[currentSection]();
+    if (window.UndoTools){
+      window.UndoTools.record(`🗑 נמחק לקוח "${removedClient.name||'(ללא שם)'}" + ${removedSessions.length} פגישות`, () => {
+        State.clients.push(removedClient);
+        State.sessions.push(...removedSessions);
+        save(LS.clients, State.clients); save(LS.sessions, State.sessions);
+        renderers[currentSection]();
+        logActivity(`שוחזר לקוח: ${removedClient.name||''}`);
+      });
+    } else { toast('לקוח נמחק'); }
   });
 }
 
