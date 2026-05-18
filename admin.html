@@ -21,6 +21,7 @@
   <script src="reports-engine.js" defer></script>
   <script src="crm-extensions.js" defer></script>
   <script src="crm-polish.js" defer></script>
+  <script src="crm-archive.js" defer></script>
   <!-- Quill — Rich text editor -->
   <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
@@ -377,6 +378,7 @@
     <a class="nav-link" onclick="openSmartScheduler()" style="cursor:pointer"><span class="icon">📆</span> תיאום חכם</a>
     <a class="nav-link" onclick="openWhatIf()" style="cursor:pointer"><span class="icon">🧮</span> סימולציה עסקית</a>
     <a class="nav-link" onclick="openColorThemes()" style="cursor:pointer"><span class="icon">🎨</span> ערכת צבעים</a>
+    <a class="nav-link" onclick="openFullSearch()" style="cursor:pointer;background:linear-gradient(135deg,#eff4ff,#fff);border-right:3px solid #1B3A6B"><span class="icon">🔍</span> חיפוש בכל הרשומות</a>
     <a class="nav-link" onclick="openHotkeysHelp()" style="cursor:pointer"><span class="icon">⌨️</span> קיצורי דרך</a>
     <a class="nav-link" onclick="openICalExport()" style="cursor:pointer"><span class="icon">📤</span> ייצוא ל-Calendar</a>
     <a class="nav-link" onclick="openBackup()" style="cursor:pointer"><span class="icon">💾</span> גיבוי מלא</a>
@@ -2573,6 +2575,7 @@ function viewClient(id){
       <button class="btn btn-sm" style="background:#dcfce7;color:#16a34a;border:1px solid #16a34a" onclick="openGoalTracker('${c.id}')">📊 מעקב יעדים</button>
       <button class="btn btn-sm" style="background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;border:0;font-weight:700" onclick="openClientPortal('${c.id}')">🌐 פורטל לקוח</button>
       <button class="btn btn-sm" style="background:#eff4ff;color:#1B3A6B;border:1px solid #1B3A6B" onclick="openSmartScheduler('${c.id}')">📆 תיאום פגישה חכם</button>
+      <button class="btn btn-sm" style="background:#1f2937;color:#fff;border:0;font-weight:700" onclick="openBulkPDF('${c.id}')">📦 ייצוא תיק PDF מלא</button>
       ${c.treatment?.primaryMethod ? `<span class="badge" style="background:#fef3c7;color:#854d0e;padding:.2rem .6rem;border-radius:50px;font-size:.8rem">🧭 ${(window.ClinicalSuite?.METHODS||[]).find(m=>m.k===c.treatment.primaryMethod)?.l||c.treatment.primaryMethod}</span>` : ''}
     </div>
 

@@ -1047,6 +1047,11 @@
           e.preventDefault();
           TimeTracker.summary();
         }
+        // Cmd/Ctrl + Shift + F → full-text search across all records
+        if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'f') {
+          e.preventDefault();
+          if (typeof window.openFullSearch === 'function') window.openFullSearch();
+        }
         // ? → show help
         if (e.key === '?' && !e.ctrlKey && !e.metaKey) {
           e.preventDefault();
@@ -1067,6 +1072,7 @@
           <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+N</kbd></td><td>ליד חדש מהיר</td></tr>
           <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+Shift+R</kbd></td><td>מרכז דוחות BI</td></tr>
           <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+Shift+T</kbd></td><td>סיכום זמני עבודה</td></tr>
+          <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+Shift+F</kbd></td><td>חיפוש בכל הרשומות</td></tr>
           <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Ctrl+K</kbd></td><td>חיפוש גלובלי (קיים)</td></tr>
           <tr style="border-bottom:1px solid #f3f4f6"><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">Esc</kbd></td><td>סגור מודל</td></tr>
           <tr><td style="padding:.5rem"><kbd style="background:#f3f4f6;padding:.2rem .5rem;border-radius:4px;font-family:monospace">?</kbd></td><td>הצג עזרה זו</td></tr>
