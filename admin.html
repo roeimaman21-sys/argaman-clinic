@@ -436,7 +436,7 @@
     <div class="topbar-actions">
       <button class="topbar-btn" onclick="toggleDarkMode()" title="מצב לילה/יום" aria-label="מצב לילה/יום" style="border:0;cursor:pointer" id="dark-toggle">🌙</button>
       <button class="topbar-btn" onclick="showShortcutsHelp()" title="קיצורי מקלדת (Shift+?)" aria-label="קיצורי מקלדת (Shift+?)" style="border:0;cursor:pointer">⌨️</button>
-      <span id="sync-status" class="topbar-btn" style="background:var(--gray-100)" title="סטטוס סנכרון">☁️ <span id="sync-text">מתחבר...</span></span>
+      <span id="sync-status" class="topbar-btn" style="background:var(--gray-100);cursor:pointer" title="סטטוס סנכרון — לחץ לפרטים" onclick="showCloudStatusInfo()">☁️ <span id="sync-text">מתחבר...</span></span>
       <span class="topbar-date" id="topbar-date"></span>
       <a href="index.html" target="_blank" class="topbar-btn">🌐 לאתר</a>
     </div>
@@ -503,7 +503,40 @@ async function supaSignIn(email, password){
   }
   ArgSec.auditLog('supabase_auth_success', email);
   localStorage.setItem(LS_SUPA_EMAIL, email);
+  // Show toast confirming cloud sync is active
+  setTimeout(() => {
+    if (typeof toast === 'function') toast('✅ סנכרון לענן פעיל — ' + email, 'success');
+  }, 600);
   return data;
+}
+
+// Quick info modal for sync status — accessible from topbar
+function showCloudStatusInfo(){
+  const cached = !!localStorage.getItem('argaman_supa_pw_cached');
+  const email = getSupaEmail();
+  const connected = !!supa && cached;
+  const html = `
+    <div style="padding:.5rem 0">
+      <div style="background:${connected?'#dcfce7':'#fef3c7'};color:${connected?'#15803d':'#854d0e'};padding:1rem;border-radius:8px;margin-bottom:1rem">
+        <strong style="font-size:1.1rem">${connected ? '✅ מחובר לענן Supabase' : '⚠️ לא מחובר לענן'}</strong>
+        ${connected ? '<div style="margin-top:.4rem;font-size:.9rem;direction:ltr;text-align:left">' + escapeHtml(email) + '</div>' : ''}
+      </div>
+      ${connected ? `
+        <p style="font-size:.9rem;color:#374151;line-height:1.6"><strong>💡 איך זה עובד:</strong></p>
+        <ul style="font-size:.9rem;color:#374151;line-height:1.7;padding-right:1.25rem">
+          <li>סיסמת ה-Supabase שלך שמורה <strong>מוצפנת AES-256</strong> בדפדפן</li>
+          <li>מפתח ההצפנה נגזר מסיסמת ה-CRM שלך (PBKDF2)</li>
+          <li>בכל כניסה: סיסמת ה-CRM מפענחת את סיסמת ה-Supabase, ואז התחברות אוטומטית</li>
+          <li><strong>הסיסמה לא מאוחסנת בטקסט גלוי</strong> — לא ב-localStorage, לא ב-Supabase, ולא בענן</li>
+        </ul>
+        <p style="font-size:.9rem;color:#374151;line-height:1.6;margin-top:1rem"><strong>⚙️ ניהול:</strong> Sidebar → 🔒 אבטחה → כפתורי ניהול</p>
+      ` : `
+        <p style="font-size:.9rem;color:#374151">המערכת פועלת ב-<strong>מצב לא מקוון</strong>. נתונים נשמרים מקומית בלבד ולא מסונכרנים.</p>
+        <p style="font-size:.9rem;color:#374151;margin-top:.75rem">לחיבור — Sidebar → 🔒 אבטחה → "התחבר מחדש"</p>
+      `}
+    </div>
+  `;
+  modal(html, { title: '☁️ סטטוס חיבור לענן', size: 'md' });
 }
 
 async function supaSignOut(){
