@@ -421,6 +421,7 @@
       <div class="sidebar-brand-icon">א</div>
       <div class="sidebar-brand-text">קליניקת ארגמן<small>פאנל ניהול</small></div>
     </div>
+    <div id="sidebar-quickstats" style="padding:.5rem 1.25rem .75rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:.5rem;font-size:.78rem;color:rgba(255,255,255,.85)"></div>
     <div class="sidebar-section">ניהול עסק</div>
     <a class="nav-link" data-section="dashboard"><span class="icon">📊</span> דשבורד</a>
     <a class="nav-link" data-section="leads"><span class="icon">🎯</span> לידים <span class="badge" id="badge-new-leads" style="display:none"></span></a>
@@ -1662,12 +1663,38 @@ function updateBadges(){
   const todaySessions = State.sessions.filter(s => s.date === today && s.status === 'scheduled').length;
   const b2 = document.getElementById('badge-today-sessions');
   if (b2){ b2.textContent = todaySessions; b2.style.display = todaySessions ? 'inline' : 'none'; }
+  // Quick stats in sidebar
+  const qs = document.getElementById('sidebar-quickstats');
+  if (qs && (State.leads.length || State.sessions.length)){
+    const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+    const newThisWeek = State.leads.filter(l => new Date(l.createdAt||0) >= weekAgo).length;
+    const todayDone = State.sessions.filter(s => s.date === today && s.status === 'completed').length;
+    qs.innerHTML = `
+      <div style="display:flex;justify-content:space-between;padding:.2rem 0">
+        <span>🎯 חדשים השבוע</span><strong style="color:#C9A84C">${newThisWeek}</strong>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:.2rem 0">
+        <span>📅 פגישות היום</span><strong style="color:#C9A84C">${todaySessions}/${todaySessions+todayDone}</strong>
+      </div>
+    `;
+  }
 }
 
 /* ═══════════════════════════════════════════════
    TOAST & MODAL
 ═══════════════════════════════════════════════ */
+const _recentToasts = new Map(); // dedup
 function toast(msg, type, duration){
+  // Dedup: same msg within 2 seconds → ignore
+  const key = msg + '|' + (type||'');
+  const lastShown = _recentToasts.get(key);
+  if (lastShown && Date.now() - lastShown < 2000) return;
+  _recentToasts.set(key, Date.now());
+  // Cleanup old entries
+  if (_recentToasts.size > 30){
+    const now = Date.now();
+    for (const [k, t] of _recentToasts) if (now - t > 10000) _recentToasts.delete(k);
+  }
   const el = document.createElement('div');
   el.className = 'toast' + (type ? ' '+type : '');
   // Auto-detect type from emoji
@@ -3886,11 +3913,29 @@ function viewClient(id){
       <button class="btn btn-danger btn-sm" onclick="deleteClient('${c.id}')">🗑 מחק</button>
       <button class="btn btn-sm" onclick="showDocumentsDialog('${c.id}')" style="background:#8b5cf6;color:#fff">📎 מסמכים${(c.documents||[]).length?' ('+c.documents.length+')':''}</button>
       <button class="btn btn-sm" onclick="showInvoiceDialog('${c.id}')" style="background:#10b981;color:#fff">📄 הוצא חשבונית</button>
+      <button class="btn btn-sm" onclick="requestReview('${c.id}')" style="background:#f59e0b;color:#fff">🌟 בקש ביקורת</button>
       <button class="btn btn-primary" onclick="saveClient('${c.id}')">שמירה</button>
     </div>
   `;
   modal(html, { title: 'לקוח: '+c.name, size: 'lg' });
 }
+
+/** Request a Google review from a client via WhatsApp */
+window.requestReview = function(clientId){
+  const c = State.clients.find(x => x.id === clientId);
+  if (!c){ toast('לקוח לא נמצא','error'); return; }
+  if (!c.phone){ toast('אין טלפון ללקוח','error'); return; }
+  const gbpLink = (State.settings?.gbpReviewLink) || 'https://g.page/r/argamanclinic/review';
+  const msg = `היי ${c.name||''},\n\nאם התהליך עזר לך — אשמח אם תוכל/י להשאיר ביקורת קצרה בגוגל. זה עוזר לזוגות אחרים למצוא אותי ולקבל החלטה.\n\nהקישור (לוקח 30 שניות):\n${gbpLink}\n\nתודה רבה,\nגל ממן\nקליניקת ארגמן`;
+  const phone = (c.phone||'').replace(/[^0-9]/g,'');
+  const intl = phone.startsWith('0') ? '972' + phone.slice(1) : phone;
+  const wa = `https://wa.me/${intl}?text=${encodeURIComponent(msg)}`;
+  c.lastReviewRequestedAt = new Date().toISOString();
+  if (typeof save === 'function' && LS) save(LS.clients, State.clients);
+  if (typeof logActivity === 'function') logActivity(`נשלחה בקשת ביקורת ללקוח: ${c.name}`);
+  window.open(wa, '_blank');
+  toast('✅ נפתח WhatsApp עם הודעת בקשת ביקורת','success');
+};
 
 function showInvoiceDialog(clientId){
   const c = State.clients.find(x => x.id === clientId);
