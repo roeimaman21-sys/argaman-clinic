@@ -1593,20 +1593,66 @@ function closeSidebar(){ document.getElementById('sidebar').classList.remove('op
 function closeFab(){ document.getElementById('fab-container')?.classList.remove('open'); }
 window.closeFab = closeFab;
 
+// Cache nav links once on first access (avoids repeated querySelectorAll)
+let _cachedNavLinks = null;
+function getNavLinks(){
+  if (!_cachedNavLinks || _cachedNavLinks.length === 0){
+    _cachedNavLinks = document.querySelectorAll('.nav-link');
+  }
+  return _cachedNavLinks;
+}
 function goto(section){
   currentSection = section;
-  document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active', a.dataset.section === section));
+  getNavLinks().forEach(a=>a.classList.toggle('active', a.dataset.section === section));
   const renderer = renderers[section];
   if (renderer){
     try {
       const result = renderer();
       if (result && typeof result.then === 'function') {
-        result.catch(e => console.error('Renderer error for', section, ':', e));
+        result.catch(e => {
+          console.error('Renderer error for', section, ':', e);
+          showSectionError(section, e);
+        });
       }
-    } catch(e){ console.error('Renderer crashed for', section, ':', e); }
+    } catch(e){
+      console.error('Renderer crashed for', section, ':', e);
+      showSectionError(section, e);
+    }
+  } else {
+    showSectionError(section, new Error('סקשן לא קיים'));
   }
   window.scrollTo(0, 0);
 }
+
+/* Global error boundary — visible error in main-content instead of blank screen */
+function showSectionError(section, err){
+  const root = document.getElementById('main-content');
+  if (!root) return;
+  root.innerHTML = `
+    <div class="card" style="background:#fef2f2;border-right:4px solid #dc2626">
+      <h2 style="color:#7f1d1d">⚠️ שגיאה בטעינת הסקשן "${escapeHtml(section)}"</h2>
+      <p style="color:#991b1b;margin:.5rem 0">${escapeHtml(err?.message || String(err))}</p>
+      <details style="margin-top:.5rem">
+        <summary style="cursor:pointer;color:#7f1d1d;font-size:.85rem">פרטים טכניים</summary>
+        <pre style="background:#fff;padding:.5rem;border-radius:4px;font-size:.75rem;overflow:auto;margin-top:.3rem">${escapeHtml(err?.stack || '')}</pre>
+      </details>
+      <div style="margin-top:1rem;display:flex;gap:.5rem">
+        <button class="btn" onclick="goto('dashboard')">🏠 חזרה לדשבורד</button>
+        <button class="btn" onclick="location.reload()">🔄 רענן</button>
+      </div>
+    </div>
+  `;
+}
+
+/* Catch unhandled errors globally */
+window.addEventListener('error', e => {
+  console.error('[Global error]', e.error || e.message);
+  try { window.Audit && window.Audit.logAction('error','system',null,e.message?.slice(0,200)); } catch(_){}
+});
+window.addEventListener('unhandledrejection', e => {
+  console.error('[Unhandled promise rejection]', e.reason);
+  try { window.Audit && window.Audit.logAction('error','promise',null,String(e.reason)?.slice(0,200)); } catch(_){}
+});
 
 function updateBadges(){
   const newLeads = State.leads.filter(l => l.status === 'new').length;
@@ -2605,6 +2651,8 @@ renderers.dashboard = async function(){
 
     ${renderFollowUpPanel()}
 
+    ${renderConversionFunnel()}
+
     ${renderSmartInsights()}
 
     ${renderBackupReminder()}
@@ -3184,6 +3232,78 @@ function sendReminder(sessionId){
   save(LS.sessions, State.sessions);
   ArgSec.auditLog('reminder_sent', 'client: '+client.name);
   toast('✓ נשלחה תזכורת ל-'+client.name);
+}
+
+/* Conversion Funnel — visualizes lead lifecycle stages */
+function renderConversionFunnel(){
+  const leads = State.leads || [];
+  const clients = State.clients || [];
+  const sessions = State.sessions || [];
+  if (leads.length === 0) return '';
+
+  // Define funnel stages
+  const total = leads.length;
+  const contacted = leads.filter(l => l.lastTouchedAt || (l.notes && l.notes.length>0) || l.status !== 'new').length;
+  const meeting = leads.filter(l => l.status === 'meeting' || l.status === 'converted').length;
+  const converted = leads.filter(l => l.status === 'converted').length;
+  const activeClients = clients.filter(c => c.status === 'active').length;
+  const paidSessions = sessions.filter(s => s.paid).length;
+
+  const stages = [
+    { label: 'לידים נכנסו', count: total, color: '#3b82f6', icon: '🎯' },
+    { label: 'יצרנו קשר', count: contacted, color: '#8b5cf6', icon: '💬' },
+    { label: 'נקבעה פגישה', count: meeting, color: '#a855f7', icon: '📅' },
+    { label: 'הומרו ללקוח', count: converted, color: '#16a34a', icon: '✅' },
+    { label: 'לקוחות פעילים', count: activeClients, color: '#1B3A6B', icon: '👥' }
+  ];
+  const max = Math.max(1, total);
+  return `
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="color:var(--navy);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem">📊 משפך המרה</h3>
+      <div style="display:flex;flex-direction:column;gap:.4rem">
+        ${stages.map((s, i) => {
+          const pct = Math.round(s.count / max * 100);
+          const prev = i > 0 ? stages[i-1].count : null;
+          const dropPct = prev ? Math.round((prev - s.count) / prev * 100) : 0;
+          return `
+            <div style="display:flex;align-items:center;gap:.5rem">
+              <div style="min-width:130px;font-size:.85rem;color:#374151;font-weight:500">
+                ${s.icon} ${s.label}
+              </div>
+              <div style="flex:1;height:28px;background:#f3f4f6;border-radius:6px;position:relative;overflow:hidden">
+                <div style="height:100%;background:${s.color};width:${Math.max(8,pct)}%;display:flex;align-items:center;justify-content:flex-end;padding:0 .5rem;color:#fff;font-weight:700;font-size:.8rem;border-radius:6px;transition:width .5s">
+                  ${s.count}
+                </div>
+              </div>
+              <div style="min-width:60px;font-size:.75rem;color:#6b7280;text-align:left">
+                ${i > 0 && prev > 0 ? `<span style="color:${dropPct>50?'#dc2626':dropPct>30?'#f59e0b':'#16a34a'}">−${dropPct}%</span>` : `${pct}%`}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div style="margin-top:.6rem;padding:.5rem;background:#f9fafb;border-radius:6px;font-size:.78rem;color:#6b7280;line-height:1.5">
+        💡 <strong>תובנה:</strong>
+        ${(() => {
+          if (total === 0) return 'אין לידים עדיין.';
+          const convRate = pct ? Math.round(converted / total * 100) : 0;
+          if (convRate >= 30) return `שיעור המרה כללי: <strong style="color:#16a34a">${convRate}%</strong> — מעולה!`;
+          if (convRate >= 15) return `שיעור המרה כללי: <strong style="color:#1B3A6B">${convRate}%</strong> — סביר. שווה לחזק את שלב המעקב.`;
+          if (total < 5) return `עדיין מעט לידים (${total}) — תן לזה זמן.`;
+          // Find biggest drop
+          let biggestDropStage = null, biggestDropPct = 0;
+          for (let i = 1; i < stages.length; i++){
+            if (stages[i-1].count > 0){
+              const d = Math.round((stages[i-1].count - stages[i].count) / stages[i-1].count * 100);
+              if (d > biggestDropPct){ biggestDropPct = d; biggestDropStage = stages[i].label; }
+            }
+          }
+          if (biggestDropStage) return `הצוואר הצר הכי גדול: לפני "<strong>${biggestDropStage}</strong>" (${biggestDropPct}% נשירה). מומלץ למקד שיפור שם.`;
+          return `שיעור המרה כללי: <strong>${convRate}%</strong>`;
+        })()}
+      </div>
+    </div>
+  `;
 }
 
 /* Follow-up reminders — stuck leads with one-click WhatsApp action */
@@ -4004,7 +4124,7 @@ function renderSessionsView(view){
           <td>${escapeHtml(s.time||'—')}</td>
           <td>${cl ? `<a style="color:var(--navy);cursor:pointer;font-weight:600" onclick="viewClient('${cl.id}')">${escapeHtml(cl.name)}</a>` : '<span class="text-muted">(חסר)</span>'}</td>
           <td><span class="badge badge-${s.status}">${{scheduled:'מתוכנן',completed:'בוצע',cancelled:'בוטל','no-show':'לא הגיע'}[s.status]||s.status}</span></td>
-          <td>${s.paid?'<span class="badge badge-paid">₪'+(s.price||'')+'</span>':'<span class="badge badge-unpaid">לא</span>'}</td>
+          <td>${s.paid?'<span class="badge badge-paid">₪'+(s.price||'')+'</span>':`<span class="badge badge-unpaid">לא · <a onclick="event.stopPropagation();requestPayment('${s.id}')" style="color:#1B3A6B;cursor:pointer;text-decoration:underline;font-weight:700" title="בקש תשלום">💰</a></span>`}</td>
           <td><button class="btn-icon" onclick="editSession('${s.id}')">✏</button></td>
         </tr>`;
       }).join('')}</tbody></table></div>`;
