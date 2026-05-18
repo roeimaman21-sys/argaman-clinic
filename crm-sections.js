@@ -292,14 +292,14 @@
       <div id="audit-content"></div>
     `);
     requestAnimationFrame(() => {
-      const log = JSON.parse(localStorage.getItem('argaman_audit_log')||'[]').slice(-300).reverse();
+      const log = (window.CRM ? window.CRM.ls.getJSON('argaman_audit_log',[]) : JSON.parse(localStorage.getItem('argaman_audit_log')||'[]')).slice(-300).reverse();
       const root = document.getElementById('audit-content');
       if (!log.length) {
         root.innerHTML = '<p style="text-align:center;color:#6b7280;padding:3rem">יומן ריק</p>';
         return;
       }
       root.innerHTML = `
-        <p style="color:#6b7280;font-size:.9rem;margin-bottom:1rem">מציג 300 פעולות אחרונות (סך הכל: ${JSON.parse(localStorage.getItem('argaman_audit_log')||'[]').length})</p>
+        <p style="color:#6b7280;font-size:.9rem;margin-bottom:1rem">מציג 300 פעולות אחרונות (סך הכל: ${(window.CRM ? window.CRM.ls.getJSON('argaman_audit_log',[]) : JSON.parse(localStorage.getItem('argaman_audit_log')||'[]')).length})</p>
         <div style="background:#fff;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden">
           <table style="width:100%;font-size:.85rem;border-collapse:collapse">
             <thead><tr style="background:#1B3A6B;color:#fff"><th style="padding:.6rem;text-align:right">זמן</th><th style="padding:.6rem;text-align:right">פעולה</th><th style="padding:.6rem;text-align:right">פרטים</th></tr></thead>

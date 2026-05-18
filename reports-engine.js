@@ -445,7 +445,7 @@
       const completed = sessions.filter(s => s.status === 'completed');
       const paid = completed.filter(s => s.paid);
       const totalPaid = paid.reduce((sum,s) => sum + Number(s.price||0), 0);
-      const outcomes = JSON.parse(localStorage.getItem('argaman_outcomes')||'[]').filter(o => o.clientId === clientId);
+      const outcomes = (window.CRM ? window.CRM.ls.getJSON('argaman_outcomes',[]) : JSON.parse(localStorage.getItem('argaman_outcomes')||'[]')).filter(o => o.clientId === clientId);
       const phq = outcomes.filter(o => o.type === 'PHQ-9');
       const gad = outcomes.filter(o => o.type === 'GAD-7');
 
@@ -795,7 +795,7 @@
 
     // 13. Clinical Outcomes Aggregate
     clinicalOutcomes(root) {
-      const outcomes = JSON.parse(localStorage.getItem('argaman_outcomes')||'[]');
+      const outcomes = (window.CRM ? window.CRM.ls.getJSON('argaman_outcomes',[]) : JSON.parse(localStorage.getItem('argaman_outcomes')||'[]'));
       const clients = State.clients || [];
       const sessions = State.sessions || [];
       const phq = outcomes.filter(o => o.type === 'PHQ-9');
@@ -864,7 +864,7 @@
 
       const totalArticles = articles.length;
       // Article views from pageStats
-      const stats = JSON.parse(localStorage.getItem('argaman_page_stats')||'{}');
+      const stats = (window.CRM ? window.CRM.ls.getJSON('argaman_page_stats',{}) : JSON.parse(localStorage.getItem('argaman_page_stats')||'{}'));
       const pageViews = Object.entries(stats).map(([url, v]) => ({ url, views: v.views||0, clicks: v.clicks||0 })).sort((a,b) => b.views - a.views);
 
       // Top performing pages
@@ -1028,7 +1028,7 @@
       }
 
       // Check 7: Outcome measures coverage
-      const outcomes = JSON.parse(localStorage.getItem('argaman_outcomes')||'[]');
+      const outcomes = (window.CRM ? window.CRM.ls.getJSON('argaman_outcomes',[]) : JSON.parse(localStorage.getItem('argaman_outcomes')||'[]'));
       const activeClientsWithOutcomes = new Set(outcomes.map(o => o.clientId));
       const activeClients = c.filter(x => x.status === 'active');
       const coverage = activeClients.length ? activeClientsWithOutcomes.size / activeClients.length : 0;
@@ -1045,7 +1045,7 @@
 
       // Check 8: SEO
       const articlesNoTraffic = (() => {
-        const stats = JSON.parse(localStorage.getItem('argaman_page_stats')||'{}');
+        const stats = (window.CRM ? window.CRM.ls.getJSON('argaman_page_stats',{}) : JSON.parse(localStorage.getItem('argaman_page_stats')||'{}'));
         return Object.values(stats).filter(p => !p.views).length;
       })();
       if (articlesNoTraffic > 20) {

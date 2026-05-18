@@ -48,8 +48,8 @@
       const totalPaid = paid.reduce((sum,s) => sum + Number(s.price||0), 0);
       const outstanding = completed.filter(s => !s.paid && s.price).reduce((sum,s) => sum + Number(s.price||0), 0);
 
-      const outcomes = JSON.parse(localStorage.getItem('argaman_outcomes')||'[]').filter(o => o.clientId === clientId).sort((a,b) => a.date.localeCompare(b.date));
-      const risk = JSON.parse(localStorage.getItem('argaman_risk_assessments')||'[]').filter(r => r.clientId === clientId).sort((a,b) => b.date.localeCompare(a.date));
+      const outcomes = (window.CRM ? window.CRM.ls.getJSON('argaman_outcomes',[]) : JSON.parse(localStorage.getItem('argaman_outcomes')||'[]')).filter(o => o.clientId === clientId).sort((a,b) => a.date.localeCompare(b.date));
+      const risk = (window.CRM ? window.CRM.ls.getJSON('argaman_risk_assessments',[]) : JSON.parse(localStorage.getItem('argaman_risk_assessments')||'[]')).filter(r => r.clientId === clientId).sort((a,b) => b.date.localeCompare(a.date));
       const goals = c.treatment?.goals || [];
 
       const startDate = c.createdAt || c.startDate;

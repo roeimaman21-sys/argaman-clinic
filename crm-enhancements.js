@@ -778,8 +778,8 @@
         templates: State.templates || [],
         marketing: State.marketing || {},
         article_overrides: State.article_overrides || {},
-        outcomes: JSON.parse(localStorage.getItem('argaman_outcomes') || '[]'),
-        auditLog: JSON.parse(localStorage.getItem('argaman_audit_log') || '[]')
+        outcomes: (window.CRM ? window.CRM.ls.getJSON('argaman_outcomes',[]) : JSON.parse(localStorage.getItem('argaman_outcomes')||'[]')),
+        auditLog: (window.CRM ? window.CRM.ls.getJSON('argaman_audit_log',[]) : JSON.parse(localStorage.getItem('argaman_audit_log')||'[]'))
       };
       const json = JSON.stringify(data, null, 2);
       const blob = new Blob([json], { type:'application/json' });

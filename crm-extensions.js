@@ -51,7 +51,7 @@
   function audit(action, details) {
     if (window.CRMPlus?.Security?.log) return window.CRMPlus.Security.log(action, details);
     try {
-      const log = JSON.parse(localStorage.getItem('argaman_audit_log')||'[]');
+      const log = (window.CRM ? window.CRM.ls.getJSON('argaman_audit_log',[]) : JSON.parse(localStorage.getItem('argaman_audit_log')||'[]'));
       log.push({ t: nowISO(), action, details: details||{} });
       localStorage.setItem('argaman_audit_log', JSON.stringify(log.slice(-1000)));
     } catch(e){}
@@ -840,7 +840,7 @@
       const outstanding = completed.filter(s => !s.paid && s.price).reduce((sum,s) => sum + Number(s.price), 0);
 
       // Outcome data
-      const outcomes = JSON.parse(localStorage.getItem('argaman_outcomes')||'[]').filter(o => o.clientId === clientId);
+      const outcomes = (window.CRM ? window.CRM.ls.getJSON('argaman_outcomes',[]) : JSON.parse(localStorage.getItem('argaman_outcomes')||'[]')).filter(o => o.clientId === clientId);
       const phq = outcomes.filter(o => o.type === 'PHQ-9').sort((a,b) => a.date.localeCompare(b.date)).map(o => ({ label: new Date(o.date).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}), value: o.total }));
       const gad = outcomes.filter(o => o.type === 'GAD-7').sort((a,b) => a.date.localeCompare(b.date)).map(o => ({ label: new Date(o.date).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}), value: o.total }));
       const ors = outcomes.filter(o => o.type === 'ORS').sort((a,b) => a.date.localeCompare(b.date)).map(o => ({ label: new Date(o.date).toLocaleDateString('he-IL',{month:'numeric',day:'numeric'}), value: o.total }));
