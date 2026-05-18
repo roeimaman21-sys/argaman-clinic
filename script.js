@@ -767,6 +767,110 @@ document.addEventListener('DOMContentLoaded', initArticleEnhancements);
   }
 })();
 
+/* =====================================================
+   GA4 CONVERSION EVENTS — automatic tracking
+   ===================================================== */
+(function() {
+  function track(name, params) {
+    if (typeof gtag !== 'function') return;
+    try { gtag('event', name, params || {}); } catch(e){}
+  }
+
+  function init() {
+    // WhatsApp click intent
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href*="wa.me"], a[href*="whatsapp"]');
+      if (a) {
+        track('whatsapp_intent', {
+          page: location.pathname,
+          link_text: a.textContent.trim().slice(0, 60),
+          link_url: a.href
+        });
+      }
+    }, true);
+
+    // Phone tap-to-call
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href^="tel:"]');
+      if (a) {
+        track('phone_intent', {
+          page: location.pathname,
+          phone: a.href.replace('tel:', '')
+        });
+      }
+    }, true);
+
+    // Email
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href^="mailto:"]');
+      if (a) track('email_intent', { page: location.pathname });
+    }, true);
+
+    // External link
+    document.addEventListener('click', e => {
+      const a = e.target.closest('a[href^="http"]');
+      if (!a) return;
+      if (a.host === location.host) return;
+      if (a.href.includes('wa.me') || a.href.includes('whatsapp')) return; // already tracked
+      track('external_link', { url: a.href.slice(0, 200), host: a.host });
+    }, true);
+
+    // Form submit
+    document.addEventListener('submit', e => {
+      const f = e.target;
+      track('form_submit', {
+        page: location.pathname,
+        form_id: f.id || 'unnamed',
+        action: f.action || '(local)'
+      });
+    }, true);
+
+    // Article read depth (50% / 75% / 100%)
+    let depthTracked = { 50: false, 75: false, 100: false };
+    const article = document.querySelector('article');
+    if (article) {
+      const updateDepth = () => {
+        const rect = article.getBoundingClientRect();
+        const total = article.scrollHeight - window.innerHeight;
+        const scrolled = Math.max(0, -rect.top);
+        const pct = total > 0 ? Math.round((scrolled / total) * 100) : 0;
+        [50, 75, 100].forEach(threshold => {
+          if (pct >= threshold && !depthTracked[threshold]) {
+            depthTracked[threshold] = true;
+            track('article_read_depth', { depth: threshold, slug: location.pathname });
+          }
+        });
+      };
+      window.addEventListener('scroll', () => requestAnimationFrame(updateDepth), { passive: true });
+    }
+
+    // Quiz completion (already tracked via gtag inside quiz.html, but ensure)
+    if (location.pathname.includes('quiz.html')) {
+      track('quiz_started');
+    }
+
+    // Time on page milestones (1min, 3min)
+    setTimeout(() => track('engaged_1min', { page: location.pathname }), 60000);
+    setTimeout(() => track('engaged_3min', { page: location.pathname }), 180000);
+
+    // Trust strip view (homepage only)
+    if (document.querySelector('.trust-strip')) {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(en => {
+          if (en.isIntersecting) {
+            track('trust_strip_viewed');
+            obs.disconnect();
+          }
+        });
+      });
+      obs.observe(document.querySelector('.trust-strip'));
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
+})();
+
 /* ─── PWA Service Worker registration ─── */
 if ('serviceWorker' in navigator && location.protocol === 'https:') {
   window.addEventListener('load', () => {
