@@ -124,6 +124,10 @@
         };
         if (labels[key]) {
           showToast(labels[key] + ' (סונכרן ממכשיר אחר)', 'info');
+          // Browser notification if tab is not in focus
+          if (window.PWA && (key === 'leads' || key === 'sessions' || key === 'clients')){
+            window.PWA.showLocalNotification(labels[key], 'עדכון מ-' + (window.CURRENT_USER_DISPLAY_NAME || 'משתמש אחר'), key);
+          }
         }
       }
     } catch(e) {
