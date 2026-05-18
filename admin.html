@@ -36,6 +36,8 @@
   <script src="monthly-report.js" defer></script>
   <script src="undo-tools.js" defer></script>
   <script src="csv-import.js" defer></script>
+  <script src="bi-charts.js" defer></script>
+  <script src="web-push.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -2090,9 +2092,10 @@ renderers.profile = async function(){
 
     <div class="card" style="margin-bottom:1rem">
       <h3 style="color:var(--navy);margin-bottom:.75rem">📲 אפליקציה + התראות</h3>
-      <button class="btn btn-gold" onclick="enableNotifications()" style="margin-bottom:.5rem">🔔 הפעל התראות בדפדפן</button>
+      <button class="btn btn-gold" onclick="enableNotifications()" style="margin-bottom:.5rem">🔔 התראות מקומיות (בכרטיסיה)</button>
+      <button class="btn" style="background:#16a34a;color:#fff;margin-bottom:.5rem" onclick="enableWebPush()">🌐 Web Push (גם כשה-CRM סגור)</button>
       <button class="btn" onclick="installCRMApp()" style="margin-bottom:.5rem">📱 התקן כאפליקציה</button>
-      <p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">לאחר התקנה — אפשר לפתוח את ה-CRM מאייקון על המסך הראשי (גם offline).</p>
+      <p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">Web Push דורש Edge Function (ראה WEB-PUSH-SETUP.md). אחרי הפעלה — תקבל התראות גם כשהדפדפן סגור.</p>
     </div>
 
     <div class="card" style="margin-bottom:1rem">
@@ -2348,6 +2351,18 @@ window.enableNotifications = async function(){
     new Notification('קליניקת ארגמן', { body: 'התראות פעילות! תקבל הודעות על לידים ופגישות חדשות.' });
   } else {
     toast('הרשאה נדחתה. אפשר להפעיל בהגדרות הדפדפן.','warning');
+  }
+};
+
+window.enableWebPush = async function(){
+  if (!window.WebPush){ toast('Web Push לא נטען','error'); return; }
+  toast('מבקש הרשאות...','info');
+  const result = await window.WebPush.subscribe();
+  if (result.success){
+    toast('✅ Web Push פעיל! יישלחו אליך התראות גם כשה-CRM סגור.','success');
+    if (window.Audit) window.Audit.logLogin('2fa_enrolled', null, { type:'web_push' });
+  } else {
+    toast('שגיאה: ' + result.error, 'error');
   }
 };
 
@@ -6687,10 +6702,29 @@ renderers.reports = function(){
       <div class="stat-card green"><div class="stat-label">הכנסה החודש</div><div class="stat-value">₪${monthRev.toLocaleString()}</div></div>
       <div class="stat-card orange"><div class="stat-label">פגישות הושלמו</div><div class="stat-value">${completedTotal}</div><div class="stat-sub">ממוצע ₪${Math.round(avgSessionPrice)}</div></div>
     </div>
+    ${window.BICharts ? `
+    <div class="card mb-3">
+      <h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">💰 הכנסה ב-6 חודשים אחרונים</h3>
+      ${window.BICharts.revenueLineChart(State.sessions || [])}
+    </div>
+    <div class="two-col">
+      <div class="card"><h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">🎯 לידים לפי מקור</h3>${window.BICharts.donutChart(Object.fromEntries(Object.entries(bySource).map(([k,v])=>[LEAD_SOURCE_LABEL[k]||k, v])))}</div>
+      <div class="card"><h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">💬 לידים לפי נושא</h3>${window.BICharts.donutChart(Object.fromEntries(Object.entries(byTopic).map(([k,v])=>[LEAD_TOPIC_LABEL[k]||k, v])))}</div>
+    </div>
+    <div class="card mt-3">
+      <h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">📅 צפיפות פגישות (90 ימים אחרונים)</h3>
+      ${window.BICharts.calendarHeatmap(State.sessions || [])}
+    </div>
+    <div class="two-col mt-3">
+      <div class="card"><h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">🏆 אפקטיביות מקורות (% המרה)</h3>${window.BICharts.sourceEffectiveness(State.leads || [])}</div>
+      <div class="card"><h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">📊 ניתוח Cohort</h3>${window.BICharts.cohortAnalysis(State.leads || [])}</div>
+    </div>
+    ` : `
     <div class="two-col">
       <div class="card"><h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">לידים לפי מקור</h3>${Object.keys(bySource).length?barChart(bySource,'var(--navy)'):'<div class="text-muted text-sm">אין נתונים</div>'}</div>
       <div class="card"><h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">לידים לפי נושא</h3>${Object.keys(byTopic).length?barChart(byTopic,'var(--gold)'):'<div class="text-muted text-sm">אין נתונים</div>'}</div>
     </div>
+    `}
     <div class="card mt-3">
       <h3 style="color:var(--navy);font-weight:700;margin-bottom:1rem">פעילות אחרונה במערכת</h3>
       <div class="timeline scrollarea">
