@@ -2540,6 +2540,44 @@ p:last-child { margin-bottom: 0; }
   .article-toc, #reading-progress { display: none !important; }
 }
 
+/* ─── Mobile Sticky CTA Bar ─── */
+.mobile-sticky-cta {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  padding: 0.5rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom));
+  z-index: 998;
+  gap: 0.5rem;
+}
+.mobile-sticky-cta a {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.95rem;
+  min-height: 44px;
+}
+.mobile-sticky-cta .cta-wa { background: #25D366; color: #fff; }
+.mobile-sticky-cta .cta-call { background: #1B3A6B; color: #fff; }
+@media (max-width: 768px) {
+  .mobile-sticky-cta { display: flex; }
+  body { padding-bottom: 75px; }
+  .whatsapp-fab { bottom: 85px !important; }
+}
+@media print {
+  .mobile-sticky-cta { display: none !important; }
+}
+
 /* ─── PWA Install Banner ─── */
 #pwa-install-banner {
   position: fixed;
