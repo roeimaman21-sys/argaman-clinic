@@ -13,8 +13,23 @@
     if (!('serviceWorker' in navigator)) return;
     if (!location.pathname.endsWith('/admin.html')) return;
     navigator.serviceWorker.register('/sw-admin.js', { scope: '/admin.html' })
-      .then(reg => { _swReady = true; log('SW registered', reg.scope); })
+      .then(reg => {
+        _swReady = true;
+        log('SW registered', reg.scope);
+        // Listen for updates and force activation
+        reg.addEventListener('updatefound', () => {
+          const newSW = reg.installing;
+          if (newSW){
+            newSW.addEventListener('statechange', () => {
+              if (newSW.state === 'installed' && navigator.serviceWorker.controller){
+                log('SW update available — reloading on next nav');
+              }
+            });
+          }
+        });
+      })
       .catch(e => log('SW failed:', e.message));
+    // If controller changes (new SW takes over), don't reload — let the network-first SW handle it
   }
 
   // Catch install prompt

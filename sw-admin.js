@@ -1,25 +1,12 @@
 /* =====================================================
    sw-admin.js — Service Worker for CRM (admin.html only)
-   Provides install prompt, basic offline shell, and push notifications.
+   Network-first for JS/CSS (so updates propagate immediately).
+   Cache-first only for fonts/images.
    ===================================================== */
-const CACHE = 'argaman-crm-v2';
-const SHELL = [
-  '/admin.html',
-  '/admin.webmanifest',
-  '/supabase-lib.js',
-  '/crypto-utils.js',
-  '/cloud-realtime.js',
-  '/role-guard.js',
-  '/audit-log.js',
-  '/presence.js'
-];
+const CACHE = 'argaman-crm-v4';
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then(c => c.addAll(SHELL).catch(()=>{}))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', (event) => {
@@ -32,28 +19,40 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
-  // Only handle same-origin GETs
   if (event.request.method !== 'GET' || url.origin !== location.origin) return;
-  // Don't cache Supabase API
-  if (url.pathname.includes('/rest/v1/') || url.pathname.includes('/auth/v1/')) return;
+  // Never intercept Supabase API
+  if (url.pathname.includes('/rest/v1/') || url.pathname.includes('/auth/v1/') ||
+      url.pathname.includes('/realtime/') || url.pathname.includes('/storage/')) return;
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      const fetcher = fetch(event.request)
-        .then(resp => {
-          if (resp && resp.status === 200 && resp.type === 'basic'){
-            const clone = resp.clone();
-            caches.open(CACHE).then(c => c.put(event.request, clone)).catch(()=>{});
-          }
-          return resp;
-        })
-        .catch(() => cached || caches.match('/admin.html'));
-      return cached || fetcher;
-    })
-  );
+  const isAsset = /\.(js|css|html|webmanifest|json)$/.test(url.pathname);
+  const isMedia = /\.(png|jpg|jpeg|gif|webp|svg|woff2?|ttf|ico)$/.test(url.pathname);
+
+  if (isAsset){
+    // Network-first for code (so deployed fixes propagate)
+    event.respondWith(
+      fetch(event.request).then(resp => {
+        if (resp && resp.status === 200){
+          const clone = resp.clone();
+          caches.open(CACHE).then(c => c.put(event.request, clone)).catch(()=>{});
+        }
+        return resp;
+      }).catch(() => caches.match(event.request).then(c => c || caches.match('/admin.html')))
+    );
+  } else if (isMedia){
+    // Cache-first for media (rarely changes)
+    event.respondWith(
+      caches.match(event.request).then(cached => cached || fetch(event.request).then(resp => {
+        if (resp && resp.status === 200){
+          const clone = resp.clone();
+          caches.open(CACHE).then(c => c.put(event.request, clone)).catch(()=>{});
+        }
+        return resp;
+      }))
+    );
+  }
+  // else: let browser handle normally
 });
 
-// Push notifications (Web Push) — receives push from server
 self.addEventListener('push', (event) => {
   let data = { title: 'קליניקת ארגמן', body: 'יש עדכון חדש' };
   try { if (event.data) data = event.data.json(); } catch(_){}

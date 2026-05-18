@@ -544,6 +544,11 @@ async function supaSignIn(email, password){
   }
   ArgSec.auditLog('supabase_auth_success', email);
   localStorage.setItem(LS_SUPA_EMAIL, email);
+  // 🛡️ Apply role-based UI restrictions FIRST — before anything else
+  // This sets window.CURRENT_USER_ROLE / DISPLAY_NAME so renderers know who they are
+  if (window.RoleGuard && typeof window.RoleGuard.init === 'function') {
+    try { window.RoleGuard.init(); } catch(e) { console.warn('RoleGuard init failed', e); }
+  }
   // Show toast confirming cloud sync is active
   setTimeout(() => {
     if (typeof toast === 'function') toast('✅ סנכרון לענן פעיל — ' + email, 'success');
@@ -554,22 +559,17 @@ async function supaSignIn(email, password){
       try { window.startRealtime(); } catch(e) { console.warn('Realtime start failed', e); }
     }
   }, 1200);
-  // Start presence tracking (who's online now)
-  setTimeout(() => {
+  // Start presence tracking — wait for role first
+  setTimeout(async () => {
+    if (window.RoleGuard?.ready) { try { await window.RoleGuard.ready; } catch(_){} }
     if (window.Presence && typeof window.Presence.start === 'function') {
       try { window.Presence.start(); } catch(e) { console.warn('Presence start failed', e); }
     }
-  }, 2000);
+  }, 1800);
   // Onboarding wizard for first-time users
   setTimeout(() => {
     try { maybeShowOnboarding(); } catch(e) { console.warn('Onboarding failed', e); }
   }, 2500);
-  // Apply role-based UI restrictions (developer can't see PHI)
-  setTimeout(() => {
-    if (window.RoleGuard && typeof window.RoleGuard.init === 'function') {
-      try { window.RoleGuard.init(); } catch(e) { console.warn('RoleGuard init failed', e); }
-    }
-  }, 1500);
   return data;
 }
 
@@ -1545,7 +1545,14 @@ function goto(section){
   currentSection = section;
   document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active', a.dataset.section === section));
   const renderer = renderers[section];
-  if (renderer) renderer();
+  if (renderer){
+    try {
+      const result = renderer();
+      if (result && typeof result.then === 'function') {
+        result.catch(e => console.error('Renderer error for', section, ':', e));
+      }
+    } catch(e){ console.error('Renderer crashed for', section, ':', e); }
+  }
   window.scrollTo(0, 0);
 }
 
@@ -1686,11 +1693,20 @@ function renderDeveloperDashboard(){
 
 /* ─── USER MANAGEMENT (owner only) ───────────── */
 renderers.users = async function(){
+  const root = document.getElementById('main-content');
+  root.innerHTML = '<div class="card"><div style="text-align:center;padding:2rem;color:#6b7280">⏳ טוען הרשאות...</div></div>';
+  // Wait for role to be loaded before checking
+  if (window.RoleGuard && window.RoleGuard.ready) {
+    try { await window.RoleGuard.ready; } catch(_){}
+  }
   if (window.CURRENT_USER_ROLE !== 'owner'){
-    document.getElementById('main-content').innerHTML = '<div class="card"><h2>אין הרשאה</h2><p>רק בעלים יכול לנהל משתמשים.</p></div>';
+    root.innerHTML = `<div class="card">
+      <h2>⛔ אין הרשאה</h2>
+      <p>רק בעלים יכול לנהל משתמשים. תפקידך: ${window.CURRENT_USER_ROLE || '(טרם נטען)'}.</p>
+      <button class="btn" onclick="location.reload()" style="margin-top:.75rem">🔄 רענן</button>
+    </div>`;
     return;
   }
-  const root = document.getElementById('main-content');
   root.innerHTML = `
     <div class="section-header">
       <div>
@@ -1894,10 +1910,27 @@ window.saveUserEdit = async function(userId){
 /* ─── PROFILE (every user) ───────────────────── */
 renderers.profile = async function(){
   const root = document.getElementById('main-content');
-  const user = (await window.supa?.auth?.getUser())?.data?.user;
-  if (!user){ root.innerHTML = '<div class="card">לא מחובר</div>'; return; }
-  const { data: meRow } = await window.supa.from('argaman_users')
-    .select('*').eq('user_id', user.id).maybeSingle();
+  root.innerHTML = '<div class="card"><div style="text-align:center;padding:2rem;color:#6b7280">⏳ טוען פרופיל...</div></div>';
+  // Wait for Supabase to be ready
+  let attempts = 0;
+  while (!window.supa && attempts < 20){ await new Promise(r=>setTimeout(r,150)); attempts++; }
+  if (!window.supa){
+    root.innerHTML = '<div class="card"><h2>⚠️ Supabase לא זמין</h2><p>נסה לרענן את הדף.</p><button class="btn" onclick="location.reload()">🔄 רענן</button></div>'; return;
+  }
+  let user = null;
+  try {
+    const { data } = await window.supa.auth.getUser();
+    user = data?.user || null;
+  } catch(e){ console.error('profile getUser error:', e); }
+  if (!user){
+    root.innerHTML = '<div class="card"><h2>⚠️ לא מחובר</h2><p>הסשן פג. <a onclick="location.reload()" style="color:#1B3A6B;cursor:pointer;text-decoration:underline">התחבר שוב</a>.</p></div>'; return;
+  }
+  let meRow = null;
+  try {
+    const res = await window.supa.from('argaman_users').select('*').eq('user_id', user.id).maybeSingle();
+    meRow = res.data;
+    if (res.error) console.warn('profile argaman_users error:', res.error);
+  } catch(e){ console.error('profile fetch error:', e); }
   const roleLabels = { owner:'בעלים', staff:'צוות', developer:'מפתח' };
   const roleColors = { owner:'#1B3A6B', staff:'#16a34a', developer:'#7c3aed' };
   root.innerHTML = `
@@ -2245,8 +2278,11 @@ async function loadMyLoginHistory(){
 
 /* ─── LOGIN HISTORY (owner — sees all) ─── */
 renderers['login-history'] = async function(){
+  const root = document.getElementById('main-content');
+  root.innerHTML = '<div class="card">⏳ טוען...</div>';
+  if (window.RoleGuard && window.RoleGuard.ready) { try { await window.RoleGuard.ready; } catch(_){} }
   if (window.CURRENT_USER_ROLE !== 'owner'){
-    document.getElementById('main-content').innerHTML = '<div class="card"><h2>אין הרשאה</h2></div>'; return;
+    root.innerHTML = '<div class="card"><h2>⛔ אין הרשאה</h2><p>רק בעלים רואה היסטוריית כל המשתמשים.</p></div>'; return;
   }
   document.getElementById('main-content').innerHTML = `
     <div class="section-header">
@@ -2284,8 +2320,11 @@ renderers['login-history'] = async function(){
 
 /* ─── ACTION LOG (owner — sees all CRUD) ─── */
 renderers['action-log'] = async function(){
+  const root = document.getElementById('main-content');
+  root.innerHTML = '<div class="card">⏳ טוען...</div>';
+  if (window.RoleGuard && window.RoleGuard.ready) { try { await window.RoleGuard.ready; } catch(_){} }
   if (window.CURRENT_USER_ROLE !== 'owner'){
-    document.getElementById('main-content').innerHTML = '<div class="card"><h2>אין הרשאה</h2></div>'; return;
+    root.innerHTML = '<div class="card"><h2>⛔ אין הרשאה</h2></div>'; return;
   }
   document.getElementById('main-content').innerHTML = `
     <div class="section-header">
@@ -2442,7 +2481,17 @@ function renderDashboardCharts(){
   `;
 }
 
-renderers.dashboard = function(){
+renderers.dashboard = async function(){
+  // Wait briefly for role to load before deciding which dashboard to render
+  if (!window.CURRENT_USER_ROLE && window.RoleGuard && window.RoleGuard.ready){
+    document.getElementById('main-content').innerHTML = '<div style="text-align:center;padding:3rem;color:#6b7280">⏳ טוען...</div>';
+    try {
+      await Promise.race([
+        window.RoleGuard.ready,
+        new Promise(r => setTimeout(r, 3000)) // 3s max
+      ]);
+    } catch(_){}
+  }
   // Developer mode — show a totally different dashboard (no PHI)
   if (window.CURRENT_USER_ROLE === 'developer' || window.__DEV_RESTRICTED){
     return renderDeveloperDashboard();

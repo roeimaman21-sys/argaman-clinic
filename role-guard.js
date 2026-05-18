@@ -3,23 +3,19 @@
    קליניקת ארגמן · הסתרת UI לפי role
    ─────────────────────────────────────────────────────
    After Supabase Auth login, fetches role from argaman_users.
-   For 'developer' role: hides PHI-related sidebar items + sections.
-   For 'owner' / 'staff': shows full UI.
+   Exposes window.RoleGuard.ready (Promise) so renderers can wait.
    ===================================================== */
 (function(){
   'use strict';
 
-  // Sidebar items that should be HIDDEN for developer role (contain PHI)
-  const PHI_SIDEBAR_SECTIONS = [
-    'leads',         // 🎯 לידים
-    'clients',       // 👥 לקוחות
-    'sessions',      // 📅 פגישות ולוח שנה
-    'financial',     // 💵 פיננסי
-    'funnel',        // 📈 משפך המרה
-    'audit'          // 📋 יומן פעולות (contains client names in entries)
-  ];
+  // Initialize safe defaults so dependent code doesn't see undefined
+  if (typeof window.CURRENT_USER_ROLE === 'undefined') window.CURRENT_USER_ROLE = null;
+  if (typeof window.CURRENT_USER_DISPLAY_NAME === 'undefined') window.CURRENT_USER_DISPLAY_NAME = null;
+  if (typeof window.CURRENT_USER_CAN_SEE_PHI === 'undefined') window.CURRENT_USER_CAN_SEE_PHI = null;
 
-  // Sidebar items hidden for developer role by onclick handler (no data-section)
+  const PHI_SIDEBAR_SECTIONS = [
+    'leads', 'clients', 'sessions', 'financial', 'funnel', 'audit'
+  ];
   const PHI_ONCLICK_PATTERNS = [
     'openClientPortal', 'openSessionNotes', 'openTreatmentPlan',
     'openOutcomeHistory', 'openRiskAssessment', 'openGenogram',
@@ -30,6 +26,10 @@
 
   let _currentRole = null;
   let _currentEmail = null;
+
+  // Promise that resolves when role is loaded (or fails)
+  let _readyResolve = null;
+  const _ready = new Promise(r => { _readyResolve = r; });
 
   function log(...args) { console.log('[RoleGuard]', ...args); }
 
@@ -45,89 +45,77 @@
         return null;
       }
       _currentEmail = userData.user.email;
-
-      // Try to fetch role from argaman_users table
       const { data, error } = await window.supa
         .from('argaman_users')
         .select('role, can_see_phi, display_name')
         .eq('user_id', userData.user.id)
         .maybeSingle();
-
       if (error) {
-        // If table doesn't exist yet (pre-migration), fail gracefully → default to owner
-        log('argaman_users not configured, defaulting to owner. Error:', error.message);
-        return { role: 'owner', can_see_phi: true };
+        log('argaman_users error → defaulting to owner. Error:', error.message);
+        return { role: 'owner', can_see_phi: true, display_name: userData.user.email?.split('@')[0] };
       }
-
       if (!data) {
-        // User authenticated but not in argaman_users → restrict
-        log('User authenticated but not in argaman_users — restricting to developer view');
-        return { role: 'developer', can_see_phi: false };
+        log('User authenticated but not in argaman_users — auto-creating as owner (first time)');
+        // Try to auto-insert this user as owner if they're the only authenticated user
+        try {
+          const insertRes = await window.supa.from('argaman_users').insert({
+            user_id: userData.user.id,
+            email: userData.user.email,
+            role: 'owner',
+            display_name: userData.user.email?.split('@')[0] || 'משתמש',
+            can_see_phi: true
+          }).select().single();
+          if (insertRes.data) return insertRes.data;
+        } catch(e) { log('auto-insert failed:', e.message); }
+        return { role: 'developer', can_see_phi: false, display_name: userData.user.email?.split('@')[0] };
       }
-
-      log('Role loaded:', data.role, 'can_see_phi:', data.can_see_phi);
+      log('Role loaded:', data.role, 'display_name:', data.display_name);
       return data;
     } catch(e) {
-      log('fetchRole error:', e.message);
-      // Network or other error — be safe, restrict
+      log('fetchRole exception:', e.message);
       return null;
     }
   }
 
   function applyDeveloperRestrictions() {
     log('Applying developer restrictions');
-
-    // 1. Hide sidebar items by data-section
     PHI_SIDEBAR_SECTIONS.forEach(section => {
       const el = document.querySelector(`.nav-link[data-section="${section}"]`);
       if (el) el.style.display = 'none';
     });
-
-    // 2. Hide sidebar items by onclick handler containing PHI function names
     document.querySelectorAll('.nav-link[onclick]').forEach(el => {
       const onclickAttr = el.getAttribute('onclick') || '';
       if (PHI_ONCLICK_PATTERNS.some(pattern => onclickAttr.includes(pattern))) {
         el.style.display = 'none';
       }
     });
-
-    // 3. Disable PHI rendering in dashboard
     window.__DEV_RESTRICTED = true;
-
-    // 4. Show banner
     if (!document.getElementById('dev-mode-banner')) {
       const banner = document.createElement('div');
       banner.id = 'dev-mode-banner';
       banner.style.cssText = 'background:#fef3c7;border-bottom:2px solid #f59e0b;color:#854d0e;padding:.5rem 1rem;text-align:center;font-size:.85rem;font-weight:600;z-index:50';
-      banner.innerHTML = `🛡️ מצב מפתח — אינך רואה מידע רפואי מוגן (לקוחות, לידים, פגישות). זאת הפרדה לפי <a href="privacy.html" target="_blank" style="color:#1B3A6B;text-decoration:underline">תיקון 13</a> לחוק הגנת הפרטיות.`;
+      banner.innerHTML = `🛡️ מצב מפתח — אינך רואה מידע רפואי מוגן. הפרדה לפי <a href="privacy.html" target="_blank" style="color:#1B3A6B;text-decoration:underline">תיקון 13</a>.`;
       const topbar = document.querySelector('.topbar');
-      if (topbar) {
-        topbar.parentNode.insertBefore(banner, topbar.nextSibling);
-      } else {
-        document.body.insertBefore(banner, document.body.firstChild);
-      }
+      if (topbar) topbar.parentNode.insertBefore(banner, topbar.nextSibling);
+      else document.body.insertBefore(banner, document.body.firstChild);
     }
-
-    // 5. Auto-redirect from PHI sections if landed there
     setTimeout(() => {
       if (typeof window.currentSection !== 'undefined' &&
           PHI_SIDEBAR_SECTIONS.includes(window.currentSection)) {
         if (typeof window.goto === 'function') window.goto('dashboard');
       }
     }, 500);
-
     log('✓ Developer UI restrictions applied');
   }
 
   function showRoleBadge(role, email) {
-    // Add a small badge in the topbar showing current user
     const topbar = document.querySelector('.topbar-actions');
-    if (!topbar || document.getElementById('role-badge')) return;
-
+    if (!topbar) return;
+    document.getElementById('role-badge')?.remove();
     const colors = {
-      owner: { bg: '#1B3A6B', label: 'בעלים' },
+      owner:     { bg: '#1B3A6B', label: 'בעלים' },
       developer: { bg: '#7c3aed', label: 'מפתח' },
-      staff: { bg: '#16a34a', label: 'צוות' }
+      staff:     { bg: '#16a34a', label: 'צוות' }
     };
     const c = colors[role] || colors.developer;
     const badge = document.createElement('span');
@@ -142,68 +130,69 @@
   async function initRoleCheck() {
     log('Starting role check');
     const result = await fetchRole();
-
     if (!result) {
-      // No role data — default to most restrictive
-      log('No role data — restricting');
-      _currentRole = 'developer';
-      applyDeveloperRestrictions();
-      showRoleBadge('developer', _currentEmail || 'guest');
+      log('No role data — keeping role as null, NOT applying restrictions yet');
+      window.CURRENT_USER_ROLE = null;
+      if (_readyResolve){ _readyResolve(false); _readyResolve = null; }
       return;
     }
-
     _currentRole = result.role;
     window.CURRENT_USER_ROLE = result.role;
     window.CURRENT_USER_CAN_SEE_PHI = result.can_see_phi;
-    window.CURRENT_USER_DISPLAY_NAME = result.display_name || _currentEmail || 'משתמש';
-
+    window.CURRENT_USER_DISPLAY_NAME = result.display_name || _currentEmail?.split('@')[0] || 'משתמש';
+    log('Set window.CURRENT_USER_ROLE =', result.role, 'DISPLAY_NAME =', window.CURRENT_USER_DISPLAY_NAME);
     showRoleBadge(result.role, _currentEmail);
-
-    // Hide owner-only items for non-owners
     if (result.role !== 'owner'){
       document.querySelectorAll('[data-owner-only]').forEach(el => { el.style.display = 'none'; });
+    } else {
+      document.querySelectorAll('[data-owner-only]').forEach(el => { el.style.display = ''; });
     }
-
     if (result.role === 'developer' || !result.can_see_phi) {
       applyDeveloperRestrictions();
     } else {
       log(`Owner/staff role — full access for ${_currentEmail}`);
     }
-
-    // Re-render current section now that role/display name is known
+    // Resolve ready promise
+    if (_readyResolve){ _readyResolve(true); _readyResolve = null; }
+    // Re-render current section
     try {
       if (typeof window.currentSection !== 'undefined' &&
           typeof window.renderers !== 'undefined' &&
           window.renderers[window.currentSection]){
-        window.renderers[window.currentSection]();
+        const r = window.renderers[window.currentSection];
+        const out = r();
+        if (out && typeof out.then === 'function') out.catch(e=>log('re-render error:', e.message));
       }
     } catch(e){ log('re-render error:', e.message); }
   }
 
-  // Wait for supa + auth to be ready, then check role
   function waitForAuth(attempts) {
     if (window.supa && window.supa.auth) {
-      // Wait a bit more for auth state to settle
-      setTimeout(() => initRoleCheck().catch(e => log('initRoleCheck error:', e)), 500);
+      setTimeout(() => initRoleCheck().catch(e => {
+        log('initRoleCheck error:', e);
+        if (_readyResolve){ _readyResolve(false); _readyResolve = null; }
+      }), 300);
       return;
     }
     if (attempts > 60) {
       log('Auth never appeared');
+      if (_readyResolve){ _readyResolve(false); _readyResolve = null; }
       return;
     }
-    setTimeout(() => waitForAuth(attempts + 1), 300);
+    setTimeout(() => waitForAuth(attempts + 1), 200);
   }
 
-  // Expose
   window.RoleGuard = {
-    init: () => waitForAuth(0),
-    getCurrentRole: () => _currentRole,
+    ready: _ready,
+    init: () => { waitForAuth(0); return _ready; },
     refresh: initRoleCheck,
-    isPHIRestricted: () => _currentRole === 'developer' || window.__DEV_RESTRICTED
+    getCurrentRole: () => _currentRole,
+    isPHIRestricted: () => _currentRole === 'developer' || window.__DEV_RESTRICTED,
+    isOwner: () => _currentRole === 'owner',
+    isStaffOrOwner: () => _currentRole === 'owner' || _currentRole === 'staff'
   };
 
-  // Listen for auth state changes (login/logout)
   document.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => waitForAuth(0), 2000);
+    setTimeout(() => waitForAuth(0), 1500);
   });
 })();
