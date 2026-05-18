@@ -468,6 +468,7 @@ const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 window.SUPA_URL = SUPA_URL;
 window.SUPA_ANON_KEY = SUPA_KEY;
 let supa = null;
+window.supa = null; // exposed for external modules; set when client is created
 window.cloudSuppress = false;
 window.cloudReady = false;
 const CLOUD_KEYS = ['leads','clients','sessions','articles','testimonials','workshops','prices','videos','faqs','faq_overrides','settings','templates','activity','marketing','article_overrides'];
@@ -500,6 +501,8 @@ async function initSupa(){
       detectSessionInUrl: false
     }
   });
+  // CRITICAL: expose to other modules (role-guard, audit-log, cloud-realtime, presence)
+  window.supa = supa;
   return supa;
 }
 

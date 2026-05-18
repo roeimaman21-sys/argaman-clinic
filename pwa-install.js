@@ -8,28 +8,21 @@
 
   function log(...a){ console.log('[PWA]', ...a); }
 
-  // Register service worker (admin.html only)
-  function registerSW(){
+  // KILL switch — proactively unregister any existing SW + clear caches
+  async function killOldSW(){
     if (!('serviceWorker' in navigator)) return;
-    if (!location.pathname.endsWith('/admin.html')) return;
-    navigator.serviceWorker.register('/sw-admin.js', { scope: '/admin.html' })
-      .then(reg => {
-        _swReady = true;
-        log('SW registered', reg.scope);
-        // Listen for updates and force activation
-        reg.addEventListener('updatefound', () => {
-          const newSW = reg.installing;
-          if (newSW){
-            newSW.addEventListener('statechange', () => {
-              if (newSW.state === 'installed' && navigator.serviceWorker.controller){
-                log('SW update available — reloading on next nav');
-              }
-            });
-          }
-        });
-      })
-      .catch(e => log('SW failed:', e.message));
-    // If controller changes (new SW takes over), don't reload — let the network-first SW handle it
+    try {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const reg of regs){ await reg.unregister(); log('Unregistered SW:', reg.scope); }
+      if ('caches' in window){
+        const keys = await caches.keys();
+        for (const k of keys){ await caches.delete(k); log('Deleted cache:', k); }
+      }
+    } catch(e){ log('killOldSW error:', e.message); }
+  }
+  function registerSW(){
+    // SW disabled — instead, kill any existing one to prevent stale content
+    killOldSW();
   }
 
   // Catch install prompt

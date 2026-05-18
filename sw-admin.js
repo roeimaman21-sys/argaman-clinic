@@ -1,73 +1,20 @@
 /* =====================================================
-   sw-admin.js — Service Worker for CRM (admin.html only)
-   Network-first for JS/CSS (so updates propagate immediately).
-   Cache-first only for fonts/images.
+   sw-admin.js — DISABLED (kill switch)
+   This SW immediately unregisters itself and clears all caches.
+   Reason: previous versions caused stale-content issues.
    ===================================================== */
-const CACHE = 'argaman-crm-v4';
-
-self.addEventListener('install', (event) => {
-  event.waitUntil(self.skipWaiting());
+self.addEventListener('install', (e) => { self.skipWaiting(); });
+self.addEventListener('activate', (e) => {
+  e.waitUntil((async () => {
+    // Delete ALL caches
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => caches.delete(k)));
+    // Unregister this SW so the next page load is fully network-based
+    await self.registration.unregister();
+    // Tell any active clients to reload
+    const clients = await self.clients.matchAll({ type: 'window' });
+    clients.forEach(c => c.navigate(c.url));
+  })());
 });
-
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener('fetch', (event) => {
-  const url = new URL(event.request.url);
-  if (event.request.method !== 'GET' || url.origin !== location.origin) return;
-  // Never intercept Supabase API
-  if (url.pathname.includes('/rest/v1/') || url.pathname.includes('/auth/v1/') ||
-      url.pathname.includes('/realtime/') || url.pathname.includes('/storage/')) return;
-
-  const isAsset = /\.(js|css|html|webmanifest|json)$/.test(url.pathname);
-  const isMedia = /\.(png|jpg|jpeg|gif|webp|svg|woff2?|ttf|ico)$/.test(url.pathname);
-
-  if (isAsset){
-    // Network-first for code (so deployed fixes propagate)
-    event.respondWith(
-      fetch(event.request).then(resp => {
-        if (resp && resp.status === 200){
-          const clone = resp.clone();
-          caches.open(CACHE).then(c => c.put(event.request, clone)).catch(()=>{});
-        }
-        return resp;
-      }).catch(() => caches.match(event.request).then(c => c || caches.match('/admin.html')))
-    );
-  } else if (isMedia){
-    // Cache-first for media (rarely changes)
-    event.respondWith(
-      caches.match(event.request).then(cached => cached || fetch(event.request).then(resp => {
-        if (resp && resp.status === 200){
-          const clone = resp.clone();
-          caches.open(CACHE).then(c => c.put(event.request, clone)).catch(()=>{});
-        }
-        return resp;
-      }))
-    );
-  }
-  // else: let browser handle normally
-});
-
-self.addEventListener('push', (event) => {
-  let data = { title: 'קליניקת ארגמן', body: 'יש עדכון חדש' };
-  try { if (event.data) data = event.data.json(); } catch(_){}
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: '/icons/icon-192.png',
-      badge: '/icons/icon-192.png',
-      tag: data.tag || 'argaman',
-      data: data
-    })
-  );
-});
-
-self.addEventListener('notificationclick', (event) => {
-  event.notification.close();
-  event.waitUntil(clients.openWindow('/admin.html'));
-});
+// Pass-through fetch — no interception at all
+self.addEventListener('fetch', () => {});
