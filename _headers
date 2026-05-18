@@ -22,7 +22,10 @@
   Expires: 0
   X-Frame-Options: DENY
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: blob:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://formsubmit.co https://api.qrserver.com https://cdn.jsdelivr.net https://unpkg.com; frame-ancestors 'none'; form-action 'self' https://formsubmit.co; base-uri 'self'; object-src 'none';
-  Clear-Site-Data: "cache"
+  # Note: Removed Clear-Site-Data — was forcing re-download of all JS modules
+  # on every admin load. admin.html itself is no-cache (private data),
+  # but module files can be cached safely (they contain only code, no data).
+  Permissions-Policy: camera=(self), microphone=(self), geolocation=(), payment=(), interest-cohort=()
 
 # Crypto utilities — strict
 /crypto-utils.js

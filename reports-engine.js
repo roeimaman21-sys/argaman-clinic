@@ -1156,30 +1156,96 @@
 
     open(id) {
       const r = HUB.find(x => x.id === id);
-      if (!r) return;
+      if (!r) return console.warn('[Reports] report not found:', id);
       const view = document.getElementById('rep-view');
       if (!view) {
-        // Modal not open — open hub first then run
         this.hub();
         setTimeout(() => this.open(id), 200);
         return;
       }
+      // Loading state for instant feedback
       view.innerHTML = `
         <button onclick="ReportsEngine.hub()" style="padding:.4rem .9rem;background:#f3f4f6;color:#1B3A6B;border:0;border-radius:8px;cursor:pointer;font-weight:600;margin-bottom:1rem">← חזרה למרכז</button>
-        <div id="rep-content"></div>
+        <div id="rep-content">
+          <div style="text-align:center;padding:3rem 1rem">
+            <div style="display:inline-block;width:40px;height:40px;border:4px solid #f3f4f6;border-top-color:#1B3A6B;border-radius:50%;animation:repspin 0.8s linear infinite"></div>
+            <p style="margin-top:1rem;color:#6b7280">מחשב נתונים...</p>
+            <style>@keyframes repspin{to{transform:rotate(360deg)}}</style>
+          </div>
+        </div>
         <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1px solid #e5e7eb">
           <button onclick="ReportsEngine.printCurrent('${id}')" style="padding:.5rem 1rem;background:#1B3A6B;color:#fff;border:0;border-radius:8px;cursor:pointer;font-weight:600">🖨️ הדפס / PDF</button>
         </div>
       `;
-      r.fn(document.getElementById('rep-content'));
+      // Render after paint (instant visual feedback)
+      requestAnimationFrame(() => {
+        const root = document.getElementById('rep-content');
+        if (!root) return;
+        try {
+          // Check if we have data to render
+          const hasClients = (State.clients||[]).length > 0;
+          const hasSessions = (State.sessions||[]).length > 0;
+          const hasLeads = (State.leads||[]).length > 0;
+          const needsData = ['ltv','inactive','retention','noshows','pnl','aging','mix','mrr','funnel','capacity','time','clinical'];
+          if (needsData.includes(id) && !hasClients && !hasSessions && !hasLeads) {
+            root.innerHTML = this._emptyState(r);
+            return;
+          }
+          r.fn(root);
+          // Verify it rendered something
+          if (!root.innerHTML.trim() || root.innerHTML.length < 100) {
+            root.innerHTML = this._emptyState(r);
+          }
+        } catch(err) {
+          console.error('[Reports] error rendering', id, err);
+          root.innerHTML = `
+            <div style="background:#fee2e2;border-right:4px solid #dc2626;padding:1.5rem;border-radius:8px">
+              <h3 style="color:#991b1b;margin-bottom:.5rem">⚠️ שגיאה בהפקת הדוח</h3>
+              <p style="color:#7f1d1d;font-size:.9rem">${esc(err.message||'שגיאה לא ידועה')}</p>
+              <details style="margin-top:.5rem"><summary style="cursor:pointer;color:#6b7280;font-size:.85rem">פרטים טכניים</summary>
+                <pre style="background:#fff;padding:.5rem;border-radius:4px;margin-top:.4rem;font-size:.75rem;overflow:auto;max-height:200px">${esc(err.stack||'')}</pre>
+              </details>
+              <button onclick="ReportsEngine.hub()" style="margin-top:.75rem;padding:.5rem 1rem;background:#1B3A6B;color:#fff;border:0;border-radius:8px;cursor:pointer">← חזור למרכז</button>
+            </div>
+          `;
+        }
+      });
+    },
+
+    _emptyState(r) {
+      return `
+        <div style="text-align:center;padding:3rem 1.5rem;background:#f9fafb;border-radius:12px">
+          <div style="font-size:4rem;opacity:.4;margin-bottom:1rem">${esc(r.icon)}</div>
+          <h3 style="color:#1B3A6B;margin-bottom:.5rem">${esc(r.name)}</h3>
+          <p style="color:#6b7280;margin-bottom:1.5rem">${esc(r.desc)}</p>
+          <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:8px;display:inline-block;text-align:right;max-width:480px">
+            <strong style="color:#1B3A6B">🎯 כדי לראות נתונים בדוח הזה, צריך:</strong>
+            <ul style="margin:.5rem 0 0;padding-right:1.5rem;color:#374151;line-height:1.8">
+              <li>להוסיף לקוחות (סייד-בר → 👥 לקוחות)</li>
+              <li>לתעד פגישות עם תאריך + מחיר + סטטוס "הושלמה"</li>
+              <li>לסמן ✓ "שולם" על פגישות ששולמו</li>
+              <li>להזין לידים עם תאריך ומקור הגעה</li>
+            </ul>
+            <p style="margin-top:.75rem;font-size:.85rem;color:#6b7280">הדוח יתעדכן אוטומטית ברגע שיהיו נתונים.</p>
+          </div>
+        </div>
+      `;
     },
 
     printCurrent(id) {
       const r = HUB.find(x => x.id === id);
       if (!r) return;
-      const tmp = document.createElement('div');
-      r.fn(tmp);
-      printReport(r.name, tmp.innerHTML);
+      try {
+        const tmp = document.createElement('div');
+        r.fn(tmp);
+        if (!tmp.innerHTML.trim()) {
+          tmp.innerHTML = this._emptyState(r);
+        }
+        printReport(r.name, tmp.innerHTML);
+      } catch(err) {
+        console.error('[Reports] print error', err);
+        alert('שגיאה בהדפסת הדוח: ' + err.message);
+      }
     },
 
     print(title, _, id) { this.printCurrent(id); },
