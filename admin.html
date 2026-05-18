@@ -357,21 +357,22 @@
 </head>
 <body>
 
-<!-- ═══════════════════ LOGIN ═══════════════════ -->
+<!-- ═══════════════════ LOGIN — Supabase Auth (unified, synced across devices) ═══════════════════ -->
 <div id="login-screen" class="login-bg">
   <form class="login-card" onsubmit="event.preventDefault();doLogin();" autocomplete="off">
     <div class="login-logo">🔒</div>
     <h1>פאנל ניהול מאובטח</h1>
-    <p style="font-size:.85rem;color:#6b7280">קליניקת ארגמן · גישה מורשית בלבד · הצפנת AES-256</p>
-    <input id="login-pass" type="password" class="login-input" placeholder="סיסמה" autocomplete="current-password" required minlength="1">
+    <p style="font-size:.85rem;color:#6b7280">קליניקת ארגמן · גישה מורשית בלבד · Supabase Auth + AES-256</p>
+    <input id="login-email" type="email" class="login-input" placeholder="אימייל" autocomplete="username" required style="margin-bottom:.5rem;text-align:left;direction:ltr;letter-spacing:0">
+    <input id="login-pass" type="password" class="login-input" placeholder="סיסמה" autocomplete="current-password" required minlength="6">
     <button type="submit" class="login-btn" id="login-btn-el">כניסה מאובטחת</button>
     <div id="login-error" class="login-error"></div>
     <div style="text-align:center;margin-top:1rem">
-      <a href="javascript:openForgotPasswordFlow()" style="font-size:.85rem;color:#1B3A6B;text-decoration:underline">🔑 שכחתי סיסמה</a>
+      <a href="javascript:supaResetPassword()" style="font-size:.85rem;color:#1B3A6B;text-decoration:underline">🔑 שכחתי סיסמה (Supabase יישלח מייל)</a>
     </div>
     <div id="login-info" style="font-size:.75rem;color:#6b7280;margin-top:.75rem;line-height:1.5">
-      <p style="margin:.25rem 0">⚠️ ניסיונות כושלים נרשמים ביומן.</p>
-      <p style="margin:.25rem 0">🛡️ הסיסמה אינה נשמרת בטקסט גלוי (PBKDF2 + AES-GCM 256-bit).</p>
+      <p style="margin:.25rem 0">🛡️ סיסמה אחת לכל המכשירים (Supabase Auth + JWT).</p>
+      <p style="margin:.25rem 0">📊 גישה לפי תפקיד — מידע רפואי מוגן ע"י RLS.</p>
     </div>
   </form>
 </div>
@@ -494,6 +495,33 @@ async function initSupa(){
 
 /* Supabase Auth — sign in with email + password */
 const LS_SUPA_EMAIL = 'argaman_supa_email';
+
+// Forgot password via Supabase Auth — sends email reset link
+async function supaResetPassword(){
+  const email = (document.getElementById('login-email')?.value || '').trim() || prompt('הזן את האימייל שלך לאיפוס סיסמה:');
+  if (!email) return;
+  try {
+    if (!supa) await initSupa();
+    if (!supa) { alert('הספרייה לא נטענה — בדוק חיבור'); return; }
+    const { error } = await supa.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + '/admin.html'
+    });
+    if (error) throw error;
+    alert('✉ נשלח אליך מייל עם קישור לאיפוס סיסמה. בדוק תיבת דואר נכנס וגם ספאם.');
+  } catch(e) {
+    alert('שגיאה: ' + e.message);
+  }
+}
+
+// Pre-fill email from previous login
+document.addEventListener('DOMContentLoaded', () => {
+  const emailEl = document.getElementById('login-email');
+  if (emailEl) {
+    const saved = localStorage.getItem('argaman_supa_email');
+    if (saved) emailEl.value = saved;
+    else emailEl.focus();
+  }
+});
 
 async function supaSignIn(email, password){
   if (!supa) await initSupa();
@@ -844,11 +872,18 @@ function logActivity(text){
 async function doLogin(){
   const btn = document.getElementById('login-btn-el');
   const err = document.getElementById('login-error');
+  const emailEl = document.getElementById('login-email');
   const passEl = document.getElementById('login-pass');
+  const email = emailEl.value.trim().toLowerCase();
   const pw = passEl.value;
   err.textContent = '';
 
-  // 1) Rate limit check
+  if (!email || !pw){
+    err.textContent = 'יש למלא אימייל וסיסמה';
+    return;
+  }
+
+  // 1) Rate limit check (local, additional defense)
   const rl = ArgSec.isLockedOut();
   if (rl.locked){
     const mins = Math.ceil(rl.remainingMs / 60000);
@@ -859,77 +894,42 @@ async function doLogin(){
 
   btn.disabled = true; btn.textContent = 'מאמת...';
   try {
-    // 2) Verify password (hashed PBKDF2)
-    let ok = false;
-    const storedHash = localStorage.getItem(LS_PASS_HASH);
-    const migrated = localStorage.getItem(LS_PASS_MIGRATED) === '1';
-
-    if (storedHash) {
-      ok = await ArgSec.verifyPassword(pw, storedHash);
-    } else if (!migrated) {
-      // First login — accept default OR legacy stored plain password, then migrate to hash
-      const legacy = localStorage.getItem(LS.pass);
-      if (pw === (legacy || DEFAULT_PASS)){
-        ok = true;
-        const newHash = await ArgSec.hashPassword(pw);
-        localStorage.setItem(LS_PASS_HASH, newHash);
-        localStorage.setItem(LS_PASS_MIGRATED, '1');
-        localStorage.removeItem(LS.pass); // remove plaintext
-        ArgSec.auditLog('password_migrated_to_hash');
-      }
+    // 2) Authenticate via Supabase Auth (SINGLE source of truth, synced across devices)
+    if (!supa) await initSupa();
+    if (!supa){
+      err.textContent = 'הספרייה לא נטענה — בדוק חיבור או כבה ad-blocker';
+      return;
     }
 
-    if (!ok){
+    let supaData;
+    try {
+      supaData = await supaSignIn(email, pw);
+    } catch (e) {
       const rec = ArgSec.recordFailedLogin();
-      ArgSec.auditLog('login_failed', `attempt ${rec.count}`);
       const remaining = 5 - rec.count;
       if (rec.count >= 5){
         err.textContent = '🔒 חסום ל-15 דקות עקב 5 ניסיונות כושלים.';
       } else {
-        err.textContent = `✗ סיסמה שגויה (נותרו ${remaining} ניסיונות)`;
+        err.textContent = `✗ אימייל או סיסמה שגויים (נותרו ${remaining} ניסיונות)`;
       }
       passEl.value = ''; passEl.focus();
       return;
     }
 
-    // 3) Unwrap DEK with password-derived KEK
-    SESSION_ENC_KEY = await unlockDEKWithPassword(pw);
-    if (!SESSION_ENC_KEY){
-      // Legacy path or first-time setup of DEK
-      const encSalt = localStorage.getItem('argaman_enc_salt');
-      if (encSalt){
-        // Migrate old direct-derived key to new DEK pattern
-        const derived = await ArgSec.deriveEncKey(pw, encSalt);
-        SESSION_ENC_KEY = derived.key;
-        // Defer: re-wrap as DEK on next save
-        setTimeout(()=>migrateToDEKPattern(pw), 1500);
-      } else {
-        // First time ever — generate DEK + wrap with password
-        SESSION_ENC_KEY = await setupNewDEK(pw);
-      }
+    // 3) Derive DEK from password — same on every device since Supabase password is unified
+    // We use Supabase user ID as the salt — deterministic + unique per user
+    try {
+      const userId = supaData?.user?.id || email;
+      const saltB64 = btoa(unescape(encodeURIComponent('argaman:' + userId))).slice(0, 24);
+      const derived = await ArgSec.deriveEncKey(pw, saltB64);
+      SESSION_ENC_KEY = derived.key;
+    } catch(e) {
+      console.warn('[SEC] DEK derivation failed:', e.message);
+      // Continue — encrypted data won't be readable but UI works
     }
 
-    // 4) Supabase Auth — connect to cloud database
-    try {
-      const supaPassword = localStorage.getItem('argaman_supa_pw_cached');
-      const supaEmail = getSupaEmail();
-      if (supaPassword){
-        // Try cached Supabase password first (encrypted)
-        try {
-          const decrypted = await ArgSec.decryptJSON(supaPassword, SESSION_ENC_KEY);
-          await supaSignIn(supaEmail, decrypted);
-        } catch(e){
-          console.warn('[SEC] Cached Supabase password failed:', e.message);
-          await promptSupabaseAuth();
-        }
-      } else {
-        // First time — prompt for Supabase credentials
-        await promptSupabaseAuth();
-      }
-    } catch (e){
-      console.warn('[Cloud] Supabase Auth not configured yet — proceeding in offline mode');
-      // Continue without cloud (offline mode)
-    }
+    // Cache email for next login
+    localStorage.setItem(LS_SUPA_EMAIL, email);
 
     // 5) Mark session authed
     ArgSec.recordSuccessfulLogin();
