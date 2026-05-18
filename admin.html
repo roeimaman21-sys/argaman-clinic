@@ -7,7 +7,7 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-  <link rel="manifest" href="site.webmanifest">
+  <link rel="manifest" href="admin.webmanifest">
   <meta name="theme-color" content="#1B3A6B">
   <link rel="dns-prefetch" href="https://www.googletagmanager.com">
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
@@ -26,6 +26,8 @@
   <script src="crm-archive.js" defer></script>
   <script src="crm-performance.js" defer></script>
   <script src="crm-sections.js" defer></script>
+  <script src="cloud-realtime.js" defer></script>
+  <script src="role-guard.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -507,6 +509,18 @@ async function supaSignIn(email, password){
   setTimeout(() => {
     if (typeof toast === 'function') toast('✅ סנכרון לענן פעיל — ' + email, 'success');
   }, 600);
+  // Activate real-time sync (cross-device updates)
+  setTimeout(() => {
+    if (typeof window.startRealtime === 'function') {
+      try { window.startRealtime(); } catch(e) { console.warn('Realtime start failed', e); }
+    }
+  }, 1200);
+  // Apply role-based UI restrictions (developer can't see PHI)
+  setTimeout(() => {
+    if (window.RoleGuard && typeof window.RoleGuard.init === 'function') {
+      try { window.RoleGuard.init(); } catch(e) { console.warn('RoleGuard init failed', e); }
+    }
+  }, 1500);
   return data;
 }
 

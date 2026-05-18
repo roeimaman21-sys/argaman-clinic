@@ -643,6 +643,11 @@ document.addEventListener('DOMContentLoaded', initArticleEnhancements);
    PWA INSTALL PROMPT — gentle, dismissable banner
    ===================================================== */
 (function() {
+  // PWA install banner DISABLED on public site — CRM is for clinic staff only.
+  // Browsers may still show their built-in install icon (e.g., URL bar +),
+  // but we no longer auto-suggest installation to public visitors.
+  // The admin.html app has its own manifest (admin.webmanifest) for Gal to install.
+  if (true) return;  // hard disable — keep code below for future reactivation
   if (location.pathname.endsWith('/admin.html')) return;
   let deferredPrompt;
   const DISMISS_KEY = 'argaman_pwa_dismissed';
