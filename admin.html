@@ -2678,6 +2678,8 @@ renderers.dashboard = async function(){
       <div class="stat-card orange"><div class="stat-label">הכנסה החודש</div><div class="stat-value">₪${monthRev.toLocaleString()}</div><div class="stat-sub">המרה: ${conversionRate}%</div></div>
     </div>
 
+    ${renderSessionRemindersPanel()}
+
     ${renderFollowUpPanel()}
 
     ${renderConversionFunnel()}
@@ -2808,6 +2810,7 @@ function renderLeadsList(){
       <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
         ${hasFilters?`<button class="btn" onclick="window.__leadFilter='all';window.__leadSearch='';renderers.leads()">✕ נקה סינון</button>`:''}
         <button class="btn btn-primary" onclick="quickAddLead()">+ ליד חדש</button>
+        ${!hasFilters?`<button class="btn" onclick="window.openCSVImport && window.openCSVImport()">📥 ייבא מקובץ CSV</button>`:''}
       </div>
     </div>`;
     return;
@@ -3278,6 +3281,65 @@ function sendReminder(sessionId){
   ArgSec.auditLog('reminder_sent', 'client: '+client.name);
   toast('✓ נשלחה תזכורת ל-'+client.name);
 }
+
+/* Session Reminders — sessions in next 24h with one-click WA reminder */
+function renderSessionRemindersPanel(){
+  const sessions = State.sessions || [];
+  const clients = State.clients || [];
+  const today = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+  const todayISO = today.toISOString().slice(0,10);
+  const tomorrowISO = tomorrow.toISOString().slice(0,10);
+
+  const upcoming = sessions.filter(s => {
+    if (s.status !== 'scheduled') return false;
+    if (s.reminderSentAt) {
+      const sentToday = s.reminderSentAt.startsWith(todayISO);
+      if (sentToday) return false; // already sent today
+    }
+    return s.date === todayISO || s.date === tomorrowISO;
+  }).slice(0, 5);
+  if (upcoming.length === 0) return '';
+  const tpl = (State.templates || []).find(t => t.id === 'tpl1');
+  const tplText = tpl?.text || 'היי {{name}}, תזכורת ידידותית — פגישתנו {{when}} בשעה {{time}}. גל';
+
+  return `
+    <div class="card" style="background:#dbeafe;border-right:4px solid #2563eb;margin-bottom:1rem">
+      <h3 style="color:#1e3a8a;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem">⏰ תזכורות פגישות (${upcoming.length})</h3>
+      <div style="display:flex;flex-direction:column;gap:.4rem">
+        ${upcoming.map(s => {
+          const cl = clients.find(c => c.id === s.clientId);
+          if (!cl?.phone) return '';
+          const phone = cl.phone.replace(/[^0-9]/g,'');
+          const intl = phone.startsWith('0') ? '972' + phone.slice(1) : phone;
+          const when = s.date === todayISO ? 'היום' : 'מחר';
+          const msg = tplText
+            .replace(/\{\{name\}\}/g, cl.name || '')
+            .replace(/\{\{date\}\}/g, s.date)
+            .replace(/\{\{when\}\}/g, when)
+            .replace(/\{\{time\}\}/g, s.time || '')
+            .replace(/\{\{location\}\}/g, s.location || 'בקליניקה');
+          const wa = `https://wa.me/${intl}?text=${encodeURIComponent(msg)}`;
+          return `
+            <div style="background:#fff;border-radius:6px;padding:.5rem .7rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+              <div>
+                <strong>${escapeHtml(cl.name || '')}</strong>
+                <span style="color:#1e3a8a;font-size:.8rem;margin-right:.5rem">📅 ${when} ${s.time || ''}</span>
+              </div>
+              <a class="btn" style="background:#25D366;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${wa}" target="_blank" onclick="markReminderSent('${s.id}')">💬 שלח תזכורת</a>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+window.markReminderSent = function(sessionId){
+  const s = (State.sessions||[]).find(x => x.id === sessionId);
+  if (!s) return;
+  s.reminderSentAt = new Date().toISOString();
+  if (typeof save === 'function' && LS) save(LS.sessions, State.sessions);
+};
 
 /* Conversion Funnel — visualizes lead lifecycle stages */
 function renderConversionFunnel(){
