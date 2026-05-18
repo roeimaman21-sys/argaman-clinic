@@ -422,6 +422,7 @@
     <a class="nav-link" data-section="marketing"><span class="icon">📣</span> שיווק ו-SEO</a>
 
     <div class="sidebar-section">מערכת</div>
+    <a class="nav-link" data-section="users" data-owner-only="1"><span class="icon">👥</span> ניהול משתמשים</a>
     <a class="nav-link" data-section="security"><span class="icon">🔒</span> אבטחה</a>
     <a class="nav-link" data-section="audit"><span class="icon">📋</span> יומן פעולות</a>
     <a class="nav-link" data-section="settings"><span class="icon">⚙️</span> הגדרות</a>
@@ -457,6 +458,8 @@
 ═══════════════════════════════════════════════ */
 const SUPA_URL = 'https://rrvjiudtgooyxpbboary.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydmppdWR0Z29veXhwYmJvYXJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4MjQwMTUsImV4cCI6MjA5NDQwMDAxNX0.3OBWeGyeQF2GlQqe9n8VmXM7uTlY9QYL8JoIIuPG6aA';
+window.SUPA_URL = SUPA_URL;
+window.SUPA_ANON_KEY = SUPA_KEY;
 let supa = null;
 window.cloudSuppress = false;
 window.cloudReady = false;
@@ -1574,6 +1577,265 @@ function confirmDialog(msg, onYes){
 ═══════════════════════════════════════════════ */
 const renderers = {};
 
+/* ─── DEVELOPER DASHBOARD — no PHI, system/content focus ─── */
+function renderDeveloperDashboard(){
+  const articlesCount = (State.articles||[]).length;
+  const faqsCount = (State.faqs||[]).length;
+  const workshopsCount = (State.workshops||[]).length;
+  const testimonialsCount = (State.testimonials||[]).length;
+  const videosCount = (State.videos||[]).length;
+  const name = window.CURRENT_USER_DISPLAY_NAME || 'מפתח';
+  document.getElementById('main-content').innerHTML = `
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">שלום, ${escapeHtml(name)} 👋</h1>
+        <div class="section-subtitle">${new Date().toLocaleDateString('he-IL',{weekday:'long',day:'numeric',month:'long',year:'numeric'})} · מצב מפתח</div>
+      </div>
+      <span class="badge" style="background:#7c3aed;color:#fff;padding:.4rem .9rem;border-radius:50px;font-weight:700">🛡️ מפתח</span>
+    </div>
+
+    <div class="card" style="background:linear-gradient(135deg,#ede9fe,#f5f3ff);border-right:4px solid #7c3aed;margin-bottom:1.5rem">
+      <h3 style="color:#5b21b6;margin-bottom:.5rem">🔒 הפרדת פרטיות רפואית פעילה</h3>
+      <p style="color:#6b21a8;font-size:.9rem;line-height:1.6">בהתאם ל<strong>תיקון 13 לחוק הגנת הפרטיות</strong> ולחיסיון רפואי, במצב מפתח אינך רואה:
+        <br>• שמות לקוחות, לידים, פרטי קשר
+        <br>• פגישות, רשומות SOAP, מדדי outcome
+        <br>• רשומות סיכון, גנוגרמות, הקלטות קול
+      </p>
+      <p style="color:#6b21a8;font-size:.85rem;margin-top:.6rem">יש לך גישה לכל מערכת התוכן, SEO, שיווק, והגדרות.</p>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-label">מאמרים באתר</div><div class="stat-value">${articlesCount}</div><div class="stat-sub">תוכן SEO פעיל</div></div>
+      <div class="stat-card gold"><div class="stat-label">שאלות נפוצות</div><div class="stat-value">${faqsCount}</div><div class="stat-sub">FAQ Schema</div></div>
+      <div class="stat-card green"><div class="stat-label">סדנאות</div><div class="stat-value">${workshopsCount}</div><div class="stat-sub">פעילות</div></div>
+      <div class="stat-card orange"><div class="stat-label">המלצות</div><div class="stat-value">${testimonialsCount}</div><div class="stat-sub">${videosCount} סרטונים</div></div>
+    </div>
+
+    <div class="two-col" style="margin-top:1.5rem">
+      <div class="card">
+        <h3 style="color:var(--navy);margin-bottom:.75rem">⚡ קיצורי דרך</h3>
+        <div style="display:grid;gap:.5rem">
+          <button class="btn" onclick="goto('articles')">📝 ניהול מאמרים</button>
+          <button class="btn" onclick="goto('faqs')">❓ ניהול FAQ</button>
+          <button class="btn" onclick="goto('marketing')">📣 שיווק ו-SEO</button>
+          <button class="btn" onclick="goto('landing-pages')">🎯 דפי נחיתה</button>
+          <button class="btn" onclick="goto('settings')">⚙️ הגדרות מערכת</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="color:var(--navy);margin-bottom:.75rem">📚 משאבים למפתח</h3>
+        <div style="display:grid;gap:.5rem">
+          <a class="btn" href="MULTI-USER-GUIDE.md" target="_blank">📖 מדריך רב-משתמשים</a>
+          <a class="btn" href="privacy.html" target="_blank">🛡️ מדיניות פרטיות</a>
+          <a class="btn" href="https://supabase.com/dashboard" target="_blank">☁️ Supabase Dashboard</a>
+          <a class="btn" href="https://app.netlify.com/projects/argamanclinic-389" target="_blank">🚀 Netlify Dashboard</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ─── USER MANAGEMENT (owner only) ───────────── */
+renderers.users = async function(){
+  if (window.CURRENT_USER_ROLE !== 'owner'){
+    document.getElementById('main-content').innerHTML = '<div class="card"><h2>אין הרשאה</h2><p>רק בעלים יכול לנהל משתמשים.</p></div>';
+    return;
+  }
+  const root = document.getElementById('main-content');
+  root.innerHTML = `
+    <div class="section-header">
+      <div>
+        <h1 class="section-title">👥 ניהול משתמשים</h1>
+        <div class="section-subtitle">הוספה, עריכת תפקיד, הסרת גישה</div>
+      </div>
+      <button class="btn btn-gold" onclick="openAddUserModal()">+ הוסף משתמש</button>
+    </div>
+    <div class="card" id="users-list-card">
+      <div style="text-align:center;padding:2rem;color:#6b7280">⏳ טוען...</div>
+    </div>
+    <div class="card" style="margin-top:1rem;background:#fef3c7;border-right:4px solid #f59e0b">
+      <h3 style="color:#92400e;margin-bottom:.5rem">💡 איך זה עובד</h3>
+      <ul style="color:#78350f;font-size:.9rem;line-height:1.8;padding-right:1.2rem;margin:0">
+        <li><strong>בעלים (owner)</strong> — רואה הכל כולל מידע מוגן. מנהל משתמשים.</li>
+        <li><strong>צוות (staff)</strong> — רואה הכל, יכול לערוך לקוחות/לידים/פגישות.</li>
+        <li><strong>מפתח (developer)</strong> — לא רואה מידע רפואי. עורך תוכן/SEO בלבד.</li>
+      </ul>
+    </div>
+  `;
+  await loadUsersList();
+};
+
+async function loadUsersList(){
+  const card = document.getElementById('users-list-card');
+  if (!card) return;
+  if (!window.supa){
+    card.innerHTML = '<p style="color:#dc2626">Supabase לא טעון</p>';
+    return;
+  }
+  try {
+    const { data, error } = await window.supa.from('argaman_users')
+      .select('user_id, email, role, display_name, can_see_phi, created_at')
+      .order('created_at', { ascending: true });
+    if (error) throw error;
+    if (!data || data.length === 0){
+      card.innerHTML = '<p style="padding:1rem">אין משתמשים</p>';
+      return;
+    }
+    const roleColors = { owner:'#1B3A6B', staff:'#16a34a', developer:'#7c3aed' };
+    const roleLabels = { owner:'בעלים', staff:'צוות', developer:'מפתח' };
+    card.innerHTML = `
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="border-bottom:2px solid #e5e7eb">
+          <th style="text-align:right;padding:.6rem">שם</th>
+          <th style="text-align:right;padding:.6rem">אימייל</th>
+          <th style="text-align:right;padding:.6rem">תפקיד</th>
+          <th style="text-align:right;padding:.6rem">PHI</th>
+          <th style="text-align:right;padding:.6rem">פעולות</th>
+        </tr></thead>
+        <tbody>
+        ${data.map(u => `
+          <tr style="border-bottom:1px solid #f3f4f6">
+            <td style="padding:.6rem"><strong>${escapeHtml(u.display_name||'(ללא שם)')}</strong></td>
+            <td style="padding:.6rem;color:#6b7280;font-size:.85rem">${escapeHtml(u.email)}</td>
+            <td style="padding:.6rem"><span style="background:${roleColors[u.role]||'#6b7280'};color:#fff;padding:.2rem .6rem;border-radius:50px;font-size:.75rem;font-weight:700">${roleLabels[u.role]||u.role}</span></td>
+            <td style="padding:.6rem">${u.can_see_phi ? '✅' : '❌'}</td>
+            <td style="padding:.6rem">
+              <button class="btn" style="padding:.3rem .6rem;font-size:.8rem" onclick="editUserModal('${u.user_id}')">✏️ ערוך</button>
+            </td>
+          </tr>
+        `).join('')}
+        </tbody>
+      </table>
+    `;
+  } catch(e){
+    card.innerHTML = `<p style="color:#dc2626;padding:1rem">שגיאה בטעינת משתמשים: ${escapeHtml(e.message||String(e))}</p>`;
+  }
+}
+
+window.openAddUserModal = function(){
+  const html = `
+    <div class="modal-content" style="max-width:500px">
+      <h2 style="color:var(--navy);margin-bottom:1rem">➕ הוספת משתמש חדש</h2>
+      <div style="background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem 1rem;border-radius:6px;margin-bottom:1rem;font-size:.85rem;color:#78350f">
+        <strong>⚠️ שים לב:</strong> פעולה זו תיצור משתמש חדש ב-Supabase Auth.<br>
+        אם הרישום ב-Supabase דורש אישור אימייל — המשתמש יקבל מייל אישור.<br>
+        אחרת המשתמש יוכל להיכנס מיד.
+      </div>
+      <label style="display:block;margin-bottom:.5rem;font-weight:600">שם תצוגה</label>
+      <input id="newuser-name" placeholder="לדוגמה: דנה כהן" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
+      <label style="display:block;margin-bottom:.5rem;font-weight:600">אימייל</label>
+      <input id="newuser-email" type="email" placeholder="user@example.com" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
+      <label style="display:block;margin-bottom:.5rem;font-weight:600">סיסמה זמנית (מינ' 8 תווים)</label>
+      <input id="newuser-pass" type="text" placeholder="המשתמש יוכל לשנות אחרי כניסה ראשונה" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
+      <label style="display:block;margin-bottom:.5rem;font-weight:600">תפקיד</label>
+      <select id="newuser-role" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:1rem">
+        <option value="staff">צוות — רואה הכל</option>
+        <option value="developer">מפתח — לא רואה מידע רפואי</option>
+        <option value="owner">בעלים — שליטה מלאה</option>
+      </select>
+      <div style="display:flex;gap:.5rem;justify-content:flex-end">
+        <button class="btn" onclick="closeModal()">ביטול</button>
+        <button class="btn btn-gold" onclick="saveNewUser()">צור משתמש</button>
+      </div>
+    </div>`;
+  modal(html);
+};
+
+window.saveNewUser = async function(){
+  const name = document.getElementById('newuser-name').value.trim();
+  const email = document.getElementById('newuser-email').value.trim().toLowerCase();
+  const pass = document.getElementById('newuser-pass').value;
+  const role = document.getElementById('newuser-role').value;
+  if (!name || !email || !pass){ toast('יש למלא את כל השדות','error'); return; }
+  if (pass.length < 8){ toast('סיסמה חייבת להיות מינ\' 8 תווים','error'); return; }
+  if (!/^[^@]+@[^@]+\.[^@]+$/.test(email)){ toast('אימייל לא תקין','error'); return; }
+  if (!window.supabase || !window.SUPA_URL || !window.SUPA_ANON_KEY){
+    toast('Supabase לא מוגדר','error'); return;
+  }
+  toast('יוצר משתמש...','info');
+  try {
+    // Create temporary client to avoid replacing Gal's session
+    const tempClient = window.supabase.createClient(window.SUPA_URL, window.SUPA_ANON_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false }
+    });
+    const { data: signUpData, error: signUpError } = await tempClient.auth.signUp({
+      email, password: pass,
+      options: { data: { display_name: name } }
+    });
+    if (signUpError){
+      toast('שגיאת יצירה: ' + signUpError.message, 'error');
+      return;
+    }
+    const newUserId = signUpData?.user?.id;
+    if (!newUserId){
+      toast('המשתמש נוצר אבל ה-ID לא חזר. בדוק ב-Supabase Dashboard.','warning');
+      closeModal();
+      return;
+    }
+    // Insert role into argaman_users (using Gal's authenticated session)
+    const canSeePhi = role !== 'developer';
+    const { error: insertError } = await window.supa.from('argaman_users').insert({
+      user_id: newUserId, email, role, display_name: name, can_see_phi: canSeePhi
+    });
+    if (insertError){
+      toast('המשתמש נוצר ב-Auth אבל לא הוקצה תפקיד: ' + insertError.message, 'warning');
+    } else {
+      toast('✅ המשתמש נוצר בהצלחה','success');
+    }
+    closeModal();
+    await loadUsersList();
+  } catch(e){
+    toast('שגיאה: ' + (e.message||String(e)), 'error');
+  }
+};
+
+window.editUserModal = async function(userId){
+  if (!window.supa) return;
+  const { data, error } = await window.supa.from('argaman_users').select('*').eq('user_id', userId).single();
+  if (error || !data){ toast('שגיאה בטעינת המשתמש','error'); return; }
+  const html = `
+    <div class="modal-content" style="max-width:500px">
+      <h2 style="color:var(--navy);margin-bottom:1rem">✏️ עריכת משתמש</h2>
+      <p style="color:#6b7280;font-size:.85rem;margin-bottom:1rem">${escapeHtml(data.email)}</p>
+      <label style="display:block;margin-bottom:.5rem;font-weight:600">שם תצוגה</label>
+      <input id="edituser-name" value="${escapeAttr(data.display_name||'')}" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
+      <label style="display:block;margin-bottom:.5rem;font-weight:600">תפקיד</label>
+      <select id="edituser-role" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.75rem">
+        <option value="staff" ${data.role==='staff'?'selected':''}>צוות</option>
+        <option value="developer" ${data.role==='developer'?'selected':''}>מפתח</option>
+        <option value="owner" ${data.role==='owner'?'selected':''}>בעלים</option>
+      </select>
+      <label style="display:flex;align-items:center;gap:.5rem;margin-bottom:1rem">
+        <input type="checkbox" id="edituser-phi" ${data.can_see_phi?'checked':''}> רואה מידע רפואי (PHI)
+      </label>
+      <div style="background:#fef2f2;border-right:4px solid #dc2626;padding:.6rem;border-radius:6px;margin-bottom:1rem;font-size:.8rem;color:#7f1d1d">
+        💡 כדי למחוק משתמש לחלוטין — לך ל-Supabase Dashboard → Authentication.
+      </div>
+      <div style="display:flex;gap:.5rem;justify-content:flex-end">
+        <button class="btn" onclick="closeModal()">ביטול</button>
+        <button class="btn btn-gold" onclick="saveUserEdit('${userId}')">שמור</button>
+      </div>
+    </div>`;
+  modal(html);
+};
+
+window.saveUserEdit = async function(userId){
+  const name = document.getElementById('edituser-name').value.trim();
+  const role = document.getElementById('edituser-role').value;
+  const phi = document.getElementById('edituser-phi').checked;
+  try {
+    const { error } = await window.supa.from('argaman_users').update({
+      display_name: name, role, can_see_phi: phi, updated_at: new Date().toISOString()
+    }).eq('user_id', userId);
+    if (error) throw error;
+    toast('✅ עודכן','success');
+    closeModal();
+    await loadUsersList();
+  } catch(e){
+    toast('שגיאה: ' + e.message, 'error');
+  }
+};
+
 /* ─── DASHBOARD ───────────────────────────── */
 /* Dashboard charts — pure SVG, no external lib */
 function renderDashboardCharts(){
@@ -1695,6 +1957,10 @@ function renderDashboardCharts(){
 }
 
 renderers.dashboard = function(){
+  // Developer mode — show a totally different dashboard (no PHI)
+  if (window.CURRENT_USER_ROLE === 'developer' || window.__DEV_RESTRICTED){
+    return renderDeveloperDashboard();
+  }
   const newLeads = State.leads.filter(l => l.status === 'new').length;
   const activeClients = State.clients.filter(c => c.status === 'active').length;
   const totalLeads = State.leads.length;
@@ -1720,7 +1986,7 @@ renderers.dashboard = function(){
   document.getElementById('main-content').innerHTML = `
     <div class="section-header">
       <div>
-        <h1 class="section-title">שלום, גל 👋</h1>
+        <h1 class="section-title">שלום, ${window.CURRENT_USER_DISPLAY_NAME || 'גל'} 👋</h1>
         <div class="section-subtitle">${new Date().toLocaleDateString('he-IL', { weekday:'long', day:'numeric', month:'long', year:'numeric' })}</div>
       </div>
       <button class="btn btn-gold" onclick="quickAddLead()">+ ליד מהיר</button>

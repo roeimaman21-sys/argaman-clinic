@@ -155,14 +155,29 @@
     _currentRole = result.role;
     window.CURRENT_USER_ROLE = result.role;
     window.CURRENT_USER_CAN_SEE_PHI = result.can_see_phi;
+    window.CURRENT_USER_DISPLAY_NAME = result.display_name || _currentEmail || 'משתמש';
 
     showRoleBadge(result.role, _currentEmail);
+
+    // Hide owner-only items for non-owners
+    if (result.role !== 'owner'){
+      document.querySelectorAll('[data-owner-only]').forEach(el => { el.style.display = 'none'; });
+    }
 
     if (result.role === 'developer' || !result.can_see_phi) {
       applyDeveloperRestrictions();
     } else {
       log(`Owner/staff role — full access for ${_currentEmail}`);
     }
+
+    // Re-render current section now that role/display name is known
+    try {
+      if (typeof window.currentSection !== 'undefined' &&
+          typeof window.renderers !== 'undefined' &&
+          window.renderers[window.currentSection]){
+        window.renderers[window.currentSection]();
+      }
+    } catch(e){ log('re-render error:', e.message); }
   }
 
   // Wait for supa + auth to be ready, then check role
