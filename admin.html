@@ -31,6 +31,7 @@
   <script src="audit-log.js" defer></script>
   <script src="presence.js" defer></script>
   <script src="pwa-install.js" defer></script>
+  <script src="backup-tools.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -1985,6 +1986,20 @@ renderers.profile = async function(){
       <p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">לאחר התקנה — אפשר לפתוח את ה-CRM מאייקון על המסך הראשי (גם offline).</p>
     </div>
 
+    <div class="card" style="margin-bottom:1rem">
+      <h3 style="color:var(--navy);margin-bottom:.75rem">💾 גיבוי וייצוא</h3>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <button class="btn btn-gold" onclick="window.backupNow()">⬇️ גיבוי עכשיו (JSON)</button>
+        <button class="btn" onclick="document.getElementById('restore-file').click()">⬆️ שחזור מקובץ JSON</button>
+        <input type="file" id="restore-file" accept=".json" style="display:none" onchange="window.BackupTools && window.BackupTools.restoreFromFile(this.files[0])">
+        <button class="btn" onclick="window.exportSessionsICS()">📅 ייצוא פגישות ל-Google Calendar (ICS)</button>
+        ${window.CURRENT_USER_ROLE === 'owner' ? `<button class="btn" onclick="if(confirm('למחוק יומני פעולות מעל 12 חודש?')) window.BackupTools.cleanOldAuditLogs()" style="color:#dc2626">🗑 מחק יומנים מעל 12 חודש (retention)</button>` : ''}
+      </div>
+      <p style="font-size:.8rem;color:#6b7280;margin-top:.75rem">
+        💡 <strong>טיפ:</strong> הורדת ה-ICS → ב-Google Calendar → ⚙️ הגדרות → "ייבא וייצא" → "ייבא" → בחר את הקובץ.
+      </p>
+    </div>
+
     <div class="card">
       <h3 style="color:var(--navy);margin-bottom:.75rem">📜 היסטוריית התחברויות שלי (אחרונות)</h3>
       <div id="my-login-history">⏳ טוען...</div>
@@ -2550,6 +2565,8 @@ renderers.dashboard = async function(){
       <div class="stat-card green"><div class="stat-label">פגישות השבוע</div><div class="stat-value">${weekSessions.length}</div><div class="stat-sub">${todaySessions.length} היום</div></div>
       <div class="stat-card orange"><div class="stat-label">הכנסה החודש</div><div class="stat-value">₪${monthRev.toLocaleString()}</div><div class="stat-sub">המרה: ${conversionRate}%</div></div>
     </div>
+
+    ${renderFollowUpPanel()}
 
     ${renderSmartInsights()}
 
@@ -3131,6 +3148,60 @@ function sendReminder(sessionId){
   ArgSec.auditLog('reminder_sent', 'client: '+client.name);
   toast('✓ נשלחה תזכורת ל-'+client.name);
 }
+
+/* Follow-up reminders — stuck leads with one-click WhatsApp action */
+function renderFollowUpPanel(){
+  const leads = State.leads || [];
+  const today = new Date();
+  const weekAgo = new Date(today); weekAgo.setDate(today.getDate() - 7);
+  const stuck = leads.filter(l => {
+    if (l.status === 'converted' || l.status === 'lost') return false;
+    const lastTouch = l.lastTouchedAt || l.createdAt;
+    if (!lastTouch) return false;
+    return new Date(lastTouch) < weekAgo;
+  }).slice(0, 5);
+  if (stuck.length === 0) return '';
+  const templates = (State.templates || []).filter(t => t.id === 'tpl2' || t.id === 'tpl5');
+  const followUpTpl = templates[0]?.text || 'היי {{name}}, חשבתי לשמוע מה שלומך. אם תרצה לקבוע שיחת היכרות — אני זמין. גל';
+  return `
+    <div class="card" style="background:#fef3c7;border-right:4px solid #f59e0b;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem">
+        <h3 style="color:#92400e;display:flex;align-items:center;gap:.5rem">🔔 מעקב לידים (${stuck.length} לידים מעל 7 ימים ללא קשר)</h3>
+        <button class="btn" onclick="goto('leads')" style="font-size:.8rem;padding:.3rem .7rem">לכל הלידים ←</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        ${stuck.map(l => {
+          const phone = (l.phone || '').replace(/[^0-9]/g,'');
+          const phoneIntl = phone.startsWith('0') ? '972' + phone.slice(1) : phone;
+          const msg = followUpTpl.replace(/\{\{name\}\}/g, l.name || 'שם').replace(/\{\{date\}\}/g,'').replace(/\{\{time\}\}/g,'');
+          const waUrl = phoneIntl ? `https://wa.me/${phoneIntl}?text=${encodeURIComponent(msg)}` : '';
+          const daysSince = Math.floor((Date.now() - new Date(l.lastTouchedAt || l.createdAt).getTime()) / 86400000);
+          return `
+            <div style="background:#fff;border-radius:6px;padding:.6rem .8rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+              <div>
+                <strong>${escapeHtml(l.name || '(ללא שם)')}</strong>
+                <span style="color:#92400e;font-size:.8rem;margin-right:.5rem">📞 ${escapeHtml(l.phone||'')}</span>
+                <span style="color:#9ca3af;font-size:.75rem">${daysSince} ימים ללא מענה</span>
+              </div>
+              <div style="display:flex;gap:.4rem">
+                ${waUrl ? `<a class="btn" style="background:#25D366;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${waUrl}" target="_blank" onclick="markLeadTouched('${l.id}')">💬 WhatsApp</a>` : ''}
+                <button class="btn" style="font-size:.8rem;padding:.3rem .6rem" onclick="viewLead('${l.id}')">פתח</button>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/** Mark a lead as touched (no actual contact, just update timestamp) */
+window.markLeadTouched = function(leadId){
+  const lead = (State.leads || []).find(l => l.id === leadId);
+  if (!lead) return;
+  lead.lastTouchedAt = new Date().toISOString();
+  if (typeof save === 'function' && LS) save(LS.leads, State.leads);
+  if (typeof logActivity === 'function') logActivity(`עודכן ליד: ${lead.name} (WhatsApp)`);
+};
 
 /* Smart Insights — statistical insights from data (no AI, pure math) */
 function renderSmartInsights(){
