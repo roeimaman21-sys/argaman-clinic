@@ -14,7 +14,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" onerror="window.__supaCdnFailed=1"></script>
+  <!-- Supabase: Self-hosted to bypass ad-blockers (uBlock/Brave Shields/etc.) -->
+  <script src="supabase-lib.js" onerror="window.__supaCdnFailed=1"></script>
   <script src="crypto-utils.js"></script>
   <script src="crm-core.js"></script>
   <script src="clinical-suite.js" defer></script>
@@ -67,10 +68,11 @@
     window.__loadSupabase = function() {
       return new Promise((resolve, reject) => {
         if (typeof window.supabase !== 'undefined' && window.supabase.createClient) return resolve(window.supabase);
+        // Self-hosted FIRST (immune to ad-blockers), CDN as backup
         const sources = [
+          'supabase-lib.js',
           'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js',
-          'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js',
-          'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js'
+          'https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js'
         ];
         let idx = 0;
         function tryNext() {
@@ -999,6 +1001,12 @@ async function forcePasswordChange(){
    SUPABASE AUTH PROMPT — first time / re-auth
 ═══════════════════════════════════════════════ */
 async function promptSupabaseAuth(){
+  // Preload library before showing modal — so status is accurate
+  if (typeof window.__loadSupabase === 'function' && !supa) {
+    try { await window.__loadSupabase(); } catch(e){}
+  }
+  const libLoaded = typeof window.supabase !== 'undefined' && window.supabase.createClient;
+
   return new Promise((resolve, reject) => {
     const modal = document.createElement('div');
     modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:99999;display:flex;align-items:center;justify-content:center;padding:1rem';
@@ -1006,6 +1014,9 @@ async function promptSupabaseAuth(){
       <div style="background:#fff;border-radius:12px;padding:2rem;max-width:480px;width:100%">
         <h2 style="margin-top:0;color:#1B3A6B">☁️ התחברות לענן Supabase</h2>
         <p style="color:#6b7280;font-size:.9rem">פעם ראשונה — הזן את פרטי המשתמש שיצרת ב-Supabase Dashboard. אלה משמשים לסנכרון מאובטח של הנתונים בענן (בנוסף לסיסמת ה-CRM).</p>
+        <div id="supa-lib-status" style="background:${libLoaded?'#dcfce7':'#fef3c7'};color:${libLoaded?'#16a34a':'#854d0e'};padding:.5rem .75rem;border-radius:6px;font-size:.85rem;margin:.75rem 0">
+          ${libLoaded ? '✓ הספרייה נטענה בהצלחה — מוכן להתחברות' : '⏳ טוען ספרייה (self-hosted, ללא תלות ב-CDN)...'}
+        </div>
         <div style="margin:1rem 0">
           <label style="display:block;font-size:.85rem;color:#374151;margin-bottom:.3rem">אימייל</label>
           <input id="supa-email" type="email" value="${getSupaEmail()}" placeholder="argamanclinic@gmail.com" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;direction:ltr">
