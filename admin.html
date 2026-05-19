@@ -2652,11 +2652,15 @@ renderers.dashboard = async function(){
   if (window.CURRENT_USER_ROLE === 'developer' || window.__DEV_RESTRICTED){
     return renderDeveloperDashboard();
   }
-  const newLeads = State.leads.filter(l => l.status === 'new').length;
-  const activeClients = State.clients.filter(c => c.status === 'active').length;
-  const totalLeads = State.leads.length;
-  const totalClients = State.clients.length;
-  const conversionRate = totalLeads ? Math.round((State.leads.filter(l=>l.status==='converted').length / totalLeads)*100) : 0;
+  // Safe-guards: never crash if State arrays aren't initialized yet
+  const _leads = State.leads || [];
+  const _clients = State.clients || [];
+  const _sessions = State.sessions || [];
+  const newLeads = _leads.filter(l => l.status === 'new').length;
+  const activeClients = _clients.filter(c => c.status === 'active').length;
+  const totalLeads = _leads.length;
+  const totalClients = _clients.length;
+  const conversionRate = totalLeads ? Math.round((_leads.filter(l=>l.status==='converted').length / totalLeads)*100) : 0;
 
   // sessions this week
   const today = new Date(); const todayISO = today.toISOString().slice(0,10);
@@ -2664,15 +2668,15 @@ renderers.dashboard = async function(){
   const weekStartISO = weekStart.toISOString().slice(0,10);
   const weekEnd = new Date(weekStart); weekEnd.setDate(weekStart.getDate()+6);
   const weekEndISO = weekEnd.toISOString().slice(0,10);
-  const weekSessions = State.sessions.filter(s => s.date >= weekStartISO && s.date <= weekEndISO);
-  const todaySessions = State.sessions.filter(s => s.date === todayISO).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const weekSessions = _sessions.filter(s => s.date >= weekStartISO && s.date <= weekEndISO);
+  const todaySessions = _sessions.filter(s => s.date === todayISO).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 
   // recent leads
-  const recentLeads = [...State.leads].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0, 5);
+  const recentLeads = [..._leads].sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||'')).slice(0, 5);
 
   // revenue this month (paid sessions)
   const monthStart = todayISO.slice(0,7) + '-01';
-  const monthRev = State.sessions.filter(s => s.date >= monthStart && s.paid).reduce((sum,s)=>sum+(parseFloat(s.price)||0), 0);
+  const monthRev = _sessions.filter(s => s.date >= monthStart && s.paid).reduce((sum,s)=>sum+(parseFloat(s.price)||0), 0);
 
   document.getElementById('main-content').innerHTML = `
     <div class="section-header">
@@ -2774,7 +2778,7 @@ renderers.leads = function(){
     <div class="section-header">
       <div>
         <h1 class="section-title">לידים</h1>
-        <div class="section-subtitle">${State.leads.length} סה״כ · ${State.leads.filter(l=>l.status==='new').length} חדשים</div>
+        <div class="section-subtitle">${(State.leads||[]).length} סה״כ · ${(State.leads||[]).filter(l=>l.status==='new').length} חדשים</div>
       </div>
       <div class="flex gap-2">
         <button class="btn btn-ghost" onclick="exportLeads()">⬇ ייצא CSV</button>
@@ -2809,7 +2813,7 @@ function renderLeadsList(){
   const q = (document.getElementById('lead-search')?.value || '').toLowerCase();
   const fStatus = document.getElementById('lead-status-filter')?.value || '';
   const fSource = document.getElementById('lead-source-filter')?.value || '';
-  const list = State.leads
+  const list = (State.leads || [])
     .filter(l => !q || (l.name||'').toLowerCase().includes(q) || (l.phone||'').includes(q) || (l.email||'').toLowerCase().includes(q))
     .filter(l => !fStatus || l.status === fStatus)
     .filter(l => !fSource || l.source === fSource)
@@ -3408,7 +3412,7 @@ function renderConversionFunnel(){
         💡 <strong>תובנה:</strong>
         ${(() => {
           if (total === 0) return 'אין לידים עדיין.';
-          const convRate = pct ? Math.round(converted / total * 100) : 0;
+          const convRate = total > 0 ? Math.round(converted / total * 100) : 0;
           if (convRate >= 30) return `שיעור המרה כללי: <strong style="color:#16a34a">${convRate}%</strong> — מעולה!`;
           if (convRate >= 15) return `שיעור המרה כללי: <strong style="color:#1B3A6B">${convRate}%</strong> — סביר. שווה לחזק את שלב המעקב.`;
           if (total < 5) return `עדיין מעט לידים (${total}) — תן לזה זמן.`;
@@ -6661,18 +6665,21 @@ async function exportEncryptedBackup(){
 
 /* ─── REPORTS ──────────────────────── */
 renderers.reports = function(){
-  const totalLeads = State.leads.length;
-  const converted = State.leads.filter(l => l.status === 'converted').length;
+  const _leads = State.leads || [];
+  const _sessions = State.sessions || [];
+  const totalLeads = _leads.length;
+  const converted = _leads.filter(l => l.status === 'converted').length;
   const conv = totalLeads ? Math.round(converted/totalLeads*100) : 0;
   const bySource = {};
-  State.leads.forEach(l => { bySource[l.source||'unknown'] = (bySource[l.source||'unknown']||0)+1; });
+  _leads.forEach(l => { bySource[l.source||'unknown'] = (bySource[l.source||'unknown']||0)+1; });
   const byTopic = {};
-  State.leads.forEach(l => { byTopic[l.topic||'unknown'] = (byTopic[l.topic||'unknown']||0)+1; });
+  _leads.forEach(l => { byTopic[l.topic||'unknown'] = (byTopic[l.topic||'unknown']||0)+1; });
   const today = new Date();
-  const monthSessions = State.sessions.filter(s => s.date.startsWith(today.toISOString().slice(0,7)));
+  const monthSessions = _sessions.filter(s => (s.date||'').startsWith(today.toISOString().slice(0,7)));
   const monthRev = monthSessions.filter(s => s.paid).reduce((sum,s)=>sum+(parseFloat(s.price)||0),0);
-  const completedTotal = State.sessions.filter(s => s.status === 'completed').length;
-  const avgSessionPrice = completedTotal ? (State.sessions.filter(s=>s.status==='completed'&&s.price).reduce((sum,s)=>sum+(parseFloat(s.price)||0),0) / State.sessions.filter(s=>s.status==='completed'&&s.price).length || 0) : 0;
+  const completedTotal = _sessions.filter(s => s.status === 'completed').length;
+  const paidPriced = _sessions.filter(s=>s.status==='completed'&&s.price);
+  const avgSessionPrice = paidPriced.length ? paidPriced.reduce((sum,s)=>sum+(parseFloat(s.price)||0),0) / paidPriced.length : 0;
 
   function barChart(data, color){
     const max = Math.max(...Object.values(data), 1);
@@ -6698,7 +6705,7 @@ renderers.reports = function(){
     </div>
     <div class="stat-grid">
       <div class="stat-card"><div class="stat-label">המרת לידים</div><div class="stat-value">${conv}%</div><div class="stat-sub">${converted}/${totalLeads}</div></div>
-      <div class="stat-card gold"><div class="stat-label">לקוחות פעילים</div><div class="stat-value">${State.clients.filter(c=>c.status==='active').length}</div></div>
+      <div class="stat-card gold"><div class="stat-label">לקוחות פעילים</div><div class="stat-value">${(State.clients||[]).filter(c=>c.status==='active').length}</div></div>
       <div class="stat-card green"><div class="stat-label">הכנסה החודש</div><div class="stat-value">₪${monthRev.toLocaleString()}</div></div>
       <div class="stat-card orange"><div class="stat-label">פגישות הושלמו</div><div class="stat-value">${completedTotal}</div><div class="stat-sub">ממוצע ₪${Math.round(avgSessionPrice)}</div></div>
     </div>
