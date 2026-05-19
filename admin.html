@@ -44,6 +44,8 @@
   <script src="hebrew-search.js" defer></script>
   <script src="optimistic.js" defer></script>
   <script src="error-tracker.js" defer></script>
+  <script src="device-trust.js" defer></script>
+  <script src="hibp-check.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -1883,9 +1885,10 @@ renderers.profile = async function(){
 
     <div class="card" style="margin-bottom:1rem">
       <h3 style="color:var(--navy);margin-bottom:.75rem">🔐 שינוי סיסמה</h3>
-      <input id="profile-newpass" type="password" placeholder="סיסמה חדשה (מינ' 8 תווים)" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
-      <input id="profile-newpass2" type="password" placeholder="אישור סיסמה" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
+      <input id="profile-newpass" type="password" placeholder="סיסמה חדשה (מינ' 12 תווים)" minlength="12" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
+      <input id="profile-newpass2" type="password" placeholder="אישור סיסמה" minlength="12" style="width:100%;padding:.6rem;border:1px solid #d1d5db;border-radius:6px;margin-bottom:.5rem">
       <button class="btn btn-gold" onclick="changeMyPassword()">שנה סיסמה</button>
+      <p style="font-size:.75rem;color:#6b7280;margin-top:.5rem">💡 הסיסמה תיבדק מול מאגר HIBP (Have I Been Pwned) בצורה פרטית — רק 5 תווים ראשונים של ה-hash נשלחים. סיסמאות שדלפו ידחו אוטומטית.</p>
       <p style="font-size:.8rem;color:#6b7280;margin-top:.5rem">הסיסמה תשתנה בכל המכשירים מיד.</p>
     </div>
 
@@ -2205,8 +2208,19 @@ window.saveMyProfile = async function(){
 window.changeMyPassword = async function(){
   const p1 = document.getElementById('profile-newpass').value;
   const p2 = document.getElementById('profile-newpass2').value;
-  if (p1.length < 8){ toast('מינ\' 8 תווים','error'); return; }
   if (p1 !== p2){ toast('הסיסמאות לא תואמות','error'); return; }
+  // Comprehensive check: length + complexity + HIBP breach
+  if (window.HIBP){
+    toast('בודק חוזק וסיסמאות שדלפו...','info');
+    const result = await window.HIBP.comprehensiveCheck(p1);
+    if (!result.ok){
+      toast(result.message || result.reason, 'error');
+      return;
+    }
+  } else {
+    // Fallback: at least enforce length
+    if (p1.length < 12){ toast('מינ\' 12 תווים','error'); return; }
+  }
   try {
     const { error } = await window.supa.auth.updateUser({ password: p1 });
     if (error) throw error;
