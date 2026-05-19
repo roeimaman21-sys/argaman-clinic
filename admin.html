@@ -38,6 +38,7 @@
   <script src="csv-import.js" defer></script>
   <script src="bi-charts.js" defer></script>
   <script src="web-push.js" defer></script>
+  <script src="reminders.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -520,6 +521,7 @@
 <div class="toast-wrap" id="toast-root"></div>
 <div class="fab-container" id="fab-container">
   <button class="fab-sub" title="ליד מהיר" onclick="quickAddLead(); closeFab()">🎯</button>
+  <button class="fab-sub" title="תזכורת" onclick="if(window.openRemindersModal)openRemindersModal(); closeFab()">⏰</button>
   <button class="fab-sub" title="פתקית" onclick="if(window.openStickyNotes)openStickyNotes(); closeFab()">📌</button>
   <button class="fab-sub" title="חיפוש" onclick="if(window.openFullSearch)openFullSearch(); closeFab()">🔍</button>
   <button class="fab" id="fab-main" onclick="document.getElementById('fab-container').classList.toggle('open')">+</button>
@@ -2725,6 +2727,8 @@ renderers.dashboard = async function(){
       <div class="stat-card orange"><div class="stat-label">הכנסה החודש</div><div class="stat-value">₪${monthRev.toLocaleString()}</div><div class="stat-sub">המרה: ${conversionRate}%</div></div>
     </div>
 
+    ${window.Reminders ? window.Reminders.renderRemindersWidget() : ''}
+
     ${renderSessionRemindersPanel()}
 
     ${renderFollowUpPanel()}
@@ -2864,14 +2868,19 @@ function renderLeadsList(){
   }
 
   root.innerHTML = `<div class="table-wrap"><table class="tbl">
-    <thead><tr><th>שם</th><th>טלפון</th><th>מקור</th><th>נושא</th><th>סטטוס</th><th>נכנס</th><th></th></tr></thead>
+    <thead><tr>
+      <th style="width:30px"><input type="checkbox" id="leads-select-all" onchange="toggleAllLeadsSelection(this)" onclick="event.stopPropagation()"></th>
+      <th>שם</th><th>טלפון</th><th>מקור</th><th>נושא</th><th>סטטוס</th><th>תגיות</th><th>נכנס</th><th></th>
+    </tr></thead>
     <tbody>${list.map(l => `
       <tr style="cursor:pointer" onclick="viewLead('${l.id}')">
+        <td onclick="event.stopPropagation()"><input type="checkbox" class="lead-row-cb" data-id="${l.id}" onchange="updateBulkActionsBar()"></td>
         <td><strong>${escapeHtml(l.name||'(ללא שם)')}</strong>${l.email?`<div class="text-xs text-muted">${escapeHtml(l.email)}</div>`:''}</td>
         <td class="nowrap">${escapeHtml(l.phone||'—')}</td>
         <td><span class="text-xs">${LEAD_SOURCE_LABEL[l.source]||l.source||'—'}</span></td>
         <td><span class="text-xs">${LEAD_TOPIC_LABEL[l.topic]||'—'}</span></td>
         <td><span class="badge badge-${l.status}">${LEAD_STATUS_LABEL[l.status]||l.status}</span></td>
+        <td>${(l.tags||[]).map(t => `<span class="tag-chip" style="background:#dbeafe;color:#1e3a8a;padding:.1rem .4rem;border-radius:50px;font-size:.7rem;margin-left:.2rem">${escapeHtml(t)}</span>`).join('')}</td>
         <td class="text-xs text-muted">${fmtRelative(l.createdAt)}</td>
         <td onclick="event.stopPropagation()">
           <div class="row-actions">
@@ -2881,8 +2890,109 @@ function renderLeadsList(){
           </div>
         </td>
       </tr>
-    `).join('')}</tbody></table></div>`;
+    `).join('')}</tbody></table>
+    <div id="bulk-actions-bar" style="display:none;position:sticky;bottom:0;background:#1B3A6B;color:#fff;padding:.75rem 1rem;border-radius:8px;margin-top:.5rem;display:none;align-items:center;gap:.75rem;flex-wrap:wrap">
+      <strong id="bulk-count">0</strong> <span>נבחרו</span>
+      <select id="bulk-status-select" style="padding:.4rem;border-radius:6px;color:#1f2937;font-size:.85rem">
+        <option value="">שנה סטטוס...</option>
+        ${Object.entries(LEAD_STATUS_LABEL).map(([k,v])=>`<option value="${k}">${v}</option>`).join('')}
+      </select>
+      <button class="btn" style="background:#fff;color:#1B3A6B" onclick="bulkUpdateStatus()">החל</button>
+      <button class="btn" style="background:transparent;color:#fff;border:1px solid #fff" onclick="bulkExportSelected()">⬇ ייצא CSV</button>
+      <button class="btn" style="background:#dc2626;color:#fff" onclick="bulkDeleteSelected()">🗑 מחק</button>
+      <button class="btn" style="background:transparent;color:#fff;margin-right:auto" onclick="clearLeadsSelection()">✕ בטל</button>
+    </div>
+    </div>`;
 }
+
+window.toggleAllLeadsSelection = function(checkbox){
+  document.querySelectorAll('.lead-row-cb').forEach(cb => cb.checked = checkbox.checked);
+  updateBulkActionsBar();
+};
+
+window.updateBulkActionsBar = function(){
+  const selected = document.querySelectorAll('.lead-row-cb:checked');
+  const bar = document.getElementById('bulk-actions-bar');
+  if (!bar) return;
+  if (selected.length === 0){
+    bar.style.display = 'none';
+  } else {
+    bar.style.display = 'flex';
+    document.getElementById('bulk-count').textContent = selected.length;
+  }
+};
+
+window.clearLeadsSelection = function(){
+  document.querySelectorAll('.lead-row-cb').forEach(cb => cb.checked = false);
+  const sel = document.getElementById('leads-select-all');
+  if (sel) sel.checked = false;
+  updateBulkActionsBar();
+};
+
+function getSelectedLeadIds(){
+  return [...document.querySelectorAll('.lead-row-cb:checked')].map(cb => cb.dataset.id);
+}
+
+window.bulkUpdateStatus = function(){
+  const newStatus = document.getElementById('bulk-status-select').value;
+  if (!newStatus){ toast('בחר סטטוס','warning'); return; }
+  const ids = getSelectedLeadIds();
+  if (ids.length === 0) return;
+  if (!confirm(`לשנות סטטוס ל-${LEAD_STATUS_LABEL[newStatus]||newStatus} עבור ${ids.length} לידים?`)) return;
+  let count = 0;
+  ids.forEach(id => {
+    const l = State.leads.find(x => x.id === id);
+    if (l){ l.status = newStatus; count++; }
+  });
+  save(LS.leads, State.leads);
+  logActivity(`עודכן סטטוס ל-${count} לידים`);
+  toast(`✅ עודכנו ${count} לידים`,'success');
+  renderers[currentSection]();
+};
+
+window.bulkDeleteSelected = function(){
+  const ids = getSelectedLeadIds();
+  if (ids.length === 0) return;
+  if (!confirm(`למחוק ${ids.length} לידים? יש 6 שניות לביטול.`)) return;
+  const removed = State.leads.filter(l => ids.includes(l.id));
+  State.leads = State.leads.filter(l => !ids.includes(l.id));
+  save(LS.leads, State.leads);
+  renderers[currentSection]();
+  if (window.UndoTools){
+    window.UndoTools.record(`🗑 נמחקו ${removed.length} לידים`, () => {
+      State.leads.push(...removed);
+      save(LS.leads, State.leads);
+      renderers[currentSection]();
+    });
+  } else {
+    toast(`✅ נמחקו ${removed.length} לידים`,'success');
+  }
+};
+
+window.bulkExportSelected = function(){
+  const ids = getSelectedLeadIds();
+  if (ids.length === 0) return;
+  const sel = State.leads.filter(l => ids.includes(l.id));
+  const headers = ['שם','טלפון','אימייל','סטטוס','מקור','נושא','תגיות','נכנס'];
+  const csv = [
+    headers.join(','),
+    ...sel.map(l => [
+      l.name||'', l.phone||'', l.email||'',
+      LEAD_STATUS_LABEL[l.status]||l.status||'',
+      LEAD_SOURCE_LABEL[l.source]||l.source||'',
+      LEAD_TOPIC_LABEL[l.topic]||l.topic||'',
+      (l.tags||[]).join('; '), l.createdAt||''
+    ].map(v => /[",\n]/.test(String(v)) ? `"${String(v).replace(/"/g,'""')}"` : v).join(','))
+  ].join('\n');
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `leads-selected-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast(`✅ יוצאו ${sel.length} לידים`,'success');
+};
 
 function viewLead(id){
   const l = State.leads.find(x => x.id === id);
@@ -2908,6 +3018,10 @@ function viewLead(id){
     </div>
     <div class="form-field"><label>פעולה הבאה (תאריך)</label><input id="ld-next-date" type="date" value="${l.nextActionDate||''}"></div>
     <div class="form-field"><label>הערה לפעולה הבאה</label><textarea id="ld-next-note">${escapeHtml(l.nextActionNote||'')}</textarea></div>
+    <div class="form-field">
+      <label>תגיות (מופרדות בפסיק) <span class="text-xs text-muted">— לדוגמה: VIP, הפנייה, דחוף</span></label>
+      <input id="ld-tags" value="${escapeAttr((l.tags||[]).join(', '))}" placeholder="VIP, דורש מעקב, ...">
+    </div>
 
     <div style="margin-top:1rem">
       <strong style="color:var(--navy)">היסטוריית הערות</strong>
@@ -2945,6 +3059,8 @@ function saveLead(id){
   l.topic = document.getElementById('ld-topic').value;
   l.nextActionDate = document.getElementById('ld-next-date').value;
   l.nextActionNote = document.getElementById('ld-next-note').value;
+  const tagsInput = document.getElementById('ld-tags');
+  if (tagsInput) l.tags = tagsInput.value.split(',').map(t => t.trim()).filter(Boolean);
   const newNote = document.getElementById('ld-new-note').value.trim();
   if (newNote){
     l.notes = l.notes || [];
