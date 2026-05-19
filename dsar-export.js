@@ -174,6 +174,19 @@
       // 5) Audit
       try { window.Audit?.logAction('dsar_export', 'client', clientId, payload.profile.name); } catch(_){}
 
+      // 6) Track in DSAR requests table for 30-day deadline (תיקון 13)
+      try {
+        if (window.supa){
+          await window.supa.from('argaman_dsar_requests').insert({
+            client_id: clientId,
+            client_name: payload.profile.name,
+            request_type: 'access',
+            completed_at: new Date().toISOString(),
+            notes: `Auto-exported by ${window.CURRENT_USER_DISPLAY_NAME || 'owner'}`
+          });
+        }
+      } catch(e){ console.warn('DSAR tracking failed:', e); }
+
       window.toast?.('✅ DSAR יוצא בהצלחה. מסור ללקוח עם הסבר.','success');
       window.closeModal?.();
     } catch(e){
