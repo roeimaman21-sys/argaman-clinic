@@ -41,6 +41,7 @@
   <script src="reminders.js" defer></script>
   <script src="consent-flow.js" defer></script>
   <script src="dsar-export.js" defer></script>
+  <script src="hebrew-search.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -521,6 +522,8 @@
 
 <div id="modal-root"></div>
 <div class="toast-wrap" id="toast-root"></div>
+<div id="aria-live-status" role="status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0"></div>
+<div id="aria-live-alert" role="alert" aria-live="assertive" aria-atomic="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0"></div>
 <div class="fab-container" id="fab-container">
   <button class="fab-sub" title="ליד מהיר" onclick="quickAddLead(); closeFab()">🎯</button>
   <button class="fab-sub" title="תזכורת" onclick="if(window.openRemindersModal)openRemindersModal(); closeFab()">⏰</button>
@@ -1733,12 +1736,20 @@ function toast(msg, type, duration){
   }
   const el = document.createElement('div');
   el.className = 'toast' + (type ? ' '+type : '');
+  el.setAttribute('role','alertdialog');
+  el.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
   // Auto-detect type from emoji
   if (!type){
     if (msg.startsWith('✓') || msg.startsWith('✅')) el.classList.add('success');
     else if (msg.startsWith('✗') || msg.startsWith('❌') || msg.startsWith('⚠')) el.classList.add('error');
   }
   el.textContent = msg;
+  // ARIA live region for screen readers
+  const ariaTarget = document.getElementById(type === 'error' ? 'aria-live-alert' : 'aria-live-status');
+  if (ariaTarget){
+    ariaTarget.textContent = msg;
+    setTimeout(() => { ariaTarget.textContent = ''; }, 5000);
+  }
   // Click to dismiss
   el.style.cursor = 'pointer';
   el.onclick = () => { el.style.opacity='0'; el.style.transform='translateY(-10px)'; setTimeout(()=>el.remove(),200); };
@@ -1766,18 +1777,52 @@ function showLoadingSkeleton(rows, cols){
 function modal(html, opts){
   opts = opts || {};
   const root = document.getElementById('modal-root');
+  const previousFocus = document.activeElement; // restore focus on close
   const bg = document.createElement('div');
   bg.className = 'modal-bg';
-  bg.innerHTML = `<div class="modal ${opts.size||''}">
+  const titleId = 'modal-title-' + Math.random().toString(36).slice(2,9);
+  bg.innerHTML = `<div class="modal ${opts.size||''}" role="dialog" aria-modal="true" aria-labelledby="${titleId}">
     <div class="modal-header">
-      <div class="modal-title">${escapeHtml(opts.title||'')}</div>
-      <button class="modal-close" onclick="this.closest('.modal-bg').remove()">✕</button>
+      <div class="modal-title" id="${titleId}">${escapeHtml(opts.title||'')}</div>
+      <button class="modal-close" onclick="this.closest('.modal-bg').remove()" aria-label="סגור">✕</button>
     </div>
     <div class="modal-body">${html}</div>
   </div>`;
   bg.addEventListener('click', e=>{ if (e.target === bg) bg.remove(); });
+  // Esc to close
+  const escHandler = (e) => {
+    if (e.key === 'Escape'){
+      bg.remove();
+      document.removeEventListener('keydown', escHandler);
+    }
+  };
+  document.addEventListener('keydown', escHandler);
+  // Focus trap
+  bg.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = bg.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (focusables.length === 0) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  });
+  // On remove, restore previous focus
+  const observer = new MutationObserver(() => {
+    if (!document.body.contains(bg)){
+      document.removeEventListener('keydown', escHandler);
+      if (previousFocus && previousFocus.focus) previousFocus.focus();
+      observer.disconnect();
+    }
+  });
+  observer.observe(root, { childList: true });
   root.appendChild(bg);
-  requestAnimationFrame(()=> bg.classList.add('show'));
+  requestAnimationFrame(()=> {
+    bg.classList.add('show');
+    // Focus first focusable in modal
+    const first = bg.querySelector('input:not([type="hidden"]), button:not(.modal-close), select, textarea, [tabindex]:not([tabindex="-1"])');
+    if (first) first.focus();
+  });
   return bg;
 }
 function closeModal(){ document.querySelectorAll('.modal-bg').forEach(b=>b.remove()); }
