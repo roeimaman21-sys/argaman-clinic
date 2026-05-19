@@ -42,6 +42,7 @@
   <script src="consent-flow.js" defer></script>
   <script src="dsar-export.js" defer></script>
   <script src="hebrew-search.js" defer></script>
+  <script src="optimistic.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -2778,6 +2779,8 @@ renderers.dashboard = async function(){
 
     ${renderSessionRemindersPanel()}
 
+    ${renderChurnPanel()}
+
     ${renderFollowUpPanel()}
 
     ${renderConversionFunnel()}
@@ -3492,6 +3495,60 @@ function sendReminder(sessionId){
   toast('✓ נשלחה תזכורת ל-'+client.name);
 }
 
+/* Churn Alerts — Active clients with no session in 30+ days */
+function renderChurnPanel(){
+  const clients = State.clients || [];
+  const sessions = State.sessions || [];
+  const today = new Date();
+  const cutoff = new Date(today); cutoff.setDate(today.getDate() - 30);
+  const cutoffISO = cutoff.toISOString().slice(0,10);
+  const todayISO = today.toISOString().slice(0,10);
+
+  // Active clients with last session > 30 days ago (or no sessions)
+  const atRisk = clients
+    .filter(c => c.status === 'active')
+    .map(c => {
+      const clientSessions = sessions.filter(s => s.clientId === c.id && s.date && s.date <= todayISO);
+      const lastSession = clientSessions.sort((a,b)=>(b.date||'').localeCompare(a.date||''))[0];
+      return { client: c, lastSessionDate: lastSession?.date };
+    })
+    .filter(({ lastSessionDate }) => !lastSessionDate || lastSessionDate < cutoffISO)
+    .slice(0, 5);
+  if (atRisk.length === 0) return '';
+
+  const followupTpl = (State.templates || []).find(t => t.id === 'tpl5')?.text
+    || 'היי {{name}}, איך אתה/את מרגיש/ה? משהו עלה שכדאי לדבר עליו בפגישה הבאה? גל';
+
+  return `
+    <div class="card" style="background:#fee2e2;border-right:4px solid #dc2626;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem">
+        <h3 style="color:#7f1d1d;display:flex;align-items:center;gap:.5rem">⚠️ לקוחות בסיכון נטישה (${atRisk.length})</h3>
+        <span style="font-size:.75rem;color:#991b1b">פעילים ללא פגישה מעל 30 ימים</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.4rem">
+        ${atRisk.map(({ client: c, lastSessionDate }) => {
+          const phone = (c.phone || '').replace(/[^0-9]/g,'');
+          const intl = phone.startsWith('0') ? '972' + phone.slice(1) : phone;
+          const msg = followupTpl.replace(/\{\{name\}\}/g, c.name || '');
+          const wa = `https://wa.me/${intl}?text=${encodeURIComponent(msg)}`;
+          const daysSince = lastSessionDate ? Math.floor((Date.now() - new Date(lastSessionDate).getTime()) / 86400000) : '∞';
+          return `
+            <div style="background:#fff;border-radius:6px;padding:.5rem .7rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+              <div>
+                <strong style="cursor:pointer;color:#1B3A6B" onclick="viewClient('${c.id}')">${escapeHtml(c.name || '(ללא שם)')}</strong>
+                <span style="color:#7f1d1d;font-size:.8rem;margin-right:.5rem">⏰ ${daysSince} ימים ללא פגישה</span>
+              </div>
+              <div style="display:flex;gap:.4rem">
+                ${intl ? `<a class="btn" style="background:#25D366;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${wa}" target="_blank">💬 שיחת המשך</a>` : ''}
+                <button class="btn" style="font-size:.8rem;padding:.3rem .6rem" onclick="viewClient('${c.id}')">פתח</button>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
 /* Session Reminders — sessions in next 24h with one-click WA reminder */
 function renderSessionRemindersPanel(){
   const sessions = State.sessions || [];
@@ -4109,7 +4166,15 @@ function viewClient(id){
   const upcoming = sess.filter(s => s.status === 'scheduled' && s.date >= new Date().toISOString().slice(0,10));
   const completed = sess.filter(s => s.status === 'completed');
   const totalRev = completed.filter(s => s.paid).reduce((sum,s)=>sum+(parseFloat(s.price)||0),0);
+  const paidCount = completed.filter(s => s.paid).length;
+  const avgRev = paidCount ? Math.round(totalRev / paidCount) : 0;
   const html = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.5rem;margin-bottom:1rem;padding:.75rem;background:#f9fafb;border-radius:8px">
+      <div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:var(--navy)">₪${totalRev.toLocaleString()}</div><div style="font-size:.7rem;color:#6b7280">💰 LTV</div></div>
+      <div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:var(--navy)">${completed.length}</div><div style="font-size:.7rem;color:#6b7280">📅 פגישות</div></div>
+      <div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:var(--navy)">₪${avgRev.toLocaleString()}</div><div style="font-size:.7rem;color:#6b7280">📊 ממוצע</div></div>
+      <div style="text-align:center"><div style="font-size:1.3rem;font-weight:800;color:var(--navy)">${upcoming.length}</div><div style="font-size:.7rem;color:#6b7280">🗓 צפויות</div></div>
+    </div>
     <div class="form-row">
       <div class="form-field"><label>שם</label><input id="cv-name" value="${escapeAttr(c.name||'')}"></div>
       <div class="form-field"><label>טלפון</label><input id="cv-phone" value="${escapeAttr(c.phone||'')}"></div>
