@@ -491,6 +491,7 @@ async function cloudPush(lsKey, value){
     }
   }, 400);
 }
+window.cloudPush = cloudPush; // expose for external modules
 
 function cloudSubscribe(){
   if (!supa) return;
@@ -536,8 +537,10 @@ const LS = {
   activity: 'argaman_activity',
   templates: 'argaman_msg_templates',
   marketing: 'argaman_marketing',
-  article_overrides: 'argaman_article_overrides'
+  article_overrides: 'argaman_article_overrides',
+  reminders: 'argaman_reminders'
 };
+window.LS = LS; // expose for external modules
 
 const DEFAULT_PASS = 'argaman2025'; // legacy fallback — migrated to hashed PBKDF2 on first login
 const LS_PASS_HASH = 'argaman_admin_pass_hash'; // hashed version (v1:salt:hash)
@@ -558,11 +561,16 @@ const State = {
   testimonials: [], workshops: [], prices: {}, videos: [], faqs: [], faq_overrides: {},
   settings: {}, activity: [], templates: [],
   marketing: { pages: {}, global: { ga4: 'G-QCQRJBKEY7', gsc: '', notes: '', tasks: [] } },
-  article_overrides: {}
+  article_overrides: {},
+  reminders: []  // added so reminders.js can find State.reminders without crashing
 };
+// CRITICAL: expose to external modules (reminders, optimistic, hebrew-search, etc.)
+window.State = State;
 
 function load(k, fb){ try { return JSON.parse(localStorage.getItem(k)) ?? fb; } catch(e){ return fb; } }
 function save_local(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+window.load = load;
+window.save_local = save_local;
 function save(k, v){
   // Auto-encrypt sensitive collections
   const cloudKey = Object.keys(LS).find(x => LS[x] === k);
@@ -571,6 +579,7 @@ function save(k, v){
   }
   save_local(k, v); cloudPush(k, v);
 }
+window.save = save; // expose for external modules
 async function loadEncryptedKey(lsKey, fb){
   // Try encrypted load first; if not encrypted, return as-is
   const raw = localStorage.getItem(lsKey);
@@ -699,6 +708,7 @@ function logActivity(text){
     if (window.Audit) window.Audit.logAction(action, entityType, null, label.slice(0, 200), { text });
   } catch(_){}
 }
+window.logActivity = logActivity; // expose for external modules
 
 /* ═══════════════════════════════════════════════
    AUTH — Secure: PBKDF2 hashing, rate limiting,

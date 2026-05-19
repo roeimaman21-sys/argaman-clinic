@@ -89,10 +89,11 @@
     }
   }
 
-  window.PaymentTools = {
-    bitLink, payboxLink, sendPaymentRequestViaWA, requestPaymentModal
-  };
+  // Expose — dual pattern
+  const PaymentAPI = { bitLink, payboxLink, sendPaymentRequestViaWA, requestPaymentModal };
+  window.PaymentTools = PaymentAPI;
   window.requestPayment = requestPaymentModal;
   window.sendPay = sendPay;
   window.markPaid = markPaid;
+  if (window.CRM && window.CRM.register) window.CRM.register('PaymentTools', PaymentAPI);
 })();

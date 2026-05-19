@@ -141,6 +141,8 @@
     window.openRemindersModal();
   };
 
-  // Expose
-  window.Reminders = { addReminder, deleteReminder, toggleDone, getDue, getAll, renderRemindersWidget };
+  // Expose — dual: window.Reminders (backwards compat) + CRM.register (new pattern)
+  const RemindersAPI = { addReminder, deleteReminder, toggleDone, getDue, getAll, renderRemindersWidget };
+  window.Reminders = RemindersAPI;
+  if (window.CRM && window.CRM.register) window.CRM.register('Reminders', RemindersAPI);
 })();

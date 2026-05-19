@@ -69,6 +69,8 @@
     }
   }
 
-  window.Presence = { start, stop, getOnlineUsers: () => [..._onlineUsers] };
+  const PresenceAPI = { start, stop, getOnlineUsers: () => [..._onlineUsers] };
+  window.Presence = PresenceAPI;
+  if (window.CRM && window.CRM.register) window.CRM.register('Presence', PresenceAPI);
   log('✓ ready');
 })();
