@@ -3357,7 +3357,9 @@ window.markReminderSent = function(sessionId){
   const s = (State.sessions||[]).find(x => x.id === sessionId);
   if (!s) return;
   s.reminderSentAt = new Date().toISOString();
+  // save() also handles cloudPush via saveEncrypted (sessions is encrypted)
   if (typeof save === 'function' && LS) save(LS.sessions, State.sessions);
+  setTimeout(() => { try { renderers[currentSection]?.(); } catch(_){} }, 100);
 };
 
 /* Conversion Funnel — visualizes lead lifecycle stages */
@@ -3367,10 +3369,10 @@ function renderConversionFunnel(){
   const sessions = State.sessions || [];
   if (leads.length === 0) return '';
 
-  // Define funnel stages
+  // Define funnel stages — using actual LEAD_STATUS values: new, contacted, scheduled, converted, no-fit, lost
   const total = leads.length;
-  const contacted = leads.filter(l => l.lastTouchedAt || (l.notes && l.notes.length>0) || l.status !== 'new').length;
-  const meeting = leads.filter(l => l.status === 'meeting' || l.status === 'converted').length;
+  const contacted = leads.filter(l => l.status === 'contacted' || l.status === 'scheduled' || l.status === 'converted' || l.lastTouchedAt || (l.notes && l.notes.length > 0)).length;
+  const meeting = leads.filter(l => l.status === 'scheduled' || l.status === 'converted').length;
   const converted = leads.filter(l => l.status === 'converted').length;
   const activeClients = clients.filter(c => c.status === 'active').length;
   const paidSessions = sessions.filter(s => s.paid).length;
@@ -3482,8 +3484,11 @@ window.markLeadTouched = function(leadId){
   const lead = (State.leads || []).find(l => l.id === leadId);
   if (!lead) return;
   lead.lastTouchedAt = new Date().toISOString();
+  // save() also handles cloudPush via saveEncrypted (leads is encrypted)
   if (typeof save === 'function' && LS) save(LS.leads, State.leads);
   if (typeof logActivity === 'function') logActivity(`עודכן ליד: ${lead.name} (WhatsApp)`);
+  // Trigger re-render so the dashboard panel updates
+  setTimeout(() => { try { renderers[currentSection]?.(); } catch(_){} }, 100);
 };
 
 /* Smart Insights — statistical insights from data (no AI, pure math) */

@@ -72,8 +72,21 @@
       reader.onload = e => {
         try {
           const data = JSON.parse(e.target.result);
-          if (!data.__meta) throw new Error('קובץ לא תקין — חסר metadata');
-          if (!confirm(`לשחזר נתונים מ-${data.__meta.exportedAt}?\n\nפעולה זו תדרוס את כל הנתונים הנוכחיים!`)) {
+          // Schema validation
+          if (!data || typeof data !== 'object') throw new Error('קובץ לא תקין — מבנה JSON שגוי');
+          if (!data.__meta) throw new Error('קובץ לא תקין — חסר metadata. ייתכן שהקובץ אינו גיבוי של קליניקת ארגמן.');
+          if (data.__meta.site && data.__meta.site !== 'argamanclinic.com'){
+            throw new Error('קובץ לא של קליניקת ארגמן (site=' + data.__meta.site + ')');
+          }
+          if (!data.__meta.version) console.warn('Backup version missing — proceeding with caution');
+          // Sanity check on data shapes
+          ['leads','clients','sessions','articles'].forEach(k => {
+            if (data[k] !== undefined && !Array.isArray(data[k])){
+              throw new Error(`שדה ${k} חייב להיות מערך`);
+            }
+          });
+          const stats = `📋 לידים: ${(data.leads||[]).length}, 👥 לקוחות: ${(data.clients||[]).length}, 📅 פגישות: ${(data.sessions||[]).length}, 📝 מאמרים: ${(data.articles||[]).length}`;
+          if (!confirm(`לשחזר נתונים מ-${data.__meta.exportedAt}?\n\n${stats}\n\n⚠️ פעולה זו תדרוס את כל הנתונים הנוכחיים!`)) {
             return resolve(false);
           }
           // Restore each key
