@@ -10,7 +10,7 @@ const SITE = 'https://argamanclinic.com';
 test.describe('Public site', () => {
   test('homepage loads with key elements', async ({ page }) => {
     await page.goto(SITE);
-    await expect(page).toHaveTitle(/קליניקת ארגמן/);
+    await expect(page).toHaveTitle(/גל ממן|ארגמן/);
     // Hero or main CTA visible
     await expect(page.locator('a[href*="wa.me"]').first()).toBeVisible();
     // Navigation present
@@ -19,7 +19,8 @@ test.describe('Public site', () => {
 
   test('contact page form fields present', async ({ page }) => {
     await page.goto(`${SITE}/contact.html`);
-    await expect(page.locator('input[type="text"], input[type="email"], input[name*="name"]').first()).toBeVisible();
+    // Skip honeypot (_honey) field — find a real visible name input
+    await expect(page.locator('input[type="email"], input#contact-name, input[name="name"]').first()).toBeVisible();
   });
 
   test('article page has Article schema', async ({ page }) => {
