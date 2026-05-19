@@ -47,6 +47,7 @@
   <script src="device-trust.js" defer></script>
   <script src="hibp-check.js" defer></script>
   <script src="honeypot.js" defer></script>
+  <script src="compliance-dashboard.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -2519,6 +2520,8 @@ renderers.dashboard = async function(){
       <div class="stat-card orange"><div class="stat-label">הכנסה החודש</div><div class="stat-value">₪${monthRev.toLocaleString()}</div><div class="stat-sub">המרה: ${conversionRate}%</div></div>
     </div>
 
+    <div id="compliance-dashboard-slot"></div>
+
     ${window.Reminders ? window.Reminders.renderRemindersWidget() : ''}
 
     ${renderSessionRemindersPanel()}
@@ -2592,6 +2595,13 @@ renderers.dashboard = async function(){
       </div>
     </div>
   `;
+  // Fill compliance dashboard widget (owner only, async)
+  if (window.ComplianceDashboard && window.CURRENT_USER_ROLE === 'owner'){
+    window.ComplianceDashboard.renderWidget().then(html => {
+      const slot = document.getElementById('compliance-dashboard-slot');
+      if (slot) slot.innerHTML = html;
+    }).catch(()=>{});
+  }
 };
 
 /* ─── LEADS ─────────────────────────────── */
