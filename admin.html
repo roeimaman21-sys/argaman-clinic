@@ -282,6 +282,34 @@
     .toast:hover{transform:translateY(-2px)}
     @keyframes toastIn{from{transform:translateY(-20px);opacity:0}to{transform:translateY(0);opacity:1}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes sectionFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes skeletonShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+    @keyframes spinSlow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+    /* Smooth main section transitions */
+    #main-content { animation: sectionFadeIn .25s ease-out }
+    /* Better focus rings — accessibility */
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
+      outline: 2px solid #C9A84C; outline-offset: 2px; border-radius: 4px;
+    }
+    /* Premium loading skeleton */
+    .skel{display:inline-block;background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%);background-size:200% 100%;animation:skeletonShimmer 1.5s infinite;border-radius:4px;height:14px;width:80%}
+    .skel-card{padding:1rem;background:#fff;border-radius:8px;display:flex;gap:.5rem;flex-direction:column}
+    .skel-card .skel:nth-child(1){width:60%;height:18px}
+    .skel-card .skel:nth-child(2){width:40%}
+    .skel-card .skel:nth-child(3){width:85%}
+    /* Polished empty state */
+    .empty-state{text-align:center;padding:3rem 1.5rem;color:var(--gray-500)}
+    .empty-state .empty-icon{font-size:3.5rem;opacity:.35;margin-bottom:.75rem;display:block;animation:pulse 3s infinite}
+    .empty-state h3{margin:.5rem 0;color:var(--navy)}
+    /* Spinner */
+    .spinner{display:inline-block;width:20px;height:20px;border:2.5px solid #e5e7eb;border-top-color:var(--navy);border-radius:50%;animation:spinSlow 0.7s linear infinite;vertical-align:middle}
+    /* Button hover polish */
+    .btn{transition:transform .15s, box-shadow .15s, background .15s}
+    .btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+    .btn:active:not(:disabled){transform:translateY(0)}
+    /* Card hover */
+    .stat-card{transition:transform .2s, box-shadow .2s}
+    .stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.06)}
     @media (max-width:768px){.toast-wrap{top:auto;bottom:20px;width:calc(100% - 2rem)}.toast{font-size:.85rem;padding:.7rem 1rem}}
     /* RECORDS */
     .record-card{background:white;border-radius:var(--r);padding:1rem 1.25rem;box-shadow:var(--sh-sm);border-right:3px solid var(--gold);transition:all var(--tx);margin-bottom:.75rem}
@@ -1845,7 +1873,7 @@ renderers.users = async function(){
       <button class="btn btn-gold" onclick="openAddUserModal()">+ הוסף משתמש</button>
     </div>
     <div class="card" id="users-list-card">
-      <div style="text-align:center;padding:2rem;color:#6b7280">⏳ טוען...</div>
+      <div style="text-align:center;padding:2rem;color:#6b7280"><span class="spinner"></span> טוען...</div>
     </div>
     <div class="card" style="margin-top:1rem;background:#fef3c7;border-right:4px solid #f59e0b">
       <h3 style="color:#92400e;margin-bottom:.5rem">💡 איך זה עובד</h3>
@@ -2087,7 +2115,7 @@ renderers.profile = async function(){
 
     <div class="card" style="margin-bottom:1rem">
       <h3 style="color:var(--navy);margin-bottom:.75rem">🛡️ אימות דו-שלבי (2FA)</h3>
-      <div id="mfa-status">⏳ טוען...</div>
+      <div id="mfa-status"><span class="spinner"></span> טוען...</div>
     </div>
 
     <div class="card" style="margin-bottom:1rem">
@@ -2114,7 +2142,7 @@ renderers.profile = async function(){
 
     <div class="card">
       <h3 style="color:var(--navy);margin-bottom:.75rem">📜 היסטוריית התחברויות שלי (אחרונות)</h3>
-      <div id="my-login-history">⏳ טוען...</div>
+      <div id="my-login-history"><span class="spinner"></span> טוען...</div>
     </div>
   `;
   loadMyLoginHistory();
@@ -2435,7 +2463,7 @@ async function loadMyLoginHistory(){
 /* ─── LOGIN HISTORY (owner — sees all) ─── */
 renderers['login-history'] = async function(){
   const root = document.getElementById('main-content');
-  root.innerHTML = '<div class="card">⏳ טוען...</div>';
+  root.innerHTML = '<div class="card"><span class="spinner"></span> טוען...</div>';
   if (window.RoleGuard && window.RoleGuard.ready) { try { await window.RoleGuard.ready; } catch(_){} }
   if (window.CURRENT_USER_ROLE !== 'owner'){
     root.innerHTML = '<div class="card"><h2>⛔ אין הרשאה</h2><p>רק בעלים רואה היסטוריית כל המשתמשים.</p></div>'; return;
@@ -2451,7 +2479,7 @@ renderers['login-history'] = async function(){
         <button class="btn" onclick="exportAuditCSV('logins')">📊 CSV</button>
       </div>
     </div>
-    <div class="card" id="login-history-card">⏳ טוען...</div>`;
+    <div class="card" id="login-history-card"><span class="spinner"></span> טוען...</div>`;
   const rows = await window.Audit.getLoginHistory(200);
   const el = document.getElementById('login-history-card');
   if (rows.length === 0){ el.innerHTML = 'אין רשומות'; return; }
@@ -2477,7 +2505,7 @@ renderers['login-history'] = async function(){
 /* ─── ACTION LOG (owner — sees all CRUD) ─── */
 renderers['action-log'] = async function(){
   const root = document.getElementById('main-content');
-  root.innerHTML = '<div class="card">⏳ טוען...</div>';
+  root.innerHTML = '<div class="card"><span class="spinner"></span> טוען...</div>';
   if (window.RoleGuard && window.RoleGuard.ready) { try { await window.RoleGuard.ready; } catch(_){} }
   if (window.CURRENT_USER_ROLE !== 'owner'){
     root.innerHTML = '<div class="card"><h2>⛔ אין הרשאה</h2></div>'; return;
@@ -2493,7 +2521,7 @@ renderers['action-log'] = async function(){
         <button class="btn" onclick="exportAuditCSV('actions')">📊 CSV</button>
       </div>
     </div>
-    <div class="card" id="action-log-card">⏳ טוען...</div>`;
+    <div class="card" id="action-log-card"><span class="spinner"></span> טוען...</div>`;
   const rows = await window.Audit.getActionLog({ limit: 300 });
   const el = document.getElementById('action-log-card');
   if (rows.length === 0){ el.innerHTML = 'אין פעולות מתועדות'; return; }
@@ -2640,7 +2668,7 @@ function renderDashboardCharts(){
 renderers.dashboard = async function(){
   // Wait briefly for role to load before deciding which dashboard to render
   if (!window.CURRENT_USER_ROLE && window.RoleGuard && window.RoleGuard.ready){
-    document.getElementById('main-content').innerHTML = '<div style="text-align:center;padding:3rem;color:#6b7280">⏳ טוען...</div>';
+    document.getElementById('main-content').innerHTML = '<div style="text-align:center;padding:3rem;color:#6b7280"><span class="spinner"></span> טוען...</div>';
     try {
       await Promise.race([
         window.RoleGuard.ready,
@@ -2822,10 +2850,10 @@ function renderLeadsList(){
   const root = document.getElementById('leads-list');
   if (!list.length){
     const hasFilters = (window.__leadFilter && window.__leadFilter !== 'all') || (window.__leadSearch||'').trim();
-    root.innerHTML = `<div class="card" style="padding:3rem 2rem;text-align:center">
-      <div style="font-size:4rem;opacity:.4;margin-bottom:.5rem">🎯</div>
-      <h3 style="margin:0 0 .5rem">${hasFilters?'אין לידים תואמים לסינון':'אין לידים עדיין'}</h3>
-      <p style="color:var(--gray-500);margin-bottom:1.5rem">${hasFilters?'נסו לשנות סינון או חיפוש':'הוסיפו את הליד הראשון כדי להתחיל לעקוב אחרי פניות'}</p>
+    root.innerHTML = `<div class="card empty-state">
+      <span class="empty-icon">🎯</span>
+      <h3>${hasFilters?'אין לידים תואמים לסינון':'אין לידים עדיין'}</h3>
+      <p style="margin-bottom:1.5rem">${hasFilters?'נסו לשנות סינון או חיפוש':'הוסיפו את הליד הראשון כדי להתחיל לעקוב אחרי פניות'}</p>
       <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap">
         ${hasFilters?`<button class="btn" onclick="window.__leadFilter='all';window.__leadSearch='';renderers.leads()">✕ נקה סינון</button>`:''}
         <button class="btn btn-primary" onclick="quickAddLead()">+ ליד חדש</button>
