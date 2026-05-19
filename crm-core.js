@@ -158,6 +158,29 @@
   }
 
   // ─────────────────────────────────────────────────────
+  // 4.4 TAGGED TEMPLATE — auto-escape for safe HTML
+  // ─────────────────────────────────────────────────────
+  // Usage: CRM.html`<div>${userInput}</div>`
+  // Interpolations are auto-escaped. Use CRM.html.raw(value) to bypass.
+  function html(strings, ...values){
+    let out = '';
+    for (let i = 0; i < strings.length; i++){
+      out += strings[i];
+      if (i < values.length){
+        const v = values[i];
+        if (v == null) out += '';
+        else if (v && typeof v === 'object' && v.__rawHtml === true) out += String(v.value);
+        else if (Array.isArray(v)) out += v.map(x =>
+          (x && typeof x === 'object' && x.__rawHtml === true) ? String(x.value) : esc(x)
+        ).join('');
+        else out += esc(v);
+      }
+    }
+    return out;
+  }
+  html.raw = (value) => ({ __rawHtml: true, value });
+
+  // ─────────────────────────────────────────────────────
   // 4.5 MEMOIZATION (for hot sort/filter paths)
   // ─────────────────────────────────────────────────────
   const _memoCache = new Map();
@@ -503,6 +526,9 @@
 
     // Memoization
     memo, invalidateMemo,
+
+    // Safe HTML tagged template
+    html,
 
     // State
     state,
