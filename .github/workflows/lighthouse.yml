@@ -1,0 +1,35 @@
+name: Lighthouse CI
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '*.html'
+      - '*.css'
+      - 'script.js'
+  schedule:
+    # Weekly on Mondays 06:00 UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.13
+      - name: Run Lighthouse
+        run: lhci autorun --config=.lighthouserc.json
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lighthouse-report
+          path: .lighthouseci/
+          retention-days: 14

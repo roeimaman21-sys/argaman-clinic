@@ -158,6 +158,29 @@
   }
 
   // ─────────────────────────────────────────────────────
+  // 4.5 MEMOIZATION (for hot sort/filter paths)
+  // ─────────────────────────────────────────────────────
+  const _memoCache = new Map();
+  function memo(keyFn, computeFn){
+    const key = typeof keyFn === 'function' ? keyFn() : String(keyFn);
+    if (_memoCache.has(key)) return _memoCache.get(key);
+    const result = computeFn();
+    _memoCache.set(key, result);
+    // Cap cache size
+    if (_memoCache.size > 100){
+      const firstKey = _memoCache.keys().next().value;
+      _memoCache.delete(firstKey);
+    }
+    return result;
+  }
+  function invalidateMemo(prefix){
+    if (!prefix) return _memoCache.clear();
+    for (const k of _memoCache.keys()){
+      if (k.startsWith(prefix)) _memoCache.delete(k);
+    }
+  }
+
+  // ─────────────────────────────────────────────────────
   // 5. STATE WRAPPERS
   // ─────────────────────────────────────────────────────
   const state = {
@@ -477,6 +500,9 @@
 
     // localStorage
     ls: { get: lsGet, getJSON: lsGetJSON, set: lsSet, setJSON: lsSetJSON, del: lsDel },
+
+    // Memoization
+    memo, invalidateMemo,
 
     // State
     state,
