@@ -1908,7 +1908,10 @@ renderers.profile = async function(){
     <div class="card" style="margin-bottom:1rem">
       <h3 style="color:var(--navy);margin-bottom:.75rem">💾 גיבוי וייצוא</h3>
       <div style="display:flex;flex-direction:column;gap:.5rem">
-        <button class="btn btn-gold" onclick="window.backupNow()">⬇️ גיבוי עכשיו (JSON)</button>
+        <button class="btn" style="background:#16a34a;color:#fff" onclick="window.backupEncryptedNow()">🔐 גיבוי מוצפן (.argbak) — מומלץ</button>
+        <button class="btn" onclick="document.getElementById('restore-encrypted').click()">🔓 שחזור מקובץ מוצפן</button>
+        <input type="file" id="restore-encrypted" accept=".argbak" style="display:none" onchange="window.BackupTools && window.BackupTools.restoreEncrypted(this.files[0])">
+        <button class="btn btn-gold" onclick="window.backupNow()">⬇️ גיבוי לא מוצפן (JSON)</button>
         <button class="btn" onclick="document.getElementById('restore-file').click()">⬆️ שחזור מקובץ JSON</button>
         <input type="file" id="restore-file" accept=".json" style="display:none" onchange="window.BackupTools && window.BackupTools.restoreFromFile(this.files[0])">
         <button class="btn" onclick="window.exportSessionsICS()">📅 ייצוא פגישות ל-Google Calendar (ICS)</button>

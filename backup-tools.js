@@ -48,7 +48,7 @@
     URL.revokeObjectURL(url);
   }
 
-  /** Manual backup with download */
+  /** Manual backup with download (plaintext JSON) */
   function backupNow(){
     try {
       const blob = generateBackup();
@@ -63,6 +63,111 @@
       if (window.toast) window.toast('שגיאת גיבוי: ' + e.message, 'error');
       return false;
     }
+  }
+
+  /** Encrypted backup — AES-256-GCM with password-derived key.
+   *  Output: .argbak file with metadata + ciphertext.
+   *  More secure than plaintext JSON — protects backup if laptop stolen. */
+  async function backupEncryptedNow(){
+    if (!window.ArgSec){ window.toast?.('הצפנה לא זמינה','error'); return false; }
+    // Prompt for backup password (NOT the same as login)
+    const pw = prompt('הזן סיסמת גיבוי (תיזכר אותה בעת שחזור — שמור במנהל סיסמאות):');
+    if (!pw){ return false; }
+    if (pw.length < 8){ window.toast?.('סיסמת גיבוי קצרה מ-8','error'); return false; }
+    try {
+      const blob = generateBackup();
+      const plaintext = await blob.text();
+      // Generate random salt + IV
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const saltB64 = btoa(String.fromCharCode(...salt));
+      // Derive key from password
+      const derived = await window.ArgSec.deriveEncKey(pw, saltB64);
+      // Encrypt
+      const encrypted = await window.ArgSec.encryptJSON({ data: plaintext }, derived.key);
+      // Wrap in .argbak structure
+      const argbak = {
+        __meta: {
+          version: 'v1',
+          format: 'argbak',
+          algo: 'AES-256-GCM',
+          kdf: 'PBKDF2-SHA256-250K',
+          salt: saltB64,
+          created: new Date().toISOString(),
+          site: 'argamanclinic.com',
+          key_hint: pw.slice(0, 1) + '*'.repeat(Math.max(0, pw.length-1))
+        },
+        ciphertext: encrypted
+      };
+      const argbakBlob = new Blob([JSON.stringify(argbak)], { type: 'application/octet-stream' });
+      const date = new Date().toISOString().slice(0,10);
+      downloadBlob(argbakBlob, `argaman-backup-${date}.argbak`);
+      localStorage.setItem(BACKUP_KEY, new Date().toISOString());
+      if (window.Audit) window.Audit.logAction('export', 'backup_encrypted', null, `Encrypted backup ${date}`);
+      if (window.toast) window.toast('🔐 גיבוי מוצפן הורד. שמור את הסיסמה!', 'success');
+      return true;
+    } catch(e){
+      console.error('Encrypted backup failed:', e);
+      if (window.toast) window.toast('שגיאת גיבוי מוצפן: ' + e.message, 'error');
+      return false;
+    }
+  }
+
+  /** Restore from .argbak (encrypted) */
+  async function restoreEncrypted(file){
+    if (!window.ArgSec){ window.toast?.('הצפנה לא זמינה','error'); return false; }
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        try {
+          const argbak = JSON.parse(e.target.result);
+          if (argbak.__meta?.format !== 'argbak'){
+            throw new Error('קובץ אינו .argbak תקני');
+          }
+          if (argbak.__meta?.site !== 'argamanclinic.com'){
+            throw new Error('קובץ לא של ארגמן');
+          }
+          const pw = prompt(`הזן סיסמת גיבוי (רמז: ${argbak.__meta.key_hint || '???'}):`);
+          if (!pw){ resolve(false); return; }
+          // Derive key
+          const derived = await window.ArgSec.deriveEncKey(pw, argbak.__meta.salt);
+          // Decrypt
+          let decrypted;
+          try {
+            decrypted = await window.ArgSec.decryptJSON(argbak.ciphertext, derived.key);
+          } catch(decErr){
+            window.toast?.('❌ סיסמה שגויה או קובץ פגום','error');
+            resolve(false); return;
+          }
+          // Now decrypted = { data: original_json_string }
+          const innerData = JSON.parse(decrypted.data);
+          // Reuse existing restoreFromFile validation logic
+          if (!innerData.__meta) throw new Error('קובץ פנימי לא תקין');
+          const stats = `📋 לידים: ${(innerData.leads||[]).length}, 👥 לקוחות: ${(innerData.clients||[]).length}, 📅 פגישות: ${(innerData.sessions||[]).length}`;
+          if (!confirm(`לשחזר נתונים מוצפנים מ-${innerData.__meta.exportedAt}?\n\n${stats}\n\n⚠️ פעולה זו תדרוס את הכל!`)) {
+            return resolve(false);
+          }
+          // Restore
+          const State = window.State;
+          if (!State) throw new Error('State לא זמין');
+          ['leads','clients','sessions','articles','testimonials','workshops','prices','videos','faqs','settings','templates','marketing','activity'].forEach(k => {
+            if (innerData[k] !== undefined) State[k] = innerData[k];
+          });
+          if (typeof window.save === 'function' && window.LS){
+            Object.keys(window.LS).forEach(k => {
+              if (State[k] !== undefined) window.save(window.LS[k], State[k]);
+            });
+          }
+          if (window.toast) window.toast('✅ שחזור מוצפן בוצע — מרענן...', 'success');
+          setTimeout(() => location.reload(), 1500);
+          resolve(true);
+        } catch(err){
+          if (window.toast) window.toast('שגיאת שחזור מוצפן: ' + err.message, 'error');
+          reject(err);
+        }
+      };
+      reader.onerror = () => reject(new Error('שגיאת קריאת קובץ'));
+      reader.readAsText(file);
+    });
   }
 
   /** Restore from JSON file */
@@ -214,7 +319,9 @@
   // Expose
   window.BackupTools = {
     backupNow,
+    backupEncryptedNow,
     restoreFromFile,
+    restoreEncrypted,
     exportSessionsICS,
     cleanOldAuditLogs,
     checkBackupSchedule,
@@ -224,6 +331,7 @@
 
   // Aliases for convenience
   window.backupNow = backupNow;
+  window.backupEncryptedNow = backupEncryptedNow;
   window.exportSessionsICS = exportSessionsICS;
 
   log('✓ ready');

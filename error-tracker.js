@@ -38,16 +38,29 @@
     }
   }
 
+  /** Sanitize text to remove PII before sending to server */
+  function sanitize(text){
+    if (!text) return text;
+    return String(text)
+      .replace(/[\w.+-]+@[\w.-]+\.\w+/g, '<email>')
+      .replace(/\b05\d-?\d{7}\b/g, '<phone>')
+      .replace(/\b(?:\+972|972|0)5\d-?\d{7}\b/g, '<phone>')
+      .replace(/\b[a-f0-9]{32,}\b/gi, '<token>')
+      .replace(/(client[_-]?id|user[_-]?id|email|phone)\s*[:=]\s*["']?[\w@.+-]+/gi, '$1=<redacted>')
+      .replace(/Bearer\s+[\w.-]+/gi, 'Bearer <redacted>')
+      .replace(/sb-\w+-auth-token/g, '<auth-token>');
+  }
+
   function reportError(opts){
     const entry = {
       user_id: _userId,
       user_email: _userEmail,
-      message: String(opts.message || '').slice(0, 1000),
-      stack: opts.stack ? String(opts.stack).slice(0, 5000) : null,
-      url: location.href.slice(0, 500),
+      message: sanitize(String(opts.message || '').slice(0, 1000)),
+      stack: opts.stack ? sanitize(String(opts.stack).slice(0, 5000)) : null,
+      url: location.href.replace(/[?#].*$/, '').slice(0, 500), // strip query string
       user_agent: navigator.userAgent.slice(0, 300),
       source: opts.source || 'manual',
-      metadata: opts.metadata || null
+      metadata: opts.metadata ? JSON.parse(sanitize(JSON.stringify(opts.metadata))) : null
     };
     _queue.push(entry);
     if (_queue.length > MAX_LOCAL_QUEUE){
