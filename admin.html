@@ -1210,6 +1210,12 @@ async function loadDecrypted(lsKey, fallback){
    APP INIT
 ═══════════════════════════════════════════════ */
 let currentSection = 'dashboard';
+// Expose to external modules as a live accessor
+Object.defineProperty(window, 'currentSection', {
+  configurable: true,
+  get(){ return currentSection; },
+  set(v){ currentSection = v; }
+});
 async function initApp(){
   await loadAll();
   document.getElementById('login-screen').classList.add('hidden');
@@ -1558,6 +1564,7 @@ function confirmDialog(msg, onYes){
    SECTION RENDERERS
 ═══════════════════════════════════════════════ */
 const renderers = {};
+window.renderers = renderers; // expose for external modules
 
 /* ─── DEVELOPER DASHBOARD — no PHI, system/content focus ─── */
 function renderDeveloperDashboard(){
