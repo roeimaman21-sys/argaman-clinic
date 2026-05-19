@@ -39,6 +39,8 @@
   <script src="bi-charts.js" defer></script>
   <script src="web-push.js" defer></script>
   <script src="reminders.js" defer></script>
+  <script src="consent-flow.js" defer></script>
+  <script src="dsar-export.js" defer></script>
   <!-- Quill — Rich text editor -->
   <!-- Quill lazy-loaded on demand (saves ~85KB on initial load) -->
   <script>
@@ -4162,6 +4164,8 @@ function viewClient(id){
       <button class="btn btn-sm" onclick="showDocumentsDialog('${c.id}')" style="background:#8b5cf6;color:#fff">📎 מסמכים${(c.documents||[]).length?' ('+c.documents.length+')':''}</button>
       <button class="btn btn-sm" onclick="showInvoiceDialog('${c.id}')" style="background:#10b981;color:#fff">📄 הוצא חשבונית</button>
       <button class="btn btn-sm" onclick="requestReview('${c.id}')" style="background:#f59e0b;color:#fff">🌟 בקש ביקורת</button>
+      <button class="btn btn-sm" onclick="window.openConsentModal && window.openConsentModal('${c.id}', ${JSON.stringify(c.name||'').replace(/"/g, '&quot;')}, ${JSON.stringify(c.phone||'').replace(/"/g, '&quot;')})" style="background:#1e3a8a;color:#fff" title="איסוף הסכמה — תיקון 13">📋 הסכמה</button>
+      <button class="btn btn-sm" onclick="window.openDSARExport && window.openDSARExport('${c.id}')" style="background:#7c3aed;color:#fff" title="ייצוא מידע ללקוח — DSAR">📤 DSAR</button>
       <button class="btn btn-primary" onclick="saveClient('${c.id}')">שמירה</button>
     </div>
   `;
