@@ -3372,7 +3372,7 @@ function renderChurnPanel(){
                 <span style="color:#7f1d1d;font-size:.8rem;margin-right:.5rem">⏰ ${daysSince} ימים ללא פגישה</span>
               </div>
               <div style="display:flex;gap:.4rem">
-                ${intl ? `<a class="btn" style="background:#25D366;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${wa}" target="_blank">💬 שיחת המשך</a>` : ''}
+                ${intl ? `<a class="btn" style="background:#0F7A3D;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${wa}" target="_blank">💬 שיחת המשך</a>` : ''}
                 <button class="btn" style="font-size:.8rem;padding:.3rem .6rem" onclick="viewClient('${c.id}')">פתח</button>
               </div>
             </div>`;
@@ -3426,7 +3426,7 @@ function renderSessionRemindersPanel(){
                 <strong>${escapeHtml(cl.name || '')}</strong>
                 <span style="color:#1e3a8a;font-size:.8rem;margin-right:.5rem">📅 ${when} ${s.time || ''}</span>
               </div>
-              <a class="btn" style="background:#25D366;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${wa}" target="_blank" onclick="markReminderSent('${s.id}')">💬 שלח תזכורת</a>
+              <a class="btn" style="background:#0F7A3D;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${wa}" target="_blank" onclick="markReminderSent('${s.id}')">💬 שלח תזכורת</a>
             </div>`;
         }).join('')}
       </div>
@@ -3550,7 +3550,7 @@ function renderFollowUpPanel(){
                 <span style="color:#9ca3af;font-size:.75rem">${daysSince} ימים ללא מענה</span>
               </div>
               <div style="display:flex;gap:.4rem">
-                ${waUrl ? `<a class="btn" style="background:#25D366;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${waUrl}" target="_blank" onclick="markLeadTouched('${l.id}')">💬 WhatsApp</a>` : ''}
+                ${waUrl ? `<a class="btn" style="background:#0F7A3D;color:#fff;font-size:.8rem;padding:.3rem .6rem;text-decoration:none" href="${waUrl}" target="_blank" onclick="markLeadTouched('${l.id}')">💬 WhatsApp</a>` : ''}
                 <button class="btn" style="font-size:.8rem;padding:.3rem .6rem" onclick="viewLead('${l.id}')">פתח</button>
               </div>
             </div>`;
@@ -6394,7 +6394,7 @@ function showRecoveryCodeToUser(code){
       <button class="btn" onclick="copyRecoveryCode('${code}')" style="background:#1B3A6B;color:#fff">📋 העתק ללוח</button>
       <button class="btn" onclick="downloadRecoveryCode('${code}')" style="background:#0f766e;color:#fff">💾 הורד כקובץ</button>
       <a class="btn" href="mailto:${email}?subject=${subj}&body=${body}" style="background:#dc2626;color:#fff;text-decoration:none;text-align:center">📧 פתח באימייל</a>
-      <a class="btn" href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" rel="noopener" style="background:#25D366;color:#fff;text-decoration:none;text-align:center">💬 שלח לוואטסאפ</a>
+      <a class="btn" href="https://wa.me/${cleanPhone}?text=${waText}" target="_blank" rel="noopener" style="background:#0F7A3D;color:#fff;text-decoration:none;text-align:center">💬 שלח לוואטסאפ</a>
       <button class="btn" onclick="printRecoveryCode('${code}')" style="background:#7c3aed;color:#fff">🖨️ הדפס</button>
       <button class="btn" onclick="showRecoveryQR('${code}')" style="background:#0891b2;color:#fff">📱 קוד QR למובייל</button>
     </div>

@@ -9,7 +9,7 @@
   --color-white:      #FFFFFF;
   --color-bg-light:   #F8F8F8;
   --color-footer:     #0F2347;
-  --color-wa:         #25D366;
+  --color-wa:         #0F7A3D;
   --color-text:       #1a1a1a;
   --color-text-muted: #555555;
   --color-border:     #E0E0E0;
@@ -153,7 +153,7 @@ p:last-child { margin-bottom: 0; }
   background: var(--color-wa);
   color: var(--color-white);
 }
-.btn-wa:hover { background: #1da354; }
+.btn-wa:hover { background: #0C6B34; }
 
 .btn-lg {
   padding: 1rem 2.2rem;
@@ -217,7 +217,7 @@ p:last-child { margin-bottom: 0; }
   border-radius: var(--radius-full);
   padding: 0.45rem 1rem !important;
 }
-.nav-wa-btn:hover { background: #1da354 !important; }
+.nav-wa-btn:hover { background: #0C6B34 !important; }
 
 .hamburger {
   display: flex;
@@ -389,7 +389,7 @@ p:last-child { margin-bottom: 0; }
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+  box-shadow: 0 4px 16px rgba(15,122,61,0.4);
   animation: pulse-wa 2s infinite;
   transition: transform var(--transition);
 }
@@ -412,8 +412,8 @@ p:last-child { margin-bottom: 0; }
 .whatsapp-fab:focus-within .fab-tooltip { opacity: 1; }
 
 @keyframes pulse-wa {
-  0%, 100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4); }
-  50%       { box-shadow: 0 4px 28px rgba(37,211,102,0.7), 0 0 0 10px rgba(37,211,102,0.1); }
+  0%, 100% { box-shadow: 0 4px 16px rgba(15,122,61,0.4); }
+  50%       { box-shadow: 0 4px 28px rgba(15,122,61,0.7), 0 0 0 10px rgba(15,122,61,0.1); }
 }
 
 /* =====================================================
@@ -1948,11 +1948,11 @@ p:last-child { margin-bottom: 0; }
 .btn-wa {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #25D366, #20BA5C);
+  background: linear-gradient(135deg, #0F7A3D, #0C6B34);
 }
 .btn-wa:hover {
-  background: linear-gradient(135deg, #20BA5C, #1da354);
-  box-shadow: 0 8px 32px rgba(37,211,102,0.5);
+  background: linear-gradient(135deg, #0C6B34, #0A5A2C);
+  box-shadow: 0 8px 32px rgba(15,122,61,0.5);
   transform: translateY(-3px) scale(1.02);
 }
 .btn-wa::before {
@@ -2058,12 +2058,12 @@ p:last-child { margin-bottom: 0; }
 
 /* --- WhatsApp FAB enhanced --- */
 .whatsapp-fab {
-  background: linear-gradient(135deg, #25D366, #20BA5C);
+  background: linear-gradient(135deg, #0F7A3D, #0C6B34);
 }
 @keyframes pulse-wa {
-  0%   { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.4); }
-  50%  { box-shadow: 0 4px 28px rgba(37,211,102,0.7), 0 0 0 14px rgba(37,211,102,0.0); }
-  100% { box-shadow: 0 4px 16px rgba(37,211,102,0.4), 0 0 0 0 rgba(37,211,102,0.0); }
+  0%   { box-shadow: 0 4px 16px rgba(15,122,61,0.4), 0 0 0 0 rgba(15,122,61,0.4); }
+  50%  { box-shadow: 0 4px 28px rgba(15,122,61,0.7), 0 0 0 14px rgba(15,122,61,0.0); }
+  100% { box-shadow: 0 4px 16px rgba(15,122,61,0.4), 0 0 0 0 rgba(15,122,61,0.0); }
 }
 
 /* --- Navbar scroll shadow --- */
@@ -2211,7 +2211,7 @@ p:last-child { margin-bottom: 0; }
 }
 .cookie-text a {
   color: var(--color-gold);
-  text-decoration: none;
+  text-decoration: underline;
 }
 .cookie-actions {
   display: flex;
@@ -2582,7 +2582,7 @@ p:last-child { margin-bottom: 0; }
   font-size: 0.95rem;
   min-height: 44px;
 }
-.mobile-sticky-cta .cta-wa { background: #25D366; color: #fff; }
+.mobile-sticky-cta .cta-wa { background: #0F7A3D; color: #fff; }
 .mobile-sticky-cta .cta-call { background: #1B3A6B; color: #fff; }
 @media (max-width: 768px) {
   .mobile-sticky-cta { display: flex; }
@@ -2715,12 +2715,12 @@ p:last-child { margin-bottom: 0; }
 .exit-msg { color: #374151; line-height: 1.6; margin: 0.75rem 0 1.5rem; font-size: 1rem; }
 .exit-actions { display: flex; flex-direction: column; gap: 0.5rem; }
 .exit-btn-primary {
-  background: #25D366; color: #fff;
+  background: #0F7A3D; color: #fff;
   padding: 0.85rem 1.5rem; border-radius: 50px;
   font-weight: 700; text-decoration: none;
   font-size: 1rem; transition: transform 0.2s, box-shadow 0.2s;
 }
-.exit-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(37,211,102,0.3); }
+.exit-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,122,61,0.3); }
 .exit-btn-secondary {
   color: #1B3A6B; padding: 0.65rem; text-decoration: none;
   font-weight: 600; font-size: 0.95rem;

@@ -20,7 +20,7 @@ jobs:
           node-version: '20'
       - name: Install Playwright
         run: |
-          npm install --save-dev @playwright/test
+          npm install --save-dev @playwright/test @axe-core/playwright
           npx playwright install chromium --with-deps
       - name: Run smoke tests
         run: npx playwright test --config=playwright.config.mjs

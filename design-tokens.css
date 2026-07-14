@@ -98,7 +98,7 @@
     --color-focus:        var(--gold-500);
     --color-selection-bg: #F2E5BA;
     --color-selection-fg: var(--navy-900);
-    --color-wa:           #25D366;
+    --color-wa:           #0F7A3D;
 
     /* Gold, but safe as small text on white/light backgrounds.
        gold-500 only reaches ~2.3:1 on white (fails WCAG AA);
