@@ -162,6 +162,7 @@
     /* SHOW ALL ANSWERS BY DEFAULT — תשובות גלויות תמיד */
     .accordion-body { max-height: none !important; overflow: visible !important; }
     .accordion-body-inner { padding: 1rem 1.5rem 1.5rem !important; color: #374151 !important; background: #fff; border-top: 1px solid #f3f4f6 }
+    .accordion-body-inner a { text-decoration: underline; }
     .accordion-icon { display: none !important; }
     .accordion-btn { cursor: default !important; pointer-events: none; background: #f9fafb !important; }
     .accordion-item { margin-bottom: .75rem !important; box-shadow: 0 1px 3px rgba(0,0,0,.05) !important; border-radius: 8px; overflow: hidden }
@@ -245,7 +246,7 @@
         <input type="text" id="faq-search" placeholder="🔍 חיפוש בשאלות..." aria-label="חיפוש שאלות נפוצות">
       </div>
 
-      <div class="accordion" role="list">
+      <div class="accordion">
 
         <!-- ===== כללי ===== -->
         <div class="faq-category-divider" data-cat-header="general">💬 כללי</div>
