@@ -3196,9 +3196,9 @@ const NOTE_TEMPLATES = [
   { name:'📞 שיחת היכרות',     text:'שיחת היכרות התקיימה.\nרושם ראשוני: \nנושאים שעלו: \nהמלצה: ' },
   { name:'✅ פגישה — סיכום',    text:'סיכום פגישה:\n- מה דובר: \n- תובנות עיקריות: \n- שיעורי בית: \n- פוקוס לפגישה הבאה: ' },
   { name:'🎯 הצבת מטרות',       text:'מטרות שהוצבו:\n1. \n2. \n3. \nציר זמן: ' },
-  { name:'⚠️ משבר/בעיה',        text:'אירוע משברי:\nתיאור: \nתגובה: \nהמלצה לטיפול: ' },
+  { name:'⚠️ משבר/בעיה',        text:'אירוע משברי:\nתיאור: \nתגובה: \nהמלצה להמשך ליווי: ' },
   { name:'💰 דיון על מחיר',     text:'שיחה על תשלום:\nהסכם: \nמחיר מוסכם: \nמועד תשלום: ' },
-  { name:'🔄 שינוי כיוון',      text:'שינוי בכיוון הטיפול:\nמה השתנה: \nסיבה: \nגישה חדשה: ' },
+  { name:'🔄 שינוי כיוון',      text:'שינוי בכיוון הליווי:\nמה השתנה: \nסיבה: \nגישה חדשה: ' },
   { name:'📅 ביטול פגישה',      text:'ביטול פגישה — תאריך: \nסיבה: \nמועד חלופי: \nחיוב: ' },
   { name:'🎉 הצלחה/התקדמות',   text:'נקודת הצלחה:\nמה השתפר: \nאיך זה הושג: \nאיך ממשיכים: ' },
   { name:'❌ סיום ליווי',       text:'סיום ליווי:\nסיבה: \nסטטוס: \nהמלצה להמשך: ' },
@@ -4032,7 +4032,7 @@ function viewClient(id){
     </div>
 
     <div style="display:flex;gap:.4rem;margin:.75rem 0;flex-wrap:wrap">
-      <button class="btn btn-sm" style="background:#eff4ff;color:#1B3A6B;border:1px solid #1B3A6B" onclick="openTreatmentPlan('${c.id}')">🎯 תוכנית טיפול ${c.treatment?.goals?.length?`(${c.treatment.goals.length})`:''}</button>
+      <button class="btn btn-sm" style="background:#eff4ff;color:#1B3A6B;border:1px solid #1B3A6B" onclick="openTreatmentPlan('${c.id}')">🎯 תוכנית ליווי ${c.treatment?.goals?.length?`(${c.treatment.goals.length})`:''}</button>
       <button class="btn btn-sm" style="background:#eff4ff;color:#1B3A6B;border:1px solid #1B3A6B" onclick="openOutcomeHistory('${c.id}')">📊 מדדים</button>
       <button class="btn btn-sm" style="background:#fff7ed;color:#854d0e;border:1px solid #C9A84C" onclick="openRecurringSessions('${c.id}')">🔄 פגישות חוזרות</button>
       <button class="btn btn-sm" style="background:#f9fafb;color:#1B3A6B;border:1px solid #e5e7eb" onclick="openDocumentTemplates('${c.id}')">📄 מסמכים</button>
@@ -4791,7 +4791,7 @@ const STATIC_ARTICLES = [
   { slug:'eich-lehatzil-zugiyut-aharei-begida', title:'להציל זוגיות אחרי בגידה', category:'זוגיות', date:'2026-05-12' },
   { slug:'charadat-bitzua-minit', title:'חרדת ביצוע מינית', category:'מיניות', date:'2026-05-11' },
   { slug:'yerida-bachshek-hamini', title:'ירידה בחשק המיני', category:'מיניות', date:'2026-05-10' },
-  { slug:'ptsd-tismun-tippul', title:'PTSD תסמינים וטיפול', category:'טראומה', date:'2026-05-09' },
+  { slug:'hitmodedut-im-hashlachot-trauma', title:'התמודדות עם השלכות טראומה', category:'טראומה', date:'2026-05-09' },
   { slug:'simaney-yeled-pnimi-patzua', title:'סימני ילד פנימי פצוע', category:'אישי', date:'2026-05-08' },
   { slug:'mechir-yeutz-zugi', title:'מחיר ייעוץ זוגי', category:'כללי', date:'2026-05-07' },
   { slug:'yeutz-zugi-charedim', title:'ייעוץ זוגי לחרדים', category:'זוגיות', date:'2026-05-06' },
@@ -5183,7 +5183,7 @@ renderers.faqs = async function(){
         <option value="general">💬 כללי</option>
         <option value="couples">🫂 ייעוץ זוגי</option>
         <option value="sexual">🌹 ייעוץ מיני</option>
-        <option value="trauma">🕊 ריפוי טראומה</option>
+        <option value="trauma">🕊 התמודדות עם טראומה</option>
         <option value="personal">🌱 ייעוץ אישי</option>
         <option value="practical">📍 פרטים ומחירים</option>
       </select>
@@ -5232,7 +5232,7 @@ function renderFaqList(){
     if (q && !item.q.toLowerCase().includes(q) && !item.a.toLowerCase().includes(q)) return false;
     return true;
   });
-  const catLabels = {general:'💬 כללי', couples:'🫂 ייעוץ זוגי', sexual:'🌹 ייעוץ מיני', trauma:'🕊 ריפוי טראומה', personal:'🌱 ייעוץ אישי', practical:'📍 פרטים ומחירים'};
+  const catLabels = {general:'💬 כללי', couples:'🫂 ייעוץ זוגי', sexual:'🌹 ייעוץ מיני', trauma:'🕊 התמודדות עם טראומה', personal:'🌱 ייעוץ אישי', practical:'📍 פרטים ומחירים'};
   const grouped = {};
   filtered.forEach(item => { if (!grouped[item.cat]) grouped[item.cat] = []; grouped[item.cat].push(item); });
   const html = Object.entries(grouped).map(([c, list]) => `
@@ -5375,7 +5375,7 @@ const CITY_DATA = [
 const SERVICE_TYPES = [
   { code:'yeutz-zugi',    name:'ייעוץ זוגי',     icon:'❤️', color:'#1B3A6B' },
   { code:'yeutz-mini',    name:'ייעוץ מיני',     icon:'💞', color:'#8B2C5F' },
-  { code:'tipul-trauma',  name:'טיפול בטראומה', icon:'🛡️', color:'#2C5F8B' }
+  { code:'yeutz-trauma',  name:'ייעוץ בהתמודדות עם טראומה', icon:'🛡️', color:'#2C5F8B' }
 ];
 
 const LANDING_PAGES = [
@@ -5404,7 +5404,7 @@ const LANDING_PAGES = [
   { url:'eich-lehatzil-zugiyut-aharei-begida.html', title:'להציל זוגיות אחרי בגידה',  type:'article', keyword:'בגידה זוגיות',              icon:'💔' },
   { url:'charadat-bitzua-minit.html',            title:'חרדת ביצוע מינית',             type:'article', keyword:'חרדת ביצוע',                icon:'😰' },
   { url:'yerida-bachshek-hamini.html',           title:'ירידה בחשק המיני',             type:'article', keyword:'ירידה בחשק המיני',          icon:'🌙' },
-  { url:'ptsd-tismun-tippul.html',               title:'PTSD - תסמינים וטיפול',        type:'article', keyword:'PTSD טיפול',                icon:'🛡️' },
+  { url:'hitmodedut-im-hashlachot-trauma.html',               title:'התמודדות עם השלכות טראומה',        type:'article', keyword:'התמודדות עם טראומה',                icon:'🛡️' },
   { url:'simaney-yeled-pnimi-patzua.html',       title:'ילד פנימי פצוע - סימנים',     type:'article', keyword:'ילד פנימי פצוע',            icon:'👶' },
   { url:'mechir-yeutz-zugi.html',                title:'מחיר ייעוץ זוגי',              type:'article', keyword:'מחיר ייעוץ זוגי',          icon:'💰' },
   { url:'yeutz-zugi-charedim.html',              title:'ייעוץ זוגי לחרדים',            type:'article', keyword:'ייעוץ זוגי חרדים',          icon:'🕯️' },
@@ -5435,7 +5435,7 @@ window.__lpState = window.__lpState || {
   view: 'cities',          // 'cities' | 'table' | 'cards' | 'top'
   search: '',
   typeFilter: 'all',       // all | city | pillar | article
-  serviceFilter: 'all',    // all | yeutz-zugi | yeutz-mini | tipul-trauma
+  serviceFilter: 'all',    // all | yeutz-zugi | yeutz-mini | yeutz-trauma
   focusFilter: 'all',      // all | local | travel | online
   statusFilter: 'all',     // all | active | paused | issue
   sort: 'leads-desc',      // leads-desc | views-desc | conv-desc | rank-asc | recent | title
@@ -5513,7 +5513,7 @@ renderers['landing-pages'] = function(){
     article: cnt(p => p.type==='article'),
     yeutzZugi: cnt(p => p.serviceType==='yeutz-zugi'),
     yeutzMini: cnt(p => p.serviceType==='yeutz-mini'),
-    tipulTrauma: cnt(p => p.serviceType==='tipul-trauma')
+    yeutzTrauma: cnt(p => p.serviceType==='yeutz-trauma')
   };
 
   // Totals across ALL pages (not filtered)
@@ -5635,7 +5635,7 @@ renderers['landing-pages'] = function(){
       <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
         <strong style="font-size:.8rem;color:#6b7280">שירות:</strong>
         <button class="lp-chip ${st.serviceFilter==='all'?'active':''}" onclick="lpSetFilter('serviceFilter','all')">הכל</button>
-        ${SERVICE_TYPES.map(t => `<button class="lp-chip ${st.serviceFilter===t.code?'active':''}" onclick="lpSetFilter('serviceFilter','${t.code}')" style="${st.serviceFilter===t.code?`background:${t.color};border-color:${t.color}`:''}">${t.icon} ${t.name} (${counts[t.code==='yeutz-zugi'?'yeutzZugi':t.code==='yeutz-mini'?'yeutzMini':'tipulTrauma']})</button>`).join('')}
+        ${SERVICE_TYPES.map(t => `<button class="lp-chip ${st.serviceFilter===t.code?'active':''}" onclick="lpSetFilter('serviceFilter','${t.code}')" style="${st.serviceFilter===t.code?`background:${t.color};border-color:${t.color}`:''}">${t.icon} ${t.name} (${counts[t.code==='yeutz-zugi'?'yeutzZugi':t.code==='yeutz-mini'?'yeutzMini':'yeutzTrauma']})</button>`).join('')}
       </div>
       <div style="display:flex;gap:.4rem;flex-wrap:wrap;align-items:center">
         <strong style="font-size:.8rem;color:#6b7280">גישה:</strong>
@@ -6062,7 +6062,7 @@ renderers.marketing = function(){
         <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>Open Graph + Twitter Cards</strong> — לשיתופים</li>
         <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>20 דפי נחיתה לערים</strong> — מקומיים + אונליין</li>
         <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>10 מאמרי SEO ארוכים</strong> — 1500-2500 מילים כל אחד</li>
-        <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>4 דפי Pillar</strong> — שיטות טיפול מעמיקות</li>
+        <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>4 דפי Pillar</strong> — שיטות ליווי מעמיקות</li>
         <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>RTL + עברית</strong> — תקין</li>
         <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">✅ <strong>Mobile responsive</strong></li>
         <li style="padding:.5rem 0;border-bottom:1px solid var(--gray-100)">⏳ <strong>Backlinks</strong> — לעבוד על קישורים מאתרים חיצוניים</li>

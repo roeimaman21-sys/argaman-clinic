@@ -450,13 +450,13 @@
       const gad = outcomes.filter(o => o.type === 'GAD-7');
 
       const html = `
-        <h2>סיכום תהליך טיפול — ${esc(c.name||'')}</h2>
+        <h2>סיכום תהליך הליווי — ${esc(c.name||'')}</h2>
         <p style="color:#6b7280">${esc(c.type||'')} · מ-${fmt(c.createdAt||c.startDate||'')} עד היום</p>
 
         <div class="kpi-grid">
           <div class="kpi"><div class="kpi-label">פגישות שהושלמו</div><div class="kpi-value">${completed.length}</div></div>
           <div class="kpi"><div class="kpi-label">פגישות ששולמו</div><div class="kpi-value">${paid.length}</div></div>
-          <div class="kpi"><div class="kpi-label">משך טיפול</div><div class="kpi-value">${c.createdAt?Math.round(daysBetween(c.createdAt,new Date())/30):'—'}<small>חודשים</small></div></div>
+          <div class="kpi"><div class="kpi-label">משך הליווי</div><div class="kpi-value">${c.createdAt?Math.round(daysBetween(c.createdAt,new Date())/30):'—'}<small>חודשים</small></div></div>
         </div>
 
         ${phq.length || gad.length ? `<h3>📊 התקדמות במדדים קליניים</h3>
@@ -465,7 +465,7 @@
         ${gad.length ? `<h4>GAD-7 (חרדה)</h4>${lineChart(gad.map(o => ({ label: fmt(o.date), value: o.total })), { color:'#8B4C8C' })}
         <p style="font-size:.85rem;color:#6b7280">ציון התחלתי: ${gad[0].total} → ציון נוכחי: ${gad[gad.length-1].total}</p>` : ''}` : ''}
 
-        ${c.treatment?.goals?.length ? `<h3>🎯 יעדי הטיפול</h3>
+        ${c.treatment?.goals?.length ? `<h3>🎯 יעדי הליווי</h3>
         <ul>${c.treatment.goals.map(g => `<li>${esc(g.text)} ${g.status==='achieved'?'<strong style="color:#16a34a">✓ הושג</strong>':g.status==='progress'?'<em style="color:#f59e0b">בהתקדמות</em>':''}</li>`).join('')}</ul>` : ''}
 
         <h3>💰 סיכום תשלומים</h3>
@@ -742,7 +742,7 @@
           <div style="background:linear-gradient(135deg,${utilization>=0.7?'#dc2626':utilization>=0.5?'#16a34a':'#1B3A6B'},${utilization>=0.7?'#991b1b':utilization>=0.5?'#15803d':'#152C52'});color:#fff;padding:1rem;border-radius:12px"><div style="font-size:.8rem;opacity:.85">ניצולת</div><div style="font-size:1.8rem;font-weight:800">${pct(utilization)}</div></div>
         </div>
 
-        ${utilization >= 0.8 ? '<div style="background:#fee2e2;border-right:4px solid #dc2626;padding:.75rem;border-radius:6px"><strong>🚨 ניצולת מעל 80% — סיכון לשחיקה</strong>. שווה לחשוב על: העלאת מחיר, חלוקת לידים, גיוס מטפל נוסף.</div>' : utilization >= 0.6 ? '<div style="background:#dcfce7;border-right:4px solid #16a34a;padding:.75rem;border-radius:6px"><strong>✓ ניצולת בריאה (60-80%)</strong>. יש מקום לגדול אבל גם זמן לעצמך.</div>' : '<div style="background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem;border-radius:6px"><strong>📈 ניצולת מתחת ל-60%</strong>. שווה להגדיל שיווק או לעבור על דפי נחיתה.</div>'}
+        ${utilization >= 0.8 ? '<div style="background:#fee2e2;border-right:4px solid #dc2626;padding:.75rem;border-radius:6px"><strong>🚨 ניצולת מעל 80% — סיכון לשחיקה</strong>. שווה לחשוב על: העלאת מחיר, חלוקת לידים, גיוס יועץ נוסף.</div>' : utilization >= 0.6 ? '<div style="background:#dcfce7;border-right:4px solid #16a34a;padding:.75rem;border-radius:6px"><strong>✓ ניצולת בריאה (60-80%)</strong>. יש מקום לגדול אבל גם זמן לעצמך.</div>' : '<div style="background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem;border-radius:6px"><strong>📈 ניצולת מתחת ל-60%</strong>. שווה להגדיל שיווק או לעבור על דפי נחיתה.</div>'}
 
         <h3 style="color:#1B3A6B">4 שבועות אחרונים</h3>
         ${lineChart(weeks, { color:'#1B3A6B', minMax: weeklySlots })}
@@ -837,13 +837,13 @@
         <h2 style="color:#1B3A6B;margin-top:0">🧠 דוח Outcome קליני מצטבר</h2>
 
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin:1rem 0">
-          <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:12px"><div style="font-size:.8rem;color:#6b7280">מדידות PHQ-9</div><div style="font-size:1.8rem;font-weight:800;color:#1B3A6B">${phq.length}</div><div style="font-size:.75rem;color:#6b7280">${phqImp.length} מטופלים עם follow-up</div></div>
+          <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:12px"><div style="font-size:.8rem;color:#6b7280">מדידות PHQ-9</div><div style="font-size:1.8rem;font-weight:800;color:#1B3A6B">${phq.length}</div><div style="font-size:.75rem;color:#6b7280">${phqImp.length} לקוחות עם follow-up</div></div>
           <div style="background:#fff;border:1px solid #e5e7eb;padding:1rem;border-radius:12px"><div style="font-size:.8rem;color:#6b7280">מדידות GAD-7</div><div style="font-size:1.8rem;font-weight:800;color:#1B3A6B">${gad.length}</div></div>
           <div style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;padding:1rem;border-radius:12px"><div style="font-size:.8rem;opacity:.85">שיפור ממוצע PHQ-9</div><div style="font-size:1.8rem;font-weight:800">${avgPhqImprovement>0?'▼ ':'▲ '}${Math.abs(avgPhqImprovement).toFixed(1)}</div><div style="font-size:.75rem;opacity:.85">${phqImproved}/${phqImp.length} השתפרו</div></div>
           <div style="background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;padding:1rem;border-radius:12px"><div style="font-size:.8rem;opacity:.85">שיפור ממוצע GAD-7</div><div style="font-size:1.8rem;font-weight:800">${avgGadImprovement>0?'▼ ':'▲ '}${Math.abs(avgGadImprovement).toFixed(1)}</div><div style="font-size:.75rem;opacity:.85">${gadImproved}/${gadImp.length} השתפרו</div></div>
         </div>
 
-        ${methodList.length ? `<h3 style="color:#1B3A6B">שכיחות שיטות טיפול שיושמו</h3>
+        ${methodList.length ? `<h3 style="color:#1B3A6B">שכיחות שיטות ליווי שיושמו</h3>
         ${barChart(methodList.map(([k,n]) => ({ label: k, value: n, color: '#1B3A6B' })))}` : ''}
 
         ${Object.keys(riskCount).length ? `<h3 style="color:#1B3A6B;margin-top:1.5rem">🚨 שכיחות דגלי סיכון (מצטבר)</h3>
@@ -1012,7 +1012,7 @@
           priority: 'high',
           category: '🚨 שחיקה',
           title: `ניצולת קלנדר: ${pct(utilization)} — סיכון לשחיקה`,
-          impact: 'שחיקה = איכות טיפול יורדת, עזיבת לקוחות',
+          impact: 'שחיקה = איכות ליווי יורדת, עזיבת לקוחות',
           action: 'העלה מחיר ב-10%, סנן לידים, שקול שותף נוסף',
           link: 'capacity'
         });
@@ -1071,7 +1071,7 @@
           <div style="font-size:.9rem;opacity:.85;margin-bottom:.5rem">ציון בריאות עסק</div>
           <div style="font-size:5rem;font-weight:800;line-height:1">${score}</div>
           <div style="font-size:1rem;margin-top:.5rem">${score>=80?'🚀 מצב מצוין':score>=60?'✓ בריא — יש מה לשפר':'⚠️ דורש תשומת לב'}</div>
-          <div style="font-size:.85rem;opacity:.85;margin-top:.5rem">${issues} נושאים לטיפול · ${highIssues} בעדיפות גבוהה</div>
+          <div style="font-size:.85rem;opacity:.85;margin-top:.5rem">${issues} נושאים הדורשים תשומת לב · ${highIssues} בעדיפות גבוהה</div>
         </div>
 
         ${recommendations.length === 0 ? '<div style="background:#dcfce7;border-right:4px solid #16a34a;padding:1.5rem;border-radius:8px;text-align:center"><strong>🎉 הכל נראה מצוין!</strong><br><small>אין המלצות פעולה. המשך כך.</small></div>' : ''}

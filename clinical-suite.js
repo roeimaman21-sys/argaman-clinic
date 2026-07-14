@@ -586,7 +586,7 @@
       const html = `
         <div style="display:flex;flex-direction:column;gap:1rem">
           <div>
-            <label style="font-weight:700;color:#1B3A6B">🎯 יעדי הטיפול</label>
+            <label style="font-weight:700;color:#1B3A6B">🎯 יעדי הליווי</label>
             <small style="color:#6b7280;display:block;margin-bottom:.5rem">הוסיפו 3-5 יעדים מדידים</small>
             <div id="goals-list">
               ${(t.goals||[]).map((g,i) => `
@@ -613,7 +613,7 @@
           </div>
 
           <div>
-            <label style="font-weight:700;color:#1B3A6B">📋 תוכנית טיפול</label>
+            <label style="font-weight:700;color:#1B3A6B">📋 תוכנית ליווי</label>
             <textarea id="tp-plan" rows="4" style="width:100%;padding:.6rem;border:1px solid #e5e7eb;border-radius:8px;font-family:inherit;margin-top:.25rem">${esc(t.plan||'')}</textarea>
           </div>
 
@@ -622,7 +622,7 @@
           </div>
         </div>
       `;
-      getModal()('🎯 תוכנית טיפול — ' + esc(c.name||''), html, { size:'lg' });
+      getModal()('🎯 תוכנית ליווי — ' + esc(c.name||''), html, { size:'lg' });
     },
 
     addGoal(clientId) {
@@ -653,7 +653,7 @@
       c.treatment.plan = $('#tp-plan').value.trim();
       c.treatment.updatedAt = new Date().toISOString();
       save(LS.clients, State.clients);
-      showToast('תוכנית טיפול נשמרה ✓');
+      showToast('תוכנית ליווי נשמרה ✓');
       closeModalSafe();
     },
 

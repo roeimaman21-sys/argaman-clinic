@@ -139,7 +139,7 @@
           let level, color, action;
           if (total < 20) { level = 'מצוקה נמוכה'; color = '#16a34a'; action = 'אין צורך בהתערבות מיוחדת'; }
           else if (total < 25) { level = 'מצוקה קלה'; color = '#84cc16'; action = 'מעקב מומלץ'; }
-          else if (total < 30) { level = 'מצוקה בינונית'; color = '#f59e0b'; action = 'התערבות טיפולית מומלצת'; }
+          else if (total < 30) { level = 'מצוקה בינונית'; color = '#f59e0b'; action = 'התערבות מקצועית מומלצת'; }
           else { level = 'מצוקה גבוהה'; color = '#dc2626'; action = '⚠️ הערכה פסיכיאטרית מומלצת'; }
           return { level, color, action, total };
         }
@@ -802,7 +802,7 @@
               </div>
             </div>
           `).join('')}
-        </div>` : '<p style="color:#6b7280">אין יעדים. צור יעדים דרך "🎯 תוכנית טיפול".</p>'}
+        </div>` : '<p style="color:#6b7280">אין יעדים. צור יעדים דרך "🎯 תוכנית ליווי".</p>'}
         <div style="display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem">
           <button onclick="openTreatmentPlan('${clientId}')" style="padding:.5rem 1rem;background:#eff4ff;color:#1B3A6B;border:0;border-radius:8px;cursor:pointer;font-weight:600">✏️ ערוך יעדים</button>
         </div>
@@ -886,7 +886,7 @@
           <ul style="margin:.4rem 0 0;padding-right:1.25rem;color:#6b7280">
             <li>${bundle.stats.sessionsCompleted} פגישות שהושלמו</li>
             <li>${bundle.upcoming.length} פגישות עתידיות</li>
-            <li>${bundle.goals.length} יעדי טיפול עם progress</li>
+            <li>${bundle.goals.length} יעדי ליווי עם progress</li>
             <li>${bundle.outcomes.phq.length + bundle.outcomes.gad.length + bundle.outcomes.ors.length} מדידות outcome</li>
             <li>סיכום תשלומים</li>
           </ul>
