@@ -22,6 +22,289 @@
   status = 301
   force  = true
 
+# Regulatory URL renames (301) — old tipul-trauma-* / ptsd / vs-tipul URLs preserve SEO + backlinks
+[[redirects]]
+  from = "/tipul-trauma-ariel.html"
+  to   = "/yeutz-trauma-ariel.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-ashdod.html"
+  to   = "/yeutz-trauma-ashdod.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-ashkelon.html"
+  to   = "/yeutz-trauma-ashkelon.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-beer-sheva.html"
+  to   = "/yeutz-trauma-beer-sheva.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-beit-shemesh.html"
+  to   = "/yeutz-trauma-beit-shemesh.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-beitar-illit.html"
+  to   = "/yeutz-trauma-beitar-illit.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-bnei-brak.html"
+  to   = "/yeutz-trauma-bnei-brak.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-dimona.html"
+  to   = "/yeutz-trauma-dimona.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-eilat.html"
+  to   = "/yeutz-trauma-eilat.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-elad.html"
+  to   = "/yeutz-trauma-elad.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-gedera.html"
+  to   = "/yeutz-trauma-gedera.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-givat-shmuel.html"
+  to   = "/yeutz-trauma-givat-shmuel.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-givatayim.html"
+  to   = "/yeutz-trauma-givatayim.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-haifa.html"
+  to   = "/yeutz-trauma-haifa.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-herzliya.html"
+  to   = "/yeutz-trauma-herzliya.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-hod-hasharon.html"
+  to   = "/yeutz-trauma-hod-hasharon.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-holon.html"
+  to   = "/yeutz-trauma-holon.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-jerusalem.html"
+  to   = "/yeutz-trauma-jerusalem.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-katzrin.html"
+  to   = "/yeutz-trauma-katzrin.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-kfar-chabad.html"
+  to   = "/yeutz-trauma-kfar-chabad.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-kfar-saba.html"
+  to   = "/yeutz-trauma-kfar-saba.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-kiryat-gat.html"
+  to   = "/yeutz-trauma-kiryat-gat.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-maale-adumim.html"
+  to   = "/yeutz-trauma-maale-adumim.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-mevasseret-zion.html"
+  to   = "/yeutz-trauma-mevasseret-zion.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-mitzpe-ramon.html"
+  to   = "/yeutz-trauma-mitzpe-ramon.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-modiin-illit.html"
+  to   = "/yeutz-trauma-modiin-illit.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-modiin.html"
+  to   = "/yeutz-trauma-modiin.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-netanya.html"
+  to   = "/yeutz-trauma-netanya.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-nof-hagalil.html"
+  to   = "/yeutz-trauma-nof-hagalil.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-ofakim.html"
+  to   = "/yeutz-trauma-ofakim.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-online.html"
+  to   = "/yeutz-trauma-online.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-petah-tikva.html"
+  to   = "/yeutz-trauma-petah-tikva.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-raanana.html"
+  to   = "/yeutz-trauma-raanana.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-ramat-gan.html"
+  to   = "/yeutz-trauma-ramat-gan.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-ramla.html"
+  to   = "/yeutz-trauma-ramla.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-rechasim.html"
+  to   = "/yeutz-trauma-rechasim.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-rehovot.html"
+  to   = "/yeutz-trauma-rehovot.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-rishon-lezion.html"
+  to   = "/yeutz-trauma-rishon-lezion.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-rosh-haayin.html"
+  to   = "/yeutz-trauma-rosh-haayin.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-shoham.html"
+  to   = "/yeutz-trauma-shoham.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-tel-aviv.html"
+  to   = "/yeutz-trauma-tel-aviv.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-tveria.html"
+  to   = "/yeutz-trauma-tveria.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-tzfat.html"
+  to   = "/yeutz-trauma-tzfat.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-tzur-hadassah.html"
+  to   = "/yeutz-trauma-tzur-hadassah.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/tipul-trauma-yavne.html"
+  to   = "/yeutz-trauma-yavne.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/ptsd-tismun-tippul.html"
+  to   = "/hitmodedut-im-hashlachot-trauma.html"
+  status = 301
+  force  = true
+
+[[redirects]]
+  from = "/yeutz-vs-tipul-zugi.html"
+  to   = "/yeutz-vs-metapel-zugi.html"
+  status = 301
+  force  = true
+
 # Custom 404
 [[redirects]]
   from   = "/*"
