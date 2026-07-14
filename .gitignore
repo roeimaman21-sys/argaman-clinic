@@ -1,6 +1,9 @@
 # Local Netlify folder
 .netlify
 
+# Claude Code local tooling (not site content)
+.claude/
+
 # Archived/unused assets — not deployed
 _unused/
 _build/

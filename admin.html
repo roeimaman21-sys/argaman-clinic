@@ -13,7 +13,7 @@
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
   <!-- Supabase: Self-hosted to bypass ad-blockers (uBlock/Brave Shields/etc.) -->
   <script src="supabase-lib.js" onerror="window.__supaCdnFailed=1"></script>
   <script src="crypto-utils.js"></script>
@@ -134,6 +134,8 @@
       window.__supabaseLoading = window.__loadSupabase().catch(e => console.error('[Supabase] All sources failed:', e));
     }
   </script>
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -687,6 +689,39 @@ function fmtRelative(iso){
   return `לפני ${Math.floor(days/30)} חודשים`;
 }
 function escapeHtml(s){ if(!s)return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+/** Pure-SVG sparkline: values -> tiny trend line. No dependencies. */
+function sparkline(values, opts){
+  opts = opts || {};
+  const w = opts.width || 64, h = opts.height || 20;
+  if (!values || !values.length) return '';
+  const max = Math.max(...values, 1);
+  const min = Math.min(...values, 0);
+  const range = (max - min) || 1;
+  const step = values.length > 1 ? w / (values.length - 1) : 0;
+  const pts = values.map((v, i) => `${(i*step).toFixed(1)},${(h - ((v-min)/range)*h).toFixed(1)}`).join(' ');
+  const color = opts.color || 'var(--gold)';
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+}
+
+/** Sessions per month for the last N months, oldest first. */
+function sessionsPerMonth(sessions, months){
+  months = months || 6;
+  const now = new Date();
+  const buckets = [];
+  for (let i = months - 1; i >= 0; i--){
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+    buckets.push({ key, count: 0 });
+  }
+  (sessions||[]).forEach(s => {
+    if (!s.date) return;
+    const key = s.date.slice(0,7);
+    const b = buckets.find(x => x.key === key);
+    if (b) b.count++;
+  });
+  return buckets.map(b => b.count);
+}
 function escapeAttr(s){ if(!s)return ''; return s.replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 /* Activity log */
@@ -719,6 +754,18 @@ window.logActivity = logActivity; // expose for external modules
    session timeout, audit logging, encryption key derivation
 ═══════════════════════════════════════════════ */
 
+/** Show a login-error with an icon + shake feedback; pass '' to clear. */
+function showLoginError(el, msg){
+  if (!el) return;
+  if (!msg){ el.textContent = ''; el.classList.remove('shake'); return; }
+  const clean = msg.replace(/^[🔒✗⚠️\s]+/, ''); // strip redundant emoji prefix, icon below replaces it
+  el.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span></span>';
+  el.querySelector('span').textContent = clean;
+  el.classList.remove('shake');
+  void el.offsetWidth; // force reflow so the animation restarts on repeat errors
+  el.classList.add('shake');
+}
+
 async function doLogin(){
   const btn = document.getElementById('login-btn-el');
   const err = document.getElementById('login-error');
@@ -726,10 +773,10 @@ async function doLogin(){
   const passEl = document.getElementById('login-pass');
   const email = emailEl.value.trim().toLowerCase();
   const pw = passEl.value;
-  err.textContent = '';
+  showLoginError(err, '');
 
   if (!email || !pw){
-    err.textContent = 'יש למלא אימייל וסיסמה';
+    showLoginError(err, 'יש למלא אימייל וסיסמה');
     return;
   }
 
@@ -737,7 +784,7 @@ async function doLogin(){
   const rl = ArgSec.isLockedOut();
   if (rl.locked){
     const mins = Math.ceil(rl.remainingMs / 60000);
-    err.textContent = `🔒 חסום עקב ניסיונות כושלים. נסה שוב בעוד ${mins} דקות.`;
+    showLoginError(err, `חסום עקב ניסיונות כושלים. נסה שוב בעוד ${mins} דקות.`);
     ArgSec.auditLog('login_blocked', `locked, ${rl.remainingMs}ms remaining`);
     return;
   }
@@ -747,7 +794,7 @@ async function doLogin(){
     // 2) Authenticate via Supabase Auth (SINGLE source of truth, synced across devices)
     if (!supa) await initSupa();
     if (!supa){
-      err.textContent = 'הספרייה לא נטענה — בדוק חיבור או כבה ad-blocker';
+      showLoginError(err, 'הספרייה לא נטענה — בדוק חיבור או כבה ad-blocker');
       return;
     }
 
@@ -758,9 +805,9 @@ async function doLogin(){
       const rec = ArgSec.recordFailedLogin();
       const remaining = 5 - rec.count;
       if (rec.count >= 5){
-        err.textContent = '🔒 חסום ל-15 דקות עקב 5 ניסיונות כושלים.';
+        showLoginError(err, 'חסום ל-15 דקות עקב 5 ניסיונות כושלים.');
       } else {
-        err.textContent = `✗ אימייל או סיסמה שגויים (נותרו ${remaining} ניסיונות)`;
+        showLoginError(err, `אימייל או סיסמה שגויים (נותרו ${remaining} ניסיונות)`);
       }
       // Server-side audit
       try { window.Audit && window.Audit.logLogin('login_failed', email, { reason: e?.message?.slice(0,200) }); } catch(_){}
@@ -812,7 +859,7 @@ async function doLogin(){
     initApp();
   } catch (e){
     console.error('[SEC] Login error:', e);
-    err.textContent = '✗ שגיאה: ' + (e.message || e);
+    showLoginError(err, 'שגיאה: ' + (e.message || e));
     ArgSec.auditLog('login_error', String(e?.message || e));
   } finally {
     btn.disabled = false; btn.textContent = 'כניסה מאובטחת';
@@ -2655,6 +2702,18 @@ function renderLeadsList(){
     .filter(l => !fSource || l.source === fSource)
     .sort((a,b) => (b.createdAt||'').localeCompare(a.createdAt||''));
 
+  // Cap initial render to avoid building hundreds of DOM rows at once as the
+  // practice grows; "load more" extends the visible window in place.
+  const PAGE_SIZE = 100;
+  const filterKey = q + '|' + fStatus + '|' + fSource;
+  if (window.__leadsFilterKey !== filterKey){
+    window.__leadsFilterKey = filterKey;
+    window.__leadsShowCount = PAGE_SIZE;
+  }
+  const showCount = window.__leadsShowCount || PAGE_SIZE;
+  const visibleList = list.slice(0, showCount);
+  const hasMore = list.length > showCount;
+
   const root = document.getElementById('leads-list');
   if (!list.length){
     const hasFilters = (window.__leadFilter && window.__leadFilter !== 'all') || (window.__leadSearch||'').trim();
@@ -2676,7 +2735,7 @@ function renderLeadsList(){
       <th style="width:30px"><input type="checkbox" id="leads-select-all" onchange="toggleAllLeadsSelection(this)" onclick="event.stopPropagation()"></th>
       <th>שם</th><th>טלפון</th><th>מקור</th><th>נושא</th><th>סטטוס</th><th>תגיות</th><th>נכנס</th><th></th>
     </tr></thead>
-    <tbody>${list.map(l => `
+    <tbody>${visibleList.map(l => `
       <tr style="cursor:pointer" onclick="viewLead('${l.id}')">
         <td onclick="event.stopPropagation()"><input type="checkbox" class="lead-row-cb" data-id="${l.id}" onchange="updateBulkActionsBar()"></td>
         <td><strong>${escapeHtml(l.name||'(ללא שם)')}</strong>${l.email?`<div class="text-xs text-muted">${escapeHtml(l.email)}</div>`:''}</td>
@@ -2695,6 +2754,10 @@ function renderLeadsList(){
         </td>
       </tr>
     `).join('')}</tbody></table>
+    ${hasMore ? `<div style="text-align:center;padding:1rem 0">
+      <p class="text-xs text-muted" style="margin-bottom:.5rem">מוצגים ${visibleList.length} מתוך ${list.length}</p>
+      <button class="btn" onclick="window.__leadsShowCount=(window.__leadsShowCount||${PAGE_SIZE})+${PAGE_SIZE};renderers.leads()">טען עוד</button>
+    </div>` : ''}
     <div id="bulk-actions-bar" style="display:none;position:sticky;bottom:0;background:#1B3A6B;color:#fff;padding:.75rem 1rem;border-radius:8px;margin-top:.5rem;display:none;align-items:center;gap:.75rem;flex-wrap:wrap">
       <strong id="bulk-count">0</strong> <span>נבחרו</span>
       <select id="bulk-status-select" style="padding:.4rem;border-radius:6px;color:#1f2937;font-size:.85rem">
@@ -3021,6 +3084,17 @@ function renderClientsList(statusFilter){
     .filter(c => !statusFilter || c.status === statusFilter)
     .filter(c => !q || (c.name||'').toLowerCase().includes(q) || (c.phone||'').includes(q))
     .sort((a,b)=>(b.createdAt||'').localeCompare(a.createdAt||''));
+
+  const CLIENTS_PAGE_SIZE = 100;
+  const clientsFilterKey = statusFilter + '|' + q;
+  if (window.__clientsFilterKey !== clientsFilterKey){
+    window.__clientsFilterKey = clientsFilterKey;
+    window.__clientsShowCount = CLIENTS_PAGE_SIZE;
+  }
+  const clientsShowCount = window.__clientsShowCount || CLIENTS_PAGE_SIZE;
+  const visibleClients = list.slice(0, clientsShowCount);
+  const clientsHasMore = list.length > clientsShowCount;
+
   const root = document.getElementById('clients-list');
   if (!list.length){
     root.innerHTML = `<div class="card" style="padding:3rem 2rem;text-align:center">
@@ -3033,7 +3107,7 @@ function renderClientsList(statusFilter){
   }
   root.innerHTML = `<div class="table-wrap"><table class="tbl">
     <thead><tr><th>שם</th><th>טלפון</th><th>סוג</th><th>סטטוס</th><th>פגישות</th><th>התחיל</th><th></th></tr></thead>
-    <tbody>${list.map(c => {
+    <tbody>${visibleClients.map(c => {
       const sess = State.sessions.filter(s => s.clientId === c.id);
       const completed = sess.filter(s => s.status === 'completed').length;
       const upcoming = sess.find(s => s.status === 'scheduled' && s.date >= new Date().toISOString().slice(0,10));
@@ -3043,7 +3117,7 @@ function renderClientsList(statusFilter){
         <td class="nowrap">${escapeHtml(c.phone||'—')}</td>
         <td>${CLIENT_TYPE_LABEL[c.type]||'—'}</td>
         <td><span class="badge badge-${c.status}">${CLIENT_STATUS_LABEL[c.status]||c.status}</span></td>
-        <td>${completed}/${sess.length}</td>
+        <td>${completed}/${sess.length}${sess.length>=2?`<div style="margin-top:.2rem">${sparkline(sessionsPerMonth(sess))}</div>`:''}</td>
         <td class="text-xs text-muted">${fmtDate(c.startDate)}</td>
         <td onclick="event.stopPropagation()">
           <div class="row-actions">
@@ -3052,7 +3126,12 @@ function renderClientsList(statusFilter){
           </div>
         </td>
       </tr>`;
-    }).join('')}</tbody></table></div>`;
+    }).join('')}</tbody></table>
+    ${clientsHasMore ? `<div style="text-align:center;padding:1rem 0">
+      <p class="text-xs text-muted" style="margin-bottom:.5rem">מוצגים ${visibleClients.length} מתוך ${list.length}</p>
+      <button class="btn" onclick="window.__clientsShowCount=(window.__clientsShowCount||${CLIENTS_PAGE_SIZE})+${CLIENTS_PAGE_SIZE};renderClientsList()">טען עוד</button>
+    </div>` : ''}
+    </div>`;
 }
 
 function addClientModal(){
@@ -4170,7 +4249,7 @@ function printSessionsView(range){
 
   const html = `<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>${title}</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap');
 body{font-family:'Heebo','Arial';padding:2rem;color:#1f2937;max-width:900px;margin:0 auto;background:#fff}
 h1{color:#1B3A6B;border-bottom:3px solid #1B3A6B;padding-bottom:.5rem;margin-bottom:1rem}
 .day{margin-bottom:1.5rem;page-break-inside:avoid}
@@ -4609,7 +4688,7 @@ function previewArticleQuill(slug){
   const content = window._currentQuill.root.innerHTML;
   const w = window.open('', '_blank');
   w.document.write(`<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"><title>תצוגה מקדימה: ${title}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
     <style>body{font-family:'Heebo',sans-serif;background:#f9fafb;margin:0;padding:2rem 1rem;color:#1f2937}
     .preview-banner{background:#fef3c7;border-right:4px solid #f59e0b;padding:.75rem;text-align:center;font-weight:600;color:#854d0e;border-radius:8px;max-width:780px;margin:0 auto 1rem}
     article{max-width:780px;margin:0 auto;background:#fff;padding:2rem;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.08)}

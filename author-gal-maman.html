@@ -28,8 +28,7 @@
   <meta name="theme-color" content="#1B3A6B">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/heebo/v26/NGSpv5_NC0k9P_v6ZUCbLRAHxK1EiSysd1WQ.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -82,6 +81,11 @@
     ]
   }
   </script>
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
   <style>
     .author-hero{background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;padding:3rem 1.5rem;border-radius:18px;margin-bottom:2rem;display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
@@ -112,7 +116,7 @@
 <header class="navbar" role="banner">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo" aria-label="קליניקת ארגמן — לדף הבית">
-      <img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async">
+      <picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture>
       <div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div>
     </a>
     <nav class="nav-links" aria-label="ניווט ראשי">
@@ -123,7 +127,7 @@
       <a href="blog.html">מאמרים</a>
       <a href="faq.html">שאלות נפוצות</a>
       <a href="contact.html">צור קשר</a>
-      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer">📱 וואטסאפ</a>
+      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
     </nav>
     <button class="hamburger" aria-label="פתח תפריט"><span></span><span></span><span></span></button>
   </div>
@@ -140,7 +144,7 @@
   </nav>
 
   <div class="author-hero">
-    <img src="gal.webp" onerror="this.onerror=null;this.src='gal.jpg'" alt="גל ממן — פורטרט" class="author-photo" loading="eager" width="600" height="420" decoding="async">
+    <picture><source srcset="gal.avif" type="image/avif"><source srcset="gal.webp" type="image/webp"><img src="gal.jpg" alt="גל ממן — פורטרט" class="author-photo" loading="eager" width="600" height="420" decoding="async"></picture>
     <div style="flex:1;min-width:240px">
       <h1>גל ממן</h1>
       <p class="tagline">יועץ זוגי, מיני, משפחתי ואישי · מומחה לטיפול בטראומה<br>10 שנות ניסיון · 13 הסמכות מקצועיות · קליניקת ארגמן, בית שמש</p>
@@ -251,7 +255,7 @@
   <section style="background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;padding:2.5rem 1.5rem;border-radius:16px;margin:3rem 0;text-align:center">
     <h2 style="color:#fff;margin-top:0">מעוניינים בייעוץ אישי?</h2>
     <p style="font-size:1.05rem;opacity:.95;margin-bottom:1.5rem">שיחת היכרות חינמית — 15-20 דקות, ללא התחייבות.</p>
-    <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#C9A84C;color:#1B3A6B;padding:.85rem 2rem;border-radius:50px;font-weight:700;text-decoration:none;margin:.3rem">📱 וואטסאפ ישיר</a>
+    <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#C9A84C;color:#1B3A6B;padding:.85rem 2rem;border-radius:50px;font-weight:700;text-decoration:none;margin:.3rem"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ ישיר</a>
     <a href="contact.html" style="display:inline-block;background:rgba(255,255,255,.15);color:#fff;padding:.85rem 2rem;border-radius:50px;font-weight:700;text-decoration:none;margin:.3rem;border:1px solid rgba(255,255,255,.3)">📝 טופס יצירת קשר</a>
   </section>
 
@@ -266,9 +270,13 @@
 
 <script src="script.js"></script>
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

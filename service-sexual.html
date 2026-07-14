@@ -29,9 +29,12 @@
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous"><noscript>
-</noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {
@@ -89,7 +92,7 @@
 <header class="navbar" role="banner">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo" aria-label="קליניקת ארגמן — לדף הבית">
-      <img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async">
+      <picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture>
       <div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div>
     </a>
     <nav class="nav-links" aria-label="ניווט ראשי">
@@ -103,7 +106,7 @@
       <a href="tips.html">טיפים</a>
       <a href="faq.html">שאלות נפוצות</a>
       <a href="contact.html">צור קשר</a>
-      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer">📱 וואטסאפ</a>
+      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
     </nav>
     <button class="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobile-drawer">
       <span></span><span></span><span></span>
@@ -114,7 +117,7 @@
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="תפריט ניידים">
   <div class="drawer-header">
     <span class="nav-logo-text" style="font-size:1.1rem">קליניקת ארגמן</span>
-    <button class="drawer-close" aria-label="סגור תפריט">✕</button>
+    <button class="drawer-close" aria-label="סגור תפריט"><svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
   </div>
   <div class="drawer-links">
     <a href="index.html">🏠 ראשי</a>
@@ -129,7 +132,7 @@
     <a href="contact.html">✉ צור קשר</a>
   </div>
   <div class="drawer-wa">
-    <a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה בוואטסאפ</a>
+    <a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שלחו הודעה בוואטסאפ</a>
   </div>
 </nav>
 
@@ -137,20 +140,20 @@
 
   <section class="page-hero" style="background:linear-gradient(135deg,#3d0f2a 0%,#6B1B4A 50%,#3d0f2a 100%);background-size:300% 300%;animation:gradientShift 10s ease infinite">
     <div class="container page-hero-content">
-      <span class="section-tag" data-aos="fade-up">🌹 ייעוץ מיני</span>
-      <h1 data-aos="fade-up" data-aos-delay="100">חיי מין מלאים —<br>זכותכם, לא מותרות</h1>
-      <p class="subtitle" data-aos="fade-up" data-aos-delay="200">חרדת ביצוע, ירידה בחשק, קשיי תפקוד, מתח סביב האינטימיות — נושאים שקשה לדבר עליהם משנים את כל הזוגיות. בקליניקה זה מרחב חם, מקצועי וללא שיפוט. מוסמך תפקוד זוגי-מיני, עם הסמכה ייעודית.</p>
-      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;margin-top:1.5rem" data-aos="fade-up" data-aos-delay="300">
-        <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שיחת ייעוץ חינמית</a>
+      <span class="section-tag reveal reveal-up">🌹 ייעוץ מיני</span>
+      <h1 class="reveal reveal-up" data-delay="1">חיי מין מלאים —<br>זכותכם, לא מותרות</h1>
+      <p class="subtitle reveal reveal-up" data-delay="2">חרדת ביצוע, ירידה בחשק, קשיי תפקוד, מתח סביב האינטימיות — נושאים שקשה לדבר עליהם משנים את כל הזוגיות. בקליניקה זה מרחב חם, מקצועי וללא שיפוט. מוסמך תפקוד זוגי-מיני, עם הסמכה ייעודית.</p>
+      <div class="reveal reveal-up" style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;margin-top:1.5rem" data-delay="4">
+        <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שיחת ייעוץ חינמית</a>
         <a href="tel:0506415222" class="btn btn-secondary btn-lg">📞 050-641-5222</a>
       </div>
-      <p style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:1rem" data-aos="fade-up" data-aos-delay="400">🔒 סודיות מוחלטת · אפס שיפוט · אונליין או פנים אל פנים</p>
+      <p class="reveal reveal-up" style="color:rgba(255,255,255,0.6);font-size:0.85rem;margin-top:1rem" data-delay="5">🔒 סודיות מוחלטת · אפס שיפוט · אונליין או פנים אל פנים</p>
     </div>
   </section>
 
   <div class="service-content-wrap" style="padding-top:3rem;padding-bottom:4rem">
 
-    <section class="service-block" data-aos="fade-up">
+    <section class="service-block reveal reveal-up">
       <h2 class="section-title">אם אחד מאלה מוכר לכם...</h2>
       <div class="pain-box">
         <p>קשיים מיניים הם אחד הנושאים השכיחים ביותר — ואחד הנושאים שאנשים הכי פחות מדברים עליהם בקול. הבושה גורמת לאנשים לסחוב את זה שנים, לבד, בשתיקה — כשלמעשה הפתרון קרוב הרבה יותר ממה שנדמה.</p>
@@ -180,7 +183,7 @@
       <p style="margin-top:1.75rem;font-size:1.1rem;font-weight:700;color:var(--color-gold)">כל אלה ניתנים לשינוי — וזה בדיוק בשביל מה הייעוץ קיים. אין שום סיבה להמשיך לסבול בשקט.</p>
     </section>
 
-    <section class="service-block" data-aos="fade-up">
+    <section class="service-block reveal reveal-up">
       <h2 class="section-title">למי מתאים ייעוץ מיני?</h2>
       <p>ייעוץ מיני מיועד לכל מי שרוצה חיי מין מלאים יותר — זוגות ויחידים כאחד:</p>
       <div class="who-tags" style="margin-top:1.25rem">
@@ -195,7 +198,7 @@
       </div>
     </section>
 
-    <section class="service-block" data-aos="fade-up">
+    <section class="service-block reveal reveal-up">
       <h2 class="section-title">מה תרוויחו מהתהליך?</h2>
       <div class="grid-2" style="gap:1.25rem;margin-top:1.5rem">
         <ul class="feature-list">
@@ -213,7 +216,7 @@
       </div>
     </section>
 
-    <section class="service-block" data-aos="fade-up">
+    <section class="service-block reveal reveal-up">
       <h2 class="section-title">איך נראה תהליך הייעוץ המיני?</h2>
       <p>הייעוץ המיני אצלי הוא שיחתי לחלוטין — ללא מגע פיזי, ללא בדיקות. פגישה ממוקדת, מכובדת ומכוונת לפתרונות:</p>
       <div class="process-steps" style="margin-top:1.75rem">
@@ -249,7 +252,7 @@
       <p style="margin-top:1.25rem;font-size:0.92rem;color:var(--color-text-muted)">📅 משך ממוצע: 6–12 פגישות | ⏱ 60 דקות | 📍 פנים בבית שמש או אונליין</p>
     </section>
 
-    <section class="service-block" data-aos="fade-up">
+    <section class="service-block reveal reveal-up">
       <h2 class="section-title">שאלות שאנשים חוששים לשאול</h2>
       <div class="faq-mini">
         <div class="faq-mini-item">
@@ -271,18 +274,18 @@
       </div>
     </section>
 
-    <div class="service-cta-box" data-aos="zoom-in">
+    <div class="service-cta-box reveal reveal-zoom">
       <h3>מוכנים לחיי מין שנראים אחרת?</h3>
       <p>הפגישה הראשונה חינמית, ללא התחייבות ובסודיות מוחלטת. לא צריך להסביר כלום — רק לשלוח הודעה.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 לשיחת ייעוץ חינמית</a>
+        <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> לשיחת ייעוץ חינמית</a>
           <a href="tel:0506415222" class="btn btn-secondary btn-lg">📞 התקשרו עכשיו</a>
         <a href="process.html" class="btn btn-secondary btn-lg">🔄 איך עובד התהליך?</a>
       </div>
       <p style="margin-top:1rem;font-size:0.82rem;color:rgba(255,255,255,0.55)">⚡ תגובה תוך שעה · 🔒 סודיות מוחלטת · ❌ ללא התחייבות</p>
     </div>
 
-    <section style="margin-top:1rem;padding-bottom:1rem" data-aos="fade-up">
+    <section class="reveal reveal-up" style="margin-top:1rem;padding-bottom:1rem">
       <h3 style="margin-bottom:1.25rem;font-size:1.1rem;color:var(--color-text-muted)">שירותים נוספים שעשויים לעניין אתכם</h3>
       <div class="grid-3" style="gap:1rem">
         <a href="service-couples.html" class="service-teaser" style="text-decoration:none">
@@ -338,13 +341,16 @@
 <button class="back-to-top" aria-label="חזרה לראש הדף">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script>
 <script src="script.js"></script>
 <script src="consent.js"></script>
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

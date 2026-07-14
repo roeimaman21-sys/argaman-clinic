@@ -1,0 +1,104 @@
+/* =====================================================
+   forms-polish.css — Forms Excellence (A14)
+   ===================================================== */
+
+/* Unlayered so they win against style.css form styles */
+
+.argaman-form .form-helper {
+  margin-top: 0.4rem;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  min-height: 1em;
+  transition: color 200ms ease;
+}
+.argaman-form .form-helper.is-error {
+  color: var(--red-700);
+  font-weight: var(--fw-semibold);
+}
+
+.argaman-form .form-hint {
+  margin-top: 0.35rem;
+  font-size: var(--text-xs);
+  color: var(--gray-500);
+  font-style: italic;
+}
+
+.argaman-form input.is-invalid,
+.argaman-form textarea.is-invalid,
+.argaman-form select.is-invalid {
+  border-color: var(--red-500) !important;
+  background-color: var(--red-50);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10);
+}
+
+.argaman-form .form-draft-saved {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.8rem;
+  background: var(--green-50);
+  border: 1px solid var(--green-500);
+  color: var(--green-700);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-medium);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 200ms ease, transform 200ms ease;
+  display: inline-block;
+}
+.argaman-form .form-draft-saved.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.argaman-form .form-restore-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, rgba(201,168,76,0.10), rgba(201,168,76,0.05));
+  border: 1px solid rgba(201,168,76,0.35);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--navy-700);
+}
+.argaman-form .form-restore-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.argaman-form .btn-restore {
+  background: var(--navy-500);
+  color: white;
+  border: 0;
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  cursor: pointer;
+  transition: background 200ms ease;
+}
+.argaman-form .btn-restore:hover { background: var(--navy-700); }
+.argaman-form .btn-restore-dismiss {
+  background: transparent;
+  border: 0;
+  color: var(--gray-500);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+.argaman-form .btn-restore-dismiss:hover {
+  color: var(--navy-700);
+  background: rgba(0,0,0,0.05);
+}
+
+/* Shake animation for failed-submit (defined globally in motion.css but redeclared safely) */
+.argaman-form.shake {
+  animation: shake 360ms cubic-bezier(.36, .07, .19, .97);
+}
+@media (prefers-reduced-motion: reduce){
+  .argaman-form.shake { animation: none; }
+}

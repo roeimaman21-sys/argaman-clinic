@@ -8,6 +8,7 @@ const RUNTIME_CACHE = 'argaman-runtime-' + CACHE_VERSION;
 const PRECACHE_URLS = [
   '/',
   '/index.html',
+  '/offline.html',
   '/style.css',
   '/script.js',
   '/about.html',
@@ -55,7 +56,7 @@ self.addEventListener('fetch', event => {
           caches.open(RUNTIME_CACHE).then(cache => cache.put(request, copy)).catch(()=>{});
           return response;
         })
-        .catch(() => caches.match(request).then(r => r || caches.match('/index.html')))
+        .catch(() => caches.match(request).then(r => r || caches.match('/offline.html')))
     );
     return;
   }

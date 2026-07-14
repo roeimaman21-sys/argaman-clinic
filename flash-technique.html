@@ -25,9 +25,12 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#1B3A6B">
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous"><noscript>
-</noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
@@ -46,25 +49,25 @@
 <a href="#main-content" class="skip-link">דלגו לתוכן הראשי</a>
 <header class="navbar" role="banner">
   <div class="container nav-inner">
-    <a href="index.html" class="nav-logo"><img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"><div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div></a>
-    <nav class="nav-links" aria-label="ניווט ראשי"><a href="index.html">ראשי</a><a href="about.html">אודות</a><a href="services.html">שירותים</a><a href="pricing.html">מחירים</a><a href="faq.html">שאלות נפוצות</a><a href="contact.html">צור קשר</a><a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer">📱 וואטסאפ</a></nav>
+    <a href="index.html" class="nav-logo"><picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture><div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div></a>
+    <nav class="nav-links" aria-label="ניווט ראשי"><a href="index.html">ראשי</a><a href="about.html">אודות</a><a href="services.html">שירותים</a><a href="pricing.html">מחירים</a><a href="faq.html">שאלות נפוצות</a><a href="contact.html">צור קשר</a><a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a></nav>
     <button class="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobile-drawer"><span></span><span></span><span></span></button>
   </div>
 </header>
 <div class="overlay" id="overlay"></div>
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="תפריט ניידים">
-  <div class="drawer-header"><span class="nav-logo-text" style="font-size:1.1rem">קליניקת ארגמן</span><button class="drawer-close" aria-label="סגור">✕</button></div>
+  <div class="drawer-header"><span class="nav-logo-text" style="font-size:1.1rem">קליניקת ארגמן</span><button class="drawer-close" aria-label="סגור"><svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
   <div class="drawer-links"><a href="index.html">🏠 ראשי</a><a href="service-trauma.html">🕊 ריפוי טראומה</a><a href="about.html">👤 אודות</a><a href="faq.html">❓ שאלות נפוצות</a><a href="contact.html">✉ צור קשר</a></div>
-  <div class="drawer-wa"><a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה</a></div>
+  <div class="drawer-wa"><a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שלחו הודעה</a></div>
 </nav>
 
 <main id="main-content">
   <section class="page-hero" style="background: linear-gradient(135deg, #0a1f3c 0%, #1a3a5c 40%, #2d6b6b 100%)">
     <div class="container page-hero-content">
-      <span class="section-tag" data-aos="fade-up">⚡ FLASH Technique</span>
-      <h1 data-aos="fade-up" data-aos-delay="100">FLASH Technique —<br>השיטה שמשנה את הכללים של ריפוי טראומה</h1>
-      <p class="subtitle" data-aos="fade-up" data-aos-delay="200">שיטה חדישה ופורצת דרך שפותחה ע״י ד״ר פיליפ מנפילד — מאפשרת לעבד זיכרון טראומטי <strong>בלי לחזור אליו, בלי לתאר אותו, ובלי לחוות אותו שוב</strong>. מדריך מקיף בעברית מאת גל ממן, מוסמך FLASH Technique.</p>
-      <a href="https://wa.me/972506415222?text=שלום, אני מעוניין/ת בטיפול FLASH Technique" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="300">📱 קבעו פגישת היכרות</a>
+      <span class="section-tag reveal reveal-up">⚡ FLASH Technique</span>
+      <h1 class="reveal reveal-up" data-delay="1">FLASH Technique —<br>השיטה שמשנה את הכללים של ריפוי טראומה</h1>
+      <p class="subtitle reveal reveal-up" data-delay="2">שיטה חדישה ופורצת דרך שפותחה ע״י ד״ר פיליפ מנפילד — מאפשרת לעבד זיכרון טראומטי <strong>בלי לחזור אליו, בלי לתאר אותו, ובלי לחוות אותו שוב</strong>. מדריך מקיף בעברית מאת גל ממן, מוסמך FLASH Technique.</p>
+      <a href="https://wa.me/972506415222?text=שלום, אני מעוניין/ת בטיפול FLASH Technique" class="btn btn-wa btn-lg reveal reveal-up" target="_blank" rel="noopener noreferrer" data-delay="4"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> קבעו פגישת היכרות</a>
     </div>
   </section>
 
@@ -84,37 +87,37 @@
         </ol>
       </nav>
 
-      <h2 id="what" style="color:var(--color-primary)" data-aos="fade-up">מהי FLASH Technique?</h2>
-      <p data-aos="fade-up"><strong><a href="glossary.html#flash" title="FLASH — למילון">FLASH</a> Technique</strong> (ראשי תיבות של Floating, Lights, Achievements, Shifts, Humor) היא שיטה לעיבוד טראומה שפותחה ב-2017 ע״י <strong>ד״ר פיליפ מנפילד</strong>, פסיכולוג קליני אמריקאי ומומחה ל-<a href="glossary.html#emdr" title="EMDR — למילון">EMDR</a>.</p>
-      <p data-aos="fade-up">השיטה התפתחה מתוך שאלה מהפכנית: <em>"האם חובה לחזור אל הזיכרון הטראומטי כדי לעבד אותו?"</em> מנפילד גילה שלא. הוא יצר תהליך שבו <strong>הלקוח כלל לא מתעמק בזיכרון הכואב</strong> — אבל המוח עדיין מעבד אותו ברקע.</p>
-      <p style="background:rgba(201,168,76,0.08);border-right:4px solid var(--color-gold);padding:1.25rem 1.5rem;border-radius:8px" data-aos="fade-up"><strong style="color:var(--color-primary)">ההבדל המהפכני:</strong> בעוד שיטות מסורתיות (כולל EMDR וטיפול קוגניטיבי-התנהגותי) דורשות חשיפה הדרגתית לזיכרון — FLASH מאפשר עיבוד בלי חשיפה. זה משנה הכל למי שמפחד מהתהליך.</p>
+      <h2 class="reveal reveal-up" id="what" style="color:var(--color-primary)">מהי FLASH Technique?</h2>
+      <p class="reveal reveal-up"><strong><a href="glossary.html#flash" title="FLASH — למילון">FLASH</a> Technique</strong> (ראשי תיבות של Floating, Lights, Achievements, Shifts, Humor) היא שיטה לעיבוד טראומה שפותחה ב-2017 ע״י <strong>ד״ר פיליפ מנפילד</strong>, פסיכולוג קליני אמריקאי ומומחה ל-<a href="glossary.html#emdr" title="EMDR — למילון">EMDR</a>.</p>
+      <p class="reveal reveal-up">השיטה התפתחה מתוך שאלה מהפכנית: <em>"האם חובה לחזור אל הזיכרון הטראומטי כדי לעבד אותו?"</em> מנפילד גילה שלא. הוא יצר תהליך שבו <strong>הלקוח כלל לא מתעמק בזיכרון הכואב</strong> — אבל המוח עדיין מעבד אותו ברקע.</p>
+      <p class="reveal reveal-up" style="background:rgba(201,168,76,0.08);border-right:4px solid var(--color-gold);padding:1.25rem 1.5rem;border-radius:8px"><strong style="color:var(--color-primary)">ההבדל המהפכני:</strong> בעוד שיטות מסורתיות (כולל EMDR וטיפול קוגניטיבי-התנהגותי) דורשות חשיפה הדרגתית לזיכרון — FLASH מאפשר עיבוד בלי חשיפה. זה משנה הכל למי שמפחד מהתהליך.</p>
 
-      <h2 id="how" style="color:var(--color-primary)" data-aos="fade-up">איך השיטה עובדת?</h2>
-      <p data-aos="fade-up">העקרון מבוסס על מחקר עכשווי במדעי המוח: <strong>המוח מסוגל לעבד מידע גם כשהמודעות לא ממוקדת בו</strong>. כשהלקוח עוסק במשהו חיובי ומעניין, המוח "ברקע" יכול לעבד את הזיכרון הטראומטי בלי ההצפה הרגשית שמתלווה לחזרה ישירה.</p>
+      <h2 class="reveal reveal-up" id="how" style="color:var(--color-primary)">איך השיטה עובדת?</h2>
+      <p class="reveal reveal-up">העקרון מבוסס על מחקר עכשווי במדעי המוח: <strong>המוח מסוגל לעבד מידע גם כשהמודעות לא ממוקדת בו</strong>. כשהלקוח עוסק במשהו חיובי ומעניין, המוח "ברקע" יכול לעבד את הזיכרון הטראומטי בלי ההצפה הרגשית שמתלווה לחזרה ישירה.</p>
 
-      <h3 style="color:var(--color-primary);margin-top:2rem" data-aos="fade-up">4 שלבי התהליך:</h3>
+      <h3 class="reveal reveal-up" style="color:var(--color-primary);margin-top:2rem">4 שלבי התהליך:</h3>
 
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up">
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem">
         <strong style="color:var(--color-gold);display:block;margin-bottom:0.3rem">שלב 1 — זיהוי הזיכרון הטראומטי</strong>
         <p style="margin:0">המטופל מזהה את הזיכרון שרוצים לעבד — אבל <strong>אינו צריך לתאר אותו</strong> או לחיות בו. מספיק לדעת "זה הזיכרון".</p>
       </div>
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up" data-aos-delay="50">
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem" data-delay="1">
         <strong style="color:var(--color-gold);display:block;margin-bottom:0.3rem">שלב 2 — מציאת "PEF" (Positive Engaging Focus)</strong>
         <p style="margin:0">בוחרים מוקד חיובי ומעניין — זיכרון שמח, אדם אהוב, פעילות מהנה. זה מה שהמטופל יחשוב עליו במהלך התהליך.</p>
       </div>
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up" data-aos-delay="100">
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem" data-delay="1">
         <strong style="color:var(--color-gold);display:block;margin-bottom:0.3rem">שלב 3 — תנועות עיניים / Tapping מהיר</strong>
         <p style="margin:0">המטופל ממוקד במוקד החיובי, והמטפל מבצע סטימולציה בילטרלית (תנועות עיניים, נגיעות לסירוגין). זה מפעיל את המוח לעיבוד.</p>
       </div>
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up" data-aos-delay="150">
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem" data-delay="2">
         <strong style="color:var(--color-gold);display:block;margin-bottom:0.3rem">שלב 4 — בדיקה ומדידה</strong>
         <p style="margin:0">אחרי כל מחזור, המטופל בודק את העוצמה הרגשית של הזיכרון. ברוב המקרים — היא יורדת משמעותית, ולעיתים נעלמת.</p>
       </div>
 
-      <h2 id="vs-emdr" style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">FLASH מול EMDR — מה ההבדל?</h2>
-      <p data-aos="fade-up">EMDR (Eye Movement Desensitization and Reprocessing) הוא הסטנדרט הזהב בטיפול בטראומה זה 30 שנה. FLASH אינו תחליף ל-EMDR — אלא <strong>אופציה חדישה</strong> שלעיתים מתאימה יותר.</p>
+      <h2 class="reveal reveal-up" id="vs-emdr" style="color:var(--color-primary);margin-top:2.5rem">FLASH מול EMDR — מה ההבדל?</h2>
+      <p class="reveal reveal-up">EMDR (Eye Movement Desensitization and Reprocessing) הוא הסטנדרט הזהב בטיפול בטראומה זה 30 שנה. FLASH אינו תחליף ל-EMDR — אלא <strong>אופציה חדישה</strong> שלעיתים מתאימה יותר.</p>
 
-      <div style="overflow-x:auto;margin:1.5rem 0" data-aos="fade-up">
+      <div class="reveal reveal-up" style="overflow-x:auto;margin:1.5rem 0">
         <table style="width:100%;border-collapse:collapse;background:white;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
           <thead style="background:var(--color-primary);color:white"><tr><th style="padding:0.85rem;text-align:right">מאפיין</th><th style="padding:0.85rem;text-align:right">EMDR</th><th style="padding:0.85rem;text-align:right">FLASH</th></tr></thead>
           <tbody>
@@ -127,9 +130,9 @@
         </table>
       </div>
 
-      <h2 id="for-whom" style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">למי FLASH מתאים?</h2>
-      <p data-aos="fade-up">השיטה מתאימה במיוחד ל:</p>
-      <ul style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0" data-aos="fade-up">
+      <h2 class="reveal reveal-up" id="for-whom" style="color:var(--color-primary);margin-top:2.5rem">למי FLASH מתאים?</h2>
+      <p class="reveal reveal-up">השיטה מתאימה במיוחד ל:</p>
+      <ul class="reveal reveal-up" style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0">
         <li>✓ אנשים שעברו טראומה ספציפית (תאונה, אובדן, אירוע אלים)</li>
         <li>✓ מי שמפחד מטיפול קלאסי כי לא רוצה "להיכנס לכאב"</li>
         <li>✓ אנשים שניסו EMDR או חשיפה ומצאו את זה קשה מדי</li>
@@ -138,39 +141,39 @@
         <li>✓ מי שמחפש תהליך מהיר עם תוצאות בפגישות בודדות</li>
       </ul>
 
-      <h2 id="research" style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">מה המחקר אומר?</h2>
-      <p data-aos="fade-up">מאז 2017 פורסמו מספר מחקרים על FLASH Technique. הממצאים העיקריים:</p>
-      <ul style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0" data-aos="fade-up">
+      <h2 class="reveal reveal-up" id="research" style="color:var(--color-primary);margin-top:2.5rem">מה המחקר אומר?</h2>
+      <p class="reveal reveal-up">מאז 2017 פורסמו מספר מחקרים על FLASH Technique. הממצאים העיקריים:</p>
+      <ul class="reveal reveal-up" style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0">
         <li>📊 ירידה משמעותית ברמת הסבל הרגשי תוך 1-3 פגישות (בממוצע)</li>
         <li>📊 70-85% מהמטופלים חוו הפחתה משמעותית של הסימפטומים</li>
         <li>📊 נשמרת יציבות בתוצאות גם בבדיקות מעקב 6-12 חודשים אחרי</li>
         <li>📊 שיעור הנשירה (drop-out) נמוך משמעותית מ-EMDR — כי הטיפול פחות מערער רגשית</li>
       </ul>
-      <p data-aos="fade-up"><em>מקור: International Journal of Mental Health and Addiction; פרסומי ד״ר פיליפ מנפילד וצוותו, 2017-2024.</em></p>
+      <p class="reveal reveal-up"><em>מקור: International Journal of Mental Health and Addiction; פרסומי ד״ר פיליפ מנפילד וצוותו, 2017-2024.</em></p>
 
-      <h2 id="process" style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">איך הפגישה נראית בפועל בקליניקת ארגמן?</h2>
-      <p data-aos="fade-up">בקליניקת ארגמן, כל תהליך FLASH מתחיל בפגישת הערכה — לוודא שהשיטה מתאימה למצב הספציפי שלכם. אחר כך:</p>
-      <ol style="display:flex;flex-direction:column;gap:0.75rem;margin:1rem 0;padding-right:1.5rem" data-aos="fade-up">
+      <h2 class="reveal reveal-up" id="process" style="color:var(--color-primary);margin-top:2.5rem">איך הפגישה נראית בפועל בקליניקת ארגמן?</h2>
+      <p class="reveal reveal-up">בקליניקת ארגמן, כל תהליך FLASH מתחיל בפגישת הערכה — לוודא שהשיטה מתאימה למצב הספציפי שלכם. אחר כך:</p>
+      <ol class="reveal reveal-up" style="display:flex;flex-direction:column;gap:0.75rem;margin:1rem 0;padding-right:1.5rem">
         <li><strong>פגישה 1 (הערכה):</strong> מיפוי הקושי, היכרות, בניית מערכת אמון</li>
         <li><strong>פגישה 2 (הכנה):</strong> זיהוי הזיכרון/הזיכרונות לעבוד עליהם, מציאת PEF טוב</li>
         <li><strong>פגישות 3-5 (עיבוד):</strong> ביצוע התהליך עצמו. כל פגישה — מחזורים של PEF + סטימולציה</li>
         <li><strong>פגישה 6 (אינטגרציה):</strong> בדיקה שהשינוי יציב, שילוב התובנות בחיים</li>
       </ol>
-      <p data-aos="fade-up">לעיתים די בפגישות בודדות, ולעיתים נדרשות יותר — תלוי במורכבות. תמיד יש שיחה בסוף כל פגישה לוודא שמיצבנו את התוצאות.</p>
+      <p class="reveal reveal-up">לעיתים די בפגישות בודדות, ולעיתים נדרשות יותר — תלוי במורכבות. תמיד יש שיחה בסוף כל פגישה לוודא שמיצבנו את התוצאות.</p>
 
-      <h2 id="faq" style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">שאלות נפוצות</h2>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary)">האם זה באמת עובד בלי לחזור לזיכרון?</summary><p style="margin-top:0.75rem">כן. זו בדיוק החדשנות של השיטה. המוח מסוגל לעבד מידע בלי שהמודעות תהיה ממוקדת בו. אנשים מתפלאים כשהם מגלים שהזיכרון פתאום פחות כואב — בלי "להיכנס" אליו.</p></details>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary)">האם זה מתאים לטראומת ילדות?</summary><p style="margin-top:0.75rem">לטראומה ספציפית — כן. לטראומה מורכבת (CPTSD, פגיעה מתמשכת מהילדות) — לרוב משלבים FLASH עם שיטות אחרות כמו שיטת הילד הפנימי וטכניקת רגרסיה.</p></details>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary)">האם יש סיכון לתופעות לוואי?</summary><p style="margin-top:0.75rem">לא תופעות לוואי בריאותיות. במקרים נדירים — תחושות רגשיות לאחר הפגישה (עייפות, רגישות). זה חולף בתוך 24-48 שעות. במסגרת הטיפול אני מלמד טכניקות ויסות אם זה קורה.</p></details>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary)">האם FLASH עובד גם אונליין?</summary><p style="margin-top:0.75rem">כן. הסטימולציה הבילטרלית עובדת היטב גם בזום — דרך מסך או אפליקציה. רוב הפגישות בקליניקה היום מתבצעות אונליין בהצלחה.</p></details>
+      <h2 class="reveal reveal-up" id="faq" style="color:var(--color-primary);margin-top:2.5rem">שאלות נפוצות</h2>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer"><summary style="font-weight:700;color:var(--color-primary)">האם זה באמת עובד בלי לחזור לזיכרון?</summary><p style="margin-top:0.75rem">כן. זו בדיוק החדשנות של השיטה. המוח מסוגל לעבד מידע בלי שהמודעות תהיה ממוקדת בו. אנשים מתפלאים כשהם מגלים שהזיכרון פתאום פחות כואב — בלי "להיכנס" אליו.</p></details>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer"><summary style="font-weight:700;color:var(--color-primary)">האם זה מתאים לטראומת ילדות?</summary><p style="margin-top:0.75rem">לטראומה ספציפית — כן. לטראומה מורכבת (CPTSD, פגיעה מתמשכת מהילדות) — לרוב משלבים FLASH עם שיטות אחרות כמו שיטת הילד הפנימי וטכניקת רגרסיה.</p></details>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer"><summary style="font-weight:700;color:var(--color-primary)">האם יש סיכון לתופעות לוואי?</summary><p style="margin-top:0.75rem">לא תופעות לוואי בריאותיות. במקרים נדירים — תחושות רגשיות לאחר הפגישה (עייפות, רגישות). זה חולף בתוך 24-48 שעות. במסגרת הטיפול אני מלמד טכניקות ויסות אם זה קורה.</p></details>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem;cursor:pointer"><summary style="font-weight:700;color:var(--color-primary)">האם FLASH עובד גם אונליין?</summary><p style="margin-top:0.75rem">כן. הסטימולציה הבילטרלית עובדת היטב גם בזום — דרך מסך או אפליקציה. רוב הפגישות בקליניקה היום מתבצעות אונליין בהצלחה.</p></details>
 
-      <div style="background:linear-gradient(135deg,var(--color-primary),#2a5298);color:white;padding:2.5rem;border-radius:16px;text-align:center;margin-top:3rem" data-aos="fade-up">
+      <div class="reveal reveal-up" style="background:linear-gradient(135deg,var(--color-primary),#2a5298);color:white;padding:2.5rem;border-radius:16px;text-align:center;margin-top:3rem">
         <h3 style="color:white;margin-bottom:0.75rem">מוכנים לנסות FLASH Technique?</h3>
         <p style="color:rgba(255,255,255,0.85);margin-bottom:1.5rem">פגישת היכרות ראשונה — חינמית. ללא התחייבות. בית שמש או אונליין.</p>
-        <a href="https://wa.me/972506415222?text=שלום, אשמח לדעת אם FLASH Technique מתאים לי" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה עכשיו</a>
+        <a href="https://wa.me/972506415222?text=שלום, אשמח לדעת אם FLASH Technique מתאים לי" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שלחו הודעה עכשיו</a>
       </div>
 
-      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border)" data-aos="fade-up">
+      <div class="reveal reveal-up" style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border)">
         <strong style="color:var(--color-primary);display:block;margin-bottom:0.75rem">📖 מאמרים קשורים:</strong>
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem">
           <a href="shitat-hayeled-hapnimi.html" class="cred-badge" style="text-decoration:none">🌱 שיטת הילד הפנימי</a>
@@ -196,11 +199,14 @@
         <a href="accessibility.html">הצהרת נגישות</a></div></div></div>
 </footer>
 
-<a href="https://wa.me/972506415222" class="whatsapp-fab" aria-label="שלחו הודעה בוואטסאפ" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script><script src="script.js"></script><script src="consent.js"></script>
+<a href="https://wa.me/972506415222" class="whatsapp-fab" aria-label="שלחו הודעה בוואטסאפ" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a><script src="script.js"></script><script src="consent.js"></script>
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body></html>

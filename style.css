@@ -98,8 +98,15 @@ p:last-child { margin-bottom: 0; }
   max-width: 600px;
 }
 .text-center { text-align: center; }
-.text-gold { color: var(--color-gold); }
+.text-gold { color: var(--color-gold-text); }
 .text-white { color: var(--color-white); }
+
+/* Inline SVG icons used as button/nav icon-prefixes (replaces structural emoji) */
+.icon-inline {
+  flex-shrink: 0;
+  vertical-align: middle;
+  margin-bottom: 0.15em; /* optical centering against Hebrew text baseline */
+}
 
 /* =====================================================
    BUTTONS
@@ -194,7 +201,7 @@ p:last-child { margin-bottom: 0; }
   gap: 0.25rem;
 }
 .nav-links a {
-  padding: 0.45rem 0.75rem;
+  padding: 0.6rem 0.9rem;
   border-radius: var(--radius-sm);
   font-weight: var(--fw-semibold);
   font-size: 0.95rem;
@@ -217,9 +224,9 @@ p:last-child { margin-bottom: 0; }
   flex-direction: column;
   justify-content: center;
   gap: 5px;
-  width: 40px;
-  height: 40px;
-  padding: 6px;
+  width: 44px;
+  height: 44px;
+  padding: 8px;
   border-radius: var(--radius-sm);
   cursor: pointer;
   background: none;
@@ -263,7 +270,7 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: 2rem;
 }
 .drawer-close {
-  width: 36px; height: 36px;
+  width: 44px; height: 44px;
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   background: var(--color-bg-light);
@@ -345,7 +352,7 @@ p:last-child { margin-bottom: 0; }
 .footer-contact a:hover { color: var(--color-gold); }
 .footer-social { display: flex; gap: 0.75rem; margin-top: 0.5rem; }
 .footer-social a {
-  width: 38px; height: 38px;
+  width: 44px; height: 44px;
   border-radius: 50%;
   background: rgba(255,255,255,0.1);
   display: flex; align-items: center; justify-content: center;
@@ -511,7 +518,7 @@ p:last-child { margin-bottom: 0; }
   margin-top: 1rem;
   transition: color var(--transition);
 }
-.blog-card .card-link:hover { color: var(--color-gold); }
+.blog-card .card-link:hover { color: var(--color-gold-text); }
 
 /* Category Badge */
 .cat-badge {
@@ -615,7 +622,7 @@ p:last-child { margin-bottom: 0; }
 .testimonial-footer { display: flex; align-items: center; justify-content: space-between; }
 .testimonial-author strong { display: block; font-weight: var(--fw-bold); font-size: 0.9rem; }
 .testimonial-author span  { font-size: 0.8rem; color: var(--color-text-muted); }
-.stars { color: var(--color-gold); font-size: 1rem; letter-spacing: 1px; }
+.stars { color: var(--color-gold-text); font-size: 1rem; letter-spacing: 1px; }
 
 /* Service card */
 .service-card {
@@ -826,7 +833,7 @@ p:last-child { margin-bottom: 0; }
 .faq-category {
   font-size: 0.82rem;
   font-weight: var(--fw-bold);
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   padding: 1rem 1.5rem 0.5rem;
@@ -843,7 +850,7 @@ p:last-child { margin-bottom: 0; }
   margin-bottom: 2.5rem;
 }
 .filter-btn {
-  padding: 0.45rem 1rem;
+  padding: 0.65rem 1.1rem;
   border-radius: var(--radius-full);
   border: 1.5px solid var(--color-border);
   font-size: 0.9rem;
@@ -897,8 +904,8 @@ p:last-child { margin-bottom: 0; }
   flex-wrap: wrap;
 }
 .page-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1.5px solid var(--color-border);
   display: flex;
@@ -1026,7 +1033,7 @@ p:last-child { margin-bottom: 0; }
 .timeline-year {
   font-size: 0.8rem;
   font-weight: var(--fw-bold);
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 0.25rem;
@@ -1057,7 +1064,7 @@ p:last-child { margin-bottom: 0; }
   top: -12px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--color-gold);
+  background: var(--color-gold-text);
   color: var(--color-white);
   font-size: 0.78rem;
   font-weight: var(--fw-bold);
@@ -1305,7 +1312,7 @@ p:last-child { margin-bottom: 0; }
 .error-404 {
   font-size: clamp(5rem, 20vw, 10rem);
   font-weight: var(--fw-extrabold);
-  color: var(--color-gold);
+  color: var(--color-gold-text);
   line-height: 1;
   margin-bottom: 0.5rem;
 }
@@ -2327,7 +2334,7 @@ p:last-child { margin-bottom: 0; }
   }
   .whatsapp-fab svg { width: 26px; height: 26px; }
   .whatsapp-fab .fab-tooltip { display: none; }
-  .back-to-top { bottom: 78px; left: 16px; width: 40px; height: 40px; font-size: 1rem; }
+  .back-to-top { bottom: 78px; left: 16px; width: 44px; height: 44px; font-size: 1rem; }
 
   /* --- Cards --- */
   .service-card { padding: 1.5rem; }
@@ -2553,6 +2560,14 @@ p:last-child { margin-bottom: 0; }
   padding: 0.5rem 0.75rem calc(0.5rem + env(safe-area-inset-bottom));
   z-index: 998;
   gap: 0.5rem;
+  transition: transform 250ms ease;
+}
+/* Hidden while scrolling down (reading); reappears on scroll up */
+.mobile-sticky-cta.is-hidden-scroll {
+  transform: translateY(100%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-sticky-cta { transition: none; }
 }
 .mobile-sticky-cta a {
   flex: 1;
@@ -2576,6 +2591,44 @@ p:last-child { margin-bottom: 0; }
 }
 @media print {
   .mobile-sticky-cta { display: none !important; }
+}
+
+/* ─── Article Share Buttons ─── */
+.share-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--color-border);
+}
+.share-buttons-label {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-inline-end: 0.25rem;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-bg-light);
+  color: var(--color-primary);
+  transition: background var(--transition), transform var(--transition), color var(--transition);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.share-btn:hover { background: var(--color-primary); color: #fff; transform: translateY(-2px); }
+.share-btn.share-wa:hover { background: var(--color-wa); }
+@media (max-width: 768px) {
+  .share-btn { width: 44px; height: 44px; }
 }
 
 /* ─── PWA Install Banner ─── */

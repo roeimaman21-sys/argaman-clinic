@@ -30,9 +30,12 @@
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous"><noscript>
-</noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -108,14 +111,14 @@
           <div id="article-body"></div>
 
           <!-- MID CTA -->
-          <div class="article-cta-box" data-aos="fade-up">
+          <div class="article-cta-box reveal reveal-up">
             <h3>רוצים לדבר על זה? ←</h3>
             <p>גל ישמח לענות על שאלות ולעזור לכם לעשות את הצעד הבא</p>
             <a href="https://wa.me/972506415222" class="btn btn-primary" target="_blank" rel="noopener noreferrer">שלחו הודעה בוואטסאפ</a>
           </div>
 
           <!-- AUTHOR BOX -->
-          <div class="author-box" data-aos="fade-up">
+          <div class="author-box reveal reveal-up">
             <div class="author-avatar">
               <img src="gal.jpg" alt="גל ממן" loading="lazy">
             </div>
@@ -199,9 +202,10 @@
 <button class="back-to-top" aria-label="חזרה לראש הדף">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script>
 <script src="script.js"></script>
 <script src="consent.js"></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

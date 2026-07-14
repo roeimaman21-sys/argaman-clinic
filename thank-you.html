@@ -16,12 +16,19 @@
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body style="background:var(--color-bg-light)">
 
-<main>
+<a href="#main-content" class="skip-link">דלגו לתוכן הראשי</a>
+
+<main id="main-content">
   <div class="centered-page">
     <div style="max-width:520px;width:100%;text-align:center">
 
@@ -75,5 +82,9 @@
 <script src="script.js"></script>
 <script src="consent.js"></script>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

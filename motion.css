@@ -1,0 +1,201 @@
+/* =====================================================
+   motion.css — Motion utility classes (A7)
+   ===================================================== */
+@layer utilities {
+
+  /* ─────────────────────────────────────────────
+     Reveal-on-scroll (via IntersectionObserver in motion.js)
+     ───────────────────────────────────────────── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity var(--motion-medium) var(--ease-emphasized),
+      transform var(--motion-medium) var(--ease-emphasized);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  .reveal-up    { transform: translateY(24px); }
+  .reveal-down  { transform: translateY(-24px); }
+  .reveal-left  { transform: translateX(24px); }
+  .reveal-right { transform: translateX(-24px); }
+  .reveal-zoom  { transform: scale(0.95); }
+  .reveal-fade  { transform: none; }
+
+  .reveal-up.is-visible,
+  .reveal-down.is-visible,
+  .reveal-left.is-visible,
+  .reveal-right.is-visible { transform: translate(0,0); }
+  .reveal-zoom.is-visible  { transform: scale(1); }
+
+  /* Stagger via inline `style="--reveal-delay: 100ms"` or class */
+  .reveal[data-delay="1"], .reveal-delay-1 { transition-delay: 80ms; }
+  .reveal[data-delay="2"], .reveal-delay-2 { transition-delay: 160ms; }
+  .reveal[data-delay="3"], .reveal-delay-3 { transition-delay: 240ms; }
+  .reveal[data-delay="4"], .reveal-delay-4 { transition-delay: 320ms; }
+  .reveal[data-delay="5"], .reveal-delay-5 { transition-delay: 400ms; }
+
+  /* ─────────────────────────────────────────────
+     Hover lift (cards, links)
+     ───────────────────────────────────────────── */
+  @media (hover: hover) and (pointer: fine) {
+    .lift {
+      transition:
+        transform var(--motion) var(--ease-spring),
+        box-shadow var(--motion) var(--ease-out);
+    }
+    .lift:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+    .lift-sm:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .lift-lg:hover { transform: translateY(-6px); box-shadow: var(--shadow-xl); }
+  }
+
+  /* ─────────────────────────────────────────────
+     Soft pulse — draws eye without aggression
+     ───────────────────────────────────────────── */
+  .pulse-soft {
+    animation: pulseSoft 2.6s ease-in-out infinite;
+  }
+  @keyframes pulseSoft {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.025); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pulse-soft { animation: none; }
+  }
+
+  /* ─────────────────────────────────────────────
+     Spinner — branded
+     ───────────────────────────────────────────── */
+  .spinner {
+    width: 1.25em; height: 1.25em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 700ms linear infinite;
+    vertical-align: middle;
+  }
+  .spinner-gold { color: var(--gold-500); }
+  .spinner-navy { color: var(--navy-500); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation-duration: 2s; }
+  }
+
+  /* ─────────────────────────────────────────────
+     Shake — error states
+     ───────────────────────────────────────────── */
+  .shake {
+    animation: shake 360ms cubic-bezier(.36, .07, .19, .97);
+  }
+  @keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shake { animation: none; }
+  }
+
+  /* ─────────────────────────────────────────────
+     Skeleton loading shimmer (sm/md/lg blocks)
+     ───────────────────────────────────────────── */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--gray-100) 0%,
+      var(--gray-200) 50%,
+      var(--gray-100) 100%
+    );
+    background-size: 200% 100%;
+    border-radius: var(--radius-sm);
+    animation: skeletonShimmer 1.6s linear infinite;
+    color: transparent;
+    user-select: none;
+    pointer-events: none;
+  }
+  @keyframes skeletonShimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+  .skeleton-text { height: 1em; width: 100%; }
+  .skeleton-text-sm { width: 60%; }
+  .skeleton-text-lg { width: 90%; }
+  .skeleton-block { min-height: 100px; }
+  .skeleton-avatar { width: 48px; height: 48px; border-radius: 50%; }
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton { animation: none; }
+  }
+
+  /* ─────────────────────────────────────────────
+     View Transitions API (CSS only — no JS needed)
+     Browsers that support it animate same-named
+     elements across nav.
+     ───────────────────────────────────────────── */
+  @supports (view-transition-name: a) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 240ms;
+      animation-timing-function: var(--ease-emphasized);
+    }
+    ::view-transition-group(root) { animation-duration: 240ms; }
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 1ms; }
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+     Scroll-driven reading progress bar (CSS-only)
+     Activate by adding .has-progress to <body>
+     and .progress-bar element somewhere.
+     ───────────────────────────────────────────── */
+  @supports (animation-timeline: scroll()) {
+    body.has-progress .progress-bar {
+      position: fixed; inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--gold-500), var(--gold-700));
+      transform: scaleX(0);
+      transform-origin: right; /* RTL */
+      z-index: var(--z-tooltip);
+      animation: progressScroll linear;
+      animation-timeline: scroll(root);
+    }
+    @keyframes progressScroll {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+  }
+
+  /* ─────────────────────────────────────────────
+     Hover ripple (touch-friendly tap feedback)
+     ───────────────────────────────────────────── */
+  .ripple {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .ripple::after {
+    content: "";
+    position: absolute;
+    inset: 50% 50% 50% 50%;
+    background: currentColor;
+    opacity: 0;
+    border-radius: 50%;
+    transform: translate(50%, -50%) scale(0);
+    transition: transform 0ms, opacity 0ms;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+  .ripple.is-rippling::after {
+    opacity: 0.18;
+    transform: translate(50%, -50%) scale(50);
+    transition: transform 600ms var(--ease-out), opacity 600ms ease;
+  }
+}

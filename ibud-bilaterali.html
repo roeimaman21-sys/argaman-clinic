@@ -24,9 +24,12 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#1B3A6B">
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous"><noscript>
-</noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
   <script type="application/ld+json">
   {"@context":"https://schema.org","@graph":[
@@ -40,63 +43,63 @@
 <a href="#main-content" class="skip-link">דלגו לתוכן הראשי</a>
 <header class="navbar" role="banner">
   <div class="container nav-inner">
-    <a href="index.html" class="nav-logo"><img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"><div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div></a>
-    <nav class="nav-links" aria-label="ניווט ראשי"><a href="index.html">ראשי</a><a href="about.html">אודות</a><a href="services.html">שירותים</a><a href="pricing.html">מחירים</a><a href="faq.html">שאלות נפוצות</a><a href="contact.html">צור קשר</a><a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer">📱 וואטסאפ</a></nav>
+    <a href="index.html" class="nav-logo"><picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture><div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div></a>
+    <nav class="nav-links" aria-label="ניווט ראשי"><a href="index.html">ראשי</a><a href="about.html">אודות</a><a href="services.html">שירותים</a><a href="pricing.html">מחירים</a><a href="faq.html">שאלות נפוצות</a><a href="contact.html">צור קשר</a><a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a></nav>
     <button class="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobile-drawer"><span></span><span></span><span></span></button>
   </div>
 </header>
 <div class="overlay" id="overlay"></div>
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="תפריט ניידים">
-  <div class="drawer-header"><span class="nav-logo-text" style="font-size:1.1rem">קליניקת ארגמן</span><button class="drawer-close" aria-label="סגור">✕</button></div>
+  <div class="drawer-header"><span class="nav-logo-text" style="font-size:1.1rem">קליניקת ארגמן</span><button class="drawer-close" aria-label="סגור"><svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button></div>
   <div class="drawer-links"><a href="index.html">🏠 ראשי</a><a href="service-trauma.html">🕊 ריפוי טראומה</a><a href="about.html">👤 אודות</a><a href="contact.html">✉ צור קשר</a></div>
-  <div class="drawer-wa"><a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה</a></div>
+  <div class="drawer-wa"><a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שלחו הודעה</a></div>
 </nav>
 
 <main id="main-content">
   <section class="page-hero" style="background: linear-gradient(135deg, #0a1f3c 0%, #1a3a5c 40%, #2d6b6b 100%)">
     <div class="container page-hero-content">
-      <span class="section-tag" data-aos="fade-up">🔄 עיבוד בילטרלי</span>
-      <h1 data-aos="fade-up" data-aos-delay="100">עיבוד בילטרלי (דו-צדדי) —<br>כשהמוח עצמו עוזר לרפא את הכאב</h1>
-      <p class="subtitle" data-aos="fade-up" data-aos-delay="200">השיטה שמפעילה את שתי ההמיספרות של המוח בו-זמנית — ומאפשרת לזיכרונות תקועים להשתחרר. מדריך מקיף בעברית מאת גל ממן.</p>
-      <a href="https://wa.me/972506415222?text=שלום, מעוניין/ת בעיבוד בילטרלי" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer" data-aos="fade-up" data-aos-delay="300">📱 קבעו פגישת היכרות</a>
+      <span class="section-tag reveal reveal-up">🔄 עיבוד בילטרלי</span>
+      <h1 class="reveal reveal-up" data-delay="1">עיבוד בילטרלי (דו-צדדי) —<br>כשהמוח עצמו עוזר לרפא את הכאב</h1>
+      <p class="subtitle reveal reveal-up" data-delay="2">השיטה שמפעילה את שתי ההמיספרות של המוח בו-זמנית — ומאפשרת לזיכרונות תקועים להשתחרר. מדריך מקיף בעברית מאת גל ממן.</p>
+      <a href="https://wa.me/972506415222?text=שלום, מעוניין/ת בעיבוד בילטרלי" class="btn btn-wa btn-lg reveal reveal-up" target="_blank" rel="noopener noreferrer" data-delay="4"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> קבעו פגישת היכרות</a>
     </div>
   </section>
 
   <article class="section">
     <div class="container" style="max-width:780px;line-height:1.85">
 
-      <h2 style="color:var(--color-primary)" data-aos="fade-up">מהו עיבוד בילטרלי?</h2>
-      <p data-aos="fade-up"><strong><a href="glossary.html#bilateral" title="עיבוד בילטרלי — למילון">עיבוד בילטרלי</a></strong> (Bilateral Processing) הוא טכניקה לעיבוד טראומה וחרדות, המבוססת על גירוי דו-צדדי של המוח (Bilateral Stimulation). השיטה התפתחה במקור כחלק מ-<a href="glossary.html#emdr" title="EMDR — למילון">EMDR</a>, ומאז התרחבה לגישות עצמאיות.</p>
-      <p data-aos="fade-up">המהפכה כאן היא <strong>הבנה חדשה של איך המוח מעבד טראומה</strong>: זיכרונות טראומטיים "נתקעים" בהמיספרה הימנית של המוח (הרגשית) ולא מצליחים לעבור עיבוד מלא בהמיספרה השמאלית (השכלית). השילוב הדו-צדדי "משחרר" את הזיכרון מהבידוד.</p>
-      <p style="background:rgba(201,168,76,0.08);border-right:4px solid var(--color-gold);padding:1.25rem 1.5rem;border-radius:8px" data-aos="fade-up"><strong>הבסיס המדעי:</strong> כשאנחנו ישנים, המוח עובר REM (Rapid Eye Movement) ומעבד את החוויות של היום. עיבוד בילטרלי "מחקה" את התהליך הזה במצב ערות — והמוח מקבל הזדמנות לעבד גם זיכרונות שלא הצליח לסיים.</p>
+      <h2 class="reveal reveal-up" style="color:var(--color-primary)">מהו עיבוד בילטרלי?</h2>
+      <p class="reveal reveal-up"><strong><a href="glossary.html#bilateral" title="עיבוד בילטרלי — למילון">עיבוד בילטרלי</a></strong> (Bilateral Processing) הוא טכניקה לעיבוד טראומה וחרדות, המבוססת על גירוי דו-צדדי של המוח (Bilateral Stimulation). השיטה התפתחה במקור כחלק מ-<a href="glossary.html#emdr" title="EMDR — למילון">EMDR</a>, ומאז התרחבה לגישות עצמאיות.</p>
+      <p class="reveal reveal-up">המהפכה כאן היא <strong>הבנה חדשה של איך המוח מעבד טראומה</strong>: זיכרונות טראומטיים "נתקעים" בהמיספרה הימנית של המוח (הרגשית) ולא מצליחים לעבור עיבוד מלא בהמיספרה השמאלית (השכלית). השילוב הדו-צדדי "משחרר" את הזיכרון מהבידוד.</p>
+      <p class="reveal reveal-up" style="background:rgba(201,168,76,0.08);border-right:4px solid var(--color-gold);padding:1.25rem 1.5rem;border-radius:8px"><strong>הבסיס המדעי:</strong> כשאנחנו ישנים, המוח עובר REM (Rapid Eye Movement) ומעבד את החוויות של היום. עיבוד בילטרלי "מחקה" את התהליך הזה במצב ערות — והמוח מקבל הזדמנות לעבד גם זיכרונות שלא הצליח לסיים.</p>
 
-      <h2 style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">איך זה עובד בפועל?</h2>
-      <p data-aos="fade-up">הסטימולציה הבילטרלית יכולה להיות בכמה דרכים:</p>
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up">
+      <h2 class="reveal reveal-up" style="color:var(--color-primary);margin-top:2.5rem">איך זה עובד בפועל?</h2>
+      <p class="reveal reveal-up">הסטימולציה הבילטרלית יכולה להיות בכמה דרכים:</p>
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem">
         <strong style="color:var(--color-gold)">👁 תנועות עיניים</strong>
         <p style="margin:0.3rem 0 0">מימין לשמאל, בקצב מסוים. השיטה המקורית של EMDR.</p>
       </div>
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up" data-aos-delay="50">
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem" data-delay="1">
         <strong style="color:var(--color-gold)">✋ נגיעות לסירוגין (Tapping)</strong>
         <p style="margin:0.3rem 0 0">דפיקות עדינות בידיים או בכתפיים — לסירוגין צד ימין/שמאל.</p>
       </div>
-      <div class="card" style="padding:1.5rem;margin-bottom:1rem" data-aos="fade-up" data-aos-delay="100">
+      <div class="card reveal reveal-up" style="padding:1.5rem;margin-bottom:1rem" data-delay="1">
         <strong style="color:var(--color-gold)">🎧 צלילים</strong>
         <p style="margin:0.3rem 0 0">צלילים לסירוגין באוזניות — אוזן ימין, אוזן שמאל. שיטה נוחה לפגישות אונליין.</p>
       </div>
 
-      <h2 style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">מודל המשאבים הדו-צדדי</h2>
-      <p data-aos="fade-up">בקליניקת ארגמן אני משתמש במודל מתקדם הנקרא <strong>"מודל המשאבים הדו-צדדי"</strong> — שלא רק מעבד את הטראומה, אלא בעיקר <strong>מחזק משאבים פנימיים חיוביים</strong>:</p>
-      <ul style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0" data-aos="fade-up">
+      <h2 class="reveal reveal-up" style="color:var(--color-primary);margin-top:2.5rem">מודל המשאבים הדו-צדדי</h2>
+      <p class="reveal reveal-up">בקליניקת ארגמן אני משתמש במודל מתקדם הנקרא <strong>"מודל המשאבים הדו-צדדי"</strong> — שלא רק מעבד את הטראומה, אלא בעיקר <strong>מחזק משאבים פנימיים חיוביים</strong>:</p>
+      <ul class="reveal reveal-up" style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0">
         <li>✓ <strong>ביטחון:</strong> זיכרון של רגע שהרגשתם בטוחים — מחוזק דרך הסטימולציה</li>
         <li>✓ <strong>חוסן:</strong> חוויות שבהן התמודדתם בהצלחה — מתבססות עמוק יותר</li>
         <li>✓ <strong>תמיכה:</strong> חוויות של אדם שתמך בכם — נשמרות כמשאב פנימי</li>
         <li>✓ <strong>שלווה:</strong> רגעי רוגע ובטיחות — מאוחסנים נגישים יותר</li>
       </ul>
 
-      <h2 style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">למי השיטה מתאימה?</h2>
-      <p data-aos="fade-up">עיבוד בילטרלי יעיל במיוחד עבור:</p>
-      <ul style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0" data-aos="fade-up">
+      <h2 class="reveal reveal-up" style="color:var(--color-primary);margin-top:2.5rem">למי השיטה מתאימה?</h2>
+      <p class="reveal reveal-up">עיבוד בילטרלי יעיל במיוחד עבור:</p>
+      <ul class="reveal reveal-up" style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0">
         <li>✓ פוסט טראומה (<a href="glossary.html#ptsd" title="PTSD — למילון">PTSD</a>)</li>
         <li>✓ חרדות שונות (כללית, חברתית, פוביות)</li>
         <li>✓ זיכרונות שליליים עם עוצמה רגשית</li>
@@ -105,28 +108,28 @@
         <li>✓ דיכאון על רקע אירועים</li>
       </ul>
 
-      <h2 style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">מה המחקר אומר?</h2>
-      <p data-aos="fade-up">EMDR (השיטה ההיסטורית של עיבוד בילטרלי) הוכר ע״י <strong>WHO</strong>, <strong>APA</strong> (האיגוד האמריקאי לפסיכולוגיה), ומשרד הבריאות הישראלי כטיפול יעיל לפוסט-טראומה.</p>
-      <ul style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0" data-aos="fade-up">
+      <h2 class="reveal reveal-up" style="color:var(--color-primary);margin-top:2.5rem">מה המחקר אומר?</h2>
+      <p class="reveal reveal-up">EMDR (השיטה ההיסטורית של עיבוד בילטרלי) הוכר ע״י <strong>WHO</strong>, <strong>APA</strong> (האיגוד האמריקאי לפסיכולוגיה), ומשרד הבריאות הישראלי כטיפול יעיל לפוסט-טראומה.</p>
+      <ul class="reveal reveal-up" style="display:flex;flex-direction:column;gap:0.5rem;margin:1rem 0">
         <li>📊 80-90% מהמטופלים חווים הקלה משמעותית תוך 6-12 פגישות</li>
         <li>📊 מחקרים מ-30+ שנים מאששים את היעילות</li>
         <li>📊 מיועד גם לילדים, מתבגרים ומבוגרים</li>
         <li>📊 עובד טוב גם בפגישות אונליין</li>
       </ul>
 
-      <h2 style="color:var(--color-primary);margin-top:2.5rem" data-aos="fade-up">שאלות נפוצות</h2>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">האם זה בטוח?</summary><p style="margin-top:0.75rem">כן. עיבוד בילטרלי הוא תהליך בטוח כשמתבצע ע״י מטפל מוסמך. במהלך הפגישה לומדים גם טכניקות ויסות לכל מקרה שמרגישים הצפה.</p></details>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">כמה פגישות נדרשות?</summary><p style="margin-top:0.75rem">תלוי בעומק הקושי. לחרדה ספציפית — 4-8 פגישות. לטראומה ספציפית — 8-12. לטראומה מורכבת — 12-20.</p></details>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">האם עובד גם אונליין?</summary><p style="margin-top:0.75rem">כן. ניתן להשתמש בצלילים (אוזניות), בתנועות עיניים מודרכות במסך, או במשתמש מבצע tapping על עצמו לפי הנחיותיי.</p></details>
-      <details class="card" style="padding:1.25rem;margin-bottom:0.75rem" data-aos="fade-up"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">מה ההבדל מ-<a href="glossary.html#flash" title="FLASH — למילון">FLASH</a> Technique?</summary><p style="margin-top:0.75rem">בעיבוד בילטרלי קלאסי — חוזרים בהדרגה לזיכרון הטראומטי. ב-FLASH — לא חוזרים אליו כלל. אני משתמש בשתי השיטות בהתאם למצב.</p></details>
+      <h2 class="reveal reveal-up" style="color:var(--color-primary);margin-top:2.5rem">שאלות נפוצות</h2>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">האם זה בטוח?</summary><p style="margin-top:0.75rem">כן. עיבוד בילטרלי הוא תהליך בטוח כשמתבצע ע״י מטפל מוסמך. במהלך הפגישה לומדים גם טכניקות ויסות לכל מקרה שמרגישים הצפה.</p></details>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">כמה פגישות נדרשות?</summary><p style="margin-top:0.75rem">תלוי בעומק הקושי. לחרדה ספציפית — 4-8 פגישות. לטראומה ספציפית — 8-12. לטראומה מורכבת — 12-20.</p></details>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">האם עובד גם אונליין?</summary><p style="margin-top:0.75rem">כן. ניתן להשתמש בצלילים (אוזניות), בתנועות עיניים מודרכות במסך, או במשתמש מבצע tapping על עצמו לפי הנחיותיי.</p></details>
+      <details class="card reveal reveal-up" style="padding:1.25rem;margin-bottom:0.75rem"><summary style="font-weight:700;color:var(--color-primary);cursor:pointer">מה ההבדל מ-<a href="glossary.html#flash" title="FLASH — למילון">FLASH</a> Technique?</summary><p style="margin-top:0.75rem">בעיבוד בילטרלי קלאסי — חוזרים בהדרגה לזיכרון הטראומטי. ב-FLASH — לא חוזרים אליו כלל. אני משתמש בשתי השיטות בהתאם למצב.</p></details>
 
-      <div style="background:linear-gradient(135deg,var(--color-primary),#2a5298);color:white;padding:2.5rem;border-radius:16px;text-align:center;margin-top:3rem" data-aos="fade-up">
+      <div class="reveal reveal-up" style="background:linear-gradient(135deg,var(--color-primary),#2a5298);color:white;padding:2.5rem;border-radius:16px;text-align:center;margin-top:3rem">
         <h3 style="color:white">רוצים לנסות?</h3>
         <p style="color:rgba(255,255,255,0.85);margin:0.75rem 0 1.5rem">פגישת היכרות ראשונה — חינמית, ללא התחייבות.</p>
-        <a href="https://wa.me/972506415222?text=שלום, מעוניין/ת בעיבוד בילטרלי" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה</a>
+        <a href="https://wa.me/972506415222?text=שלום, מעוניין/ת בעיבוד בילטרלי" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שלחו הודעה</a>
       </div>
 
-      <div style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border)" data-aos="fade-up">
+      <div class="reveal reveal-up" style="margin-top:3rem;padding-top:2rem;border-top:1px solid var(--color-border)">
         <strong style="color:var(--color-primary);display:block;margin-bottom:0.75rem">📖 מאמרים קשורים:</strong>
         <div style="display:flex;flex-wrap:wrap;gap:0.75rem">
           <a href="flash-technique.html" class="cred-badge" style="text-decoration:none">⚡ FLASH Technique</a>
@@ -169,11 +172,14 @@
         <a href="accessibility.html">הצהרת נגישות</a></div></div></div>
 </footer>
 
-<a href="https://wa.me/972506415222" class="whatsapp-fab" aria-label="שלחו הודעה בוואטסאפ" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script><script src="script.js"></script><script src="consent.js"></script>
+<a href="https://wa.me/972506415222" class="whatsapp-fab" aria-label="שלחו הודעה בוואטסאפ" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a><script src="script.js"></script><script src="consent.js"></script>
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body></html>

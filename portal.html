@@ -9,7 +9,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Heebo,Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     body{font-family:'Heebo',Arial,sans-serif;background:linear-gradient(135deg,#f9fafb,#eff4ff);color:#1f2937;line-height:1.6;min-height:100vh}
@@ -48,10 +48,17 @@
     }
     .print-btn{background:#fff;border:2px solid #1B3A6B;color:#1B3A6B;padding:.5rem 1rem;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;margin-right:.5rem}
   </style>
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
 </head>
 <body>
 
-<div class="wrap">
+<a href="#main-content" class="skip-link">דלגו לתוכן הראשי</a>
+
+<main class="wrap" id="main-content">
 
   <div id="content">
     <div class="error-box">
@@ -60,7 +67,7 @@
     </div>
   </div>
 
-</div>
+</main>
 
 <footer>
   קליניקת ארגמן · גל ממן · בית שמש · <a href="https://argamanclinic.com" style="color:#1B3A6B">argamanclinic.com</a>
@@ -122,7 +129,7 @@
       document.getElementById('content').innerHTML = `<div class="error-box">
         <h2>⚠️ קישור לא תקין</h2>
         <p>לא ניתן לטעון את הנתונים. צרו קשר עם גל לקבלת קישור חדש.</p>
-        <p style="margin-top:1rem"><a href="https://wa.me/972506415222" style="background:#25D366;color:#fff;padding:.6rem 1.5rem;border-radius:50px;text-decoration:none;font-weight:600">📱 פנו לגל בוואטסאפ</a></p>
+        <p style="margin-top:1rem"><a href="https://wa.me/972506415222" style="background:#25D366;color:#fff;padding:.6rem 1.5rem;border-radius:50px;text-decoration:none;font-weight:600"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> פנו לגל בוואטסאפ</a></p>
       </div>`;
       return;
     }
@@ -160,7 +167,7 @@
               <div class="session-time">${fmtDate(s.date)}</div>
               <small style="color:#6b7280">${fmtTime(s.time)} · ${esc(s.location||'בקליניקה')}</small>
             </div>
-            <a href="https://wa.me/972506415222?text=${encodeURIComponent('שלום, רציתי לדבר על הפגישה ב-' + s.date)}" target="_blank" rel="noopener" style="background:#25D366;color:#fff;padding:.4rem .9rem;border-radius:50px;text-decoration:none;font-size:.85rem">📱 שאלה</a>
+            <a href="https://wa.me/972506415222?text=${encodeURIComponent('שלום, רציתי לדבר על הפגישה ב-' + s.date)}" target="_blank" rel="noopener" style="background:#25D366;color:#fff;padding:.4rem .9rem;border-radius:50px;text-decoration:none;font-size:.85rem"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שאלה</a>
           </li>`).join('')}
         </ul>
       </div>`;
@@ -236,7 +243,7 @@
     html += `<div class="cta-section">
       <h3>צריך משהו?</h3>
       <p style="opacity:.85">אני זמין דרך וואטסאפ לשאלות מהירות, ביטולים או תיאומים.</p>
-      <a href="https://wa.me/972506415222?text=${encodeURIComponent('שלום גל, מ' + (b.firstName||b.name||''))}" target="_blank" rel="noopener" class="cta-btn wa-btn">📱 שיחה עם גל</a>
+      <a href="https://wa.me/972506415222?text=${encodeURIComponent('שלום גל, מ' + (b.firstName||b.name||''))}" target="_blank" rel="noopener" class="cta-btn wa-btn"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שיחה עם גל</a>
     </div>
 
     <div style="text-align:center;margin-top:1rem;padding:1rem">
@@ -250,5 +257,9 @@
 })();
 </script>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

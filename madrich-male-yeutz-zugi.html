@@ -29,8 +29,7 @@
   <meta name="theme-color" content="#1B3A6B">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/heebo/v26/NGSpv5_NC0k9P_v6ZUCbLRAHxK1EiSysd1WQ.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -64,6 +63,11 @@
     ]
   }
   </script>
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
   <style>
     .pillar-toc{background:#f9fafb;border-right:4px solid #C9A84C;padding:1.5rem;border-radius:0 12px 12px 0;margin:2rem 0}
@@ -84,7 +88,7 @@
 <header class="navbar" role="banner">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo" aria-label="קליניקת ארגמן — לדף הבית">
-      <img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async">
+      <picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture>
       <div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div>
     </a>
     <nav class="nav-links" aria-label="ניווט ראשי">
@@ -95,7 +99,7 @@
       <a href="blog.html">מאמרים</a>
       <a href="faq.html">שאלות נפוצות</a>
       <a href="contact.html">צור קשר</a>
-      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer">📱 וואטסאפ</a>
+      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
     </nav>
     <button class="hamburger" aria-label="פתח תפריט"><span></span><span></span><span></span></button>
   </div>
@@ -479,7 +483,7 @@
   <hr style="margin:3rem 0;border:0;border-top:2px solid #C9A84C">
 
   <div style="background:#f9fafb;padding:1.5rem;border-radius:12px;display:flex;gap:1rem;align-items:start">
-    <img src="gal.webp" onerror="this.onerror=null;this.src='gal.jpg'" alt="גל ממן" style="width:80px;height:80px;border-radius:50%;object-fit:cover" loading="lazy" width="80" height="80" decoding="async">
+    <picture><source srcset="gal.avif" type="image/avif"><source srcset="gal.webp" type="image/webp"><img src="gal.jpg" alt="גל ממן" style="width:80px;height:80px;border-radius:50%;object-fit:cover" loading="lazy" width="80" height="80" decoding="async"></picture>
     <div>
       <strong style="color:#1B3A6B">גל ממן — מחבר המדריך</strong>
       <p style="margin:.25rem 0 .5rem;color:#6b7280;font-size:.9rem">יועץ זוגי, מיני, משפחתי ואישי · 10 שנות ניסיון · 13 הסמכות (Gottman, EFT, IFS, EMDR, FLASH) · מנהל קליניקת ארגמן בבית שמש</p>
@@ -501,7 +505,7 @@
   <section style="background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;padding:2.5rem 1.5rem;border-radius:16px;margin:3rem 0 1rem;text-align:center">
     <h2 style="color:#fff;margin-top:0">מוכנים להתחיל?</h2>
     <p style="opacity:.95;margin-bottom:1.5rem;font-size:1.05rem">שיחת היכרות חינמית של 15-20 דקות. ללא התחייבות.</p>
-    <a href="https://wa.me/972506415222?text=שלום, קראתי את המדריך המלא ומעוניין/ת בייעוץ" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#C9A84C;color:#1B3A6B;padding:.9rem 2.5rem;border-radius:50px;font-weight:700;text-decoration:none;font-size:1.05rem">📱 שיחה עם גל</a>
+    <a href="https://wa.me/972506415222?text=שלום, קראתי את המדריך המלא ומעוניין/ת בייעוץ" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#C9A84C;color:#1B3A6B;padding:.9rem 2.5rem;border-radius:50px;font-weight:700;text-decoration:none;font-size:1.05rem"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שיחה עם גל</a>
     <p style="margin-top:1rem;opacity:.85;font-size:.85rem">או חייגו: <a href="tel:0506415222" style="color:#fff;text-decoration:underline">050-641-5222</a></p>
   </section>
 
@@ -515,11 +519,15 @@
 </footer>
 
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
 
 <script src="script.js"></script>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

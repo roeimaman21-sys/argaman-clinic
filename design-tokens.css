@@ -1,0 +1,384 @@
+/* =====================================================
+   design-tokens.css — Single source of truth (A1)
+   Argaman Clinic — Premium UI Token System
+   ---------------------------------------------------
+   Hierarchy: this loads BEFORE style.css / admin.css
+   Both consume these tokens. Existing variable names
+   (--color-primary, --navy, --gold) are preserved as
+   aliases — nothing breaks.
+   ===================================================== */
+
+/* ----- Cascade layers (define order; consumers opt into "components") ----- */
+@layer reset, tokens, base, layout, components, utilities, overrides;
+
+@layer tokens {
+  :root {
+    /* ─────────────────────────────────────────────
+       COLOR · Primary brand
+       LCH used for perceptual uniformity; sRGB hex
+       fallback ensures identical visual output on
+       browsers that don't yet support lch().
+       ───────────────────────────────────────────── */
+
+    /* Navy scale (#1B3A6B is the anchor at 500) */
+    --navy-50:  #EEF2F8;
+    --navy-100: #D4DEEB;
+    --navy-200: #A8BDD7;
+    --navy-300: #7C9CC3;
+    --navy-400: #4F7BAF;
+    --navy-500: #1B3A6B; /* primary anchor */
+    --navy-600: #163059;
+    --navy-700: #112647;
+    --navy-800: #0F2347; /* footer-dark */
+    --navy-900: #08152B;
+
+    /* Gold scale (#C9A84C is the anchor at 500) */
+    --gold-50:  #FAF6E9;
+    --gold-100: #F2E9C3;
+    --gold-200: #E6D389;
+    --gold-300: #D8BC5E;
+    --gold-400: #CFB154;
+    --gold-500: #C9A84C; /* primary anchor */
+    --gold-600: #B89438;
+    --gold-700: #A8882E;
+    --gold-800: #8A6F22;
+    --gold-900: #5E4B16;
+
+    /* Semantic colors */
+    --red-50:   #FEF2F2;
+    --red-100:  #FEE2E2;
+    --red-500:  #DC2626;
+    --red-700:  #B91C1C;
+    --green-50: #F0FDF4;
+    --green-100:#DCFCE7;
+    --green-500:#16A34A;
+    --green-700:#15803D;
+    --orange-50:#FFF7ED;
+    --orange-100:#FED7AA;
+    --orange-500:#EA580C;
+    --orange-700:#C2410C;
+    --blue-50:  #EFF6FF;
+    --blue-100: #DBEAFE;
+    --blue-500: #0284C7;
+    --blue-700: #0369A1;
+    --purple-50:#FAF5FF;
+    --purple-100:#F3E8FF;
+    --purple-500:#7E22CE;
+    --purple-700:#6B21A8;
+
+    /* Neutral scale */
+    --gray-50:  #F9FAFB;
+    --gray-100: #F3F4F6;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-400: #9CA3AF;
+    --gray-500: #6B7280;
+    --gray-600: #4B5563;
+    --gray-700: #374151;
+    --gray-800: #1F2937;
+    --gray-900: #111827;
+    --white:    #FFFFFF;
+    --black:    #000000;
+
+    /* ─────────────────────────────────────────────
+       SEMANTIC tokens (use these in components)
+       ───────────────────────────────────────────── */
+    --color-bg:           #F8F8F8;
+    --color-surface:      var(--white);
+    --color-surface-alt:  var(--gray-50);
+    --color-text:         #1A1A1A;
+    --color-text-muted:   #555555;
+    --color-text-inverse: var(--white);
+    --color-border:       #E0E0E0;
+    --color-border-strong:var(--gray-300);
+    --color-success:      var(--green-500);
+    --color-warning:      var(--orange-500);
+    --color-danger:       var(--red-500);
+    --color-info:         var(--blue-500);
+    --color-focus:        var(--gold-500);
+    --color-selection-bg: #F2E5BA;
+    --color-selection-fg: var(--navy-900);
+    --color-wa:           #25D366;
+
+    /* Gold, but safe as small text on white/light backgrounds.
+       gold-500 only reaches ~2.3:1 on white (fails WCAG AA);
+       gold-800 reaches ~4.8:1 (passes AA). Use gold-500 for
+       backgrounds, borders, icons, and text on dark surfaces —
+       use this token only where gold is the TEXT color on a
+       light surface. */
+    --color-gold-text:    var(--gold-800);
+
+    /* ─────────────────────────────────────────────
+       BACKWARD-COMPAT aliases — DO NOT REMOVE
+       (existing style.css + admin.css depend on these)
+       ───────────────────────────────────────────── */
+    --color-primary:    var(--navy-500);
+    --color-gold:       var(--gold-500);
+    --color-white:      var(--white);
+    --color-bg-light:   #F8F8F8;
+    --color-footer:     var(--navy-800);
+    --color-error:      #C0392B;
+
+    --navy:      var(--navy-500);
+    --navy-mid:  #243F72;
+    --gold:      var(--gold-500);
+    --red:       var(--red-500);
+    --red-light: var(--red-100);
+    --green:     var(--green-500);
+    --green-light:var(--green-100);
+    --orange:    var(--orange-500);
+    --orange-light:var(--orange-100);
+    --blue:      var(--blue-500);
+    --blue-light:var(--blue-100);
+    --purple:    var(--purple-500);
+    --purple-light:var(--purple-100);
+
+    --bg:     #F5F7FB;
+    --text:   #1A1A2E;
+    --muted:  var(--gray-500);
+    --border: var(--gray-200);
+
+    /* ─────────────────────────────────────────────
+       TYPOGRAPHY — Fluid scale (clamp-based)
+       Each step honours the visual rhythm and
+       remains readable at 320px viewport width.
+       ───────────────────────────────────────────── */
+    --font-family: 'Heebo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-mono:   'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+    --fw-regular:   400;
+    --fw-medium:    500;
+    --fw-semibold:  600;
+    --fw-bold:      700;
+    --fw-extrabold: 800;
+    --fw-black:     900;
+
+    --text-2xs:    clamp(0.70rem, 0.65rem + 0.20vw, 0.75rem);
+    --text-xs:     clamp(0.75rem, 0.70rem + 0.20vw, 0.825rem);
+    --text-sm:     clamp(0.875rem, 0.85rem + 0.20vw, 0.95rem);
+    --text-base:   clamp(1.00rem, 0.95rem + 0.25vw, 1.05rem);
+    --text-lg:     clamp(1.10rem, 1.00rem + 0.50vw, 1.25rem);
+    --text-xl:     clamp(1.25rem, 1.10rem + 0.80vw, 1.50rem);
+    --text-2xl:    clamp(1.50rem, 1.30rem + 1.00vw, 1.80rem);
+    --text-3xl:    clamp(1.80rem, 1.50rem + 1.50vw, 2.40rem);
+    --text-4xl:    clamp(2.20rem, 1.80rem + 2.00vw, 3.00rem);
+    --text-5xl:    clamp(2.80rem, 2.20rem + 3.00vw, 4.00rem);
+    --text-display:clamp(3.50rem, 2.50rem + 4.00vw, 5.50rem);
+
+    --leading-tight:   1.15;
+    --leading-snug:    1.30;
+    --leading-normal:  1.50;
+    --leading-relaxed: 1.70;
+    --leading-loose:   1.90;
+
+    --tracking-tighter: -0.02em;
+    --tracking-tight:   -0.01em;
+    --tracking-normal:  0;
+    --tracking-wide:    0.025em;
+    --tracking-wider:   0.05em;
+    --tracking-widest:  0.10em;
+
+    /* ─────────────────────────────────────────────
+       SPACING — 4px base, 16 steps
+       Generous enough for hero, tight enough for chips
+       ───────────────────────────────────────────── */
+    --space-0:   0;
+    --space-1:   0.25rem;  /* 4px  */
+    --space-2:   0.50rem;  /* 8px  */
+    --space-3:   0.75rem;  /* 12px */
+    --space-4:   1.00rem;  /* 16px */
+    --space-5:   1.25rem;  /* 20px */
+    --space-6:   1.50rem;  /* 24px */
+    --space-8:   2.00rem;  /* 32px */
+    --space-10:  2.50rem;  /* 40px */
+    --space-12:  3.00rem;  /* 48px */
+    --space-16:  4.00rem;  /* 64px */
+    --space-20:  5.00rem;  /* 80px */
+    --space-24:  6.00rem;  /* 96px */
+    --space-32:  8.00rem;  /* 128px */
+    --space-48: 12.00rem;  /* 192px */
+    --space-64: 16.00rem;  /* 256px */
+
+    /* ─────────────────────────────────────────────
+       RADIUS — soft to circular
+       ───────────────────────────────────────────── */
+    --radius-none: 0;
+    --radius-sm:    6px;
+    --radius:       8px;
+    --radius-md:   12px;
+    --radius-lg:   16px;
+    --radius-xl:   24px;
+    --radius-2xl:  32px;
+    --radius-full: 9999px;
+
+    /* Aliases for current usage */
+    --r:    10px;        /* admin.css legacy */
+    --r-sm: var(--radius-sm);
+    --r-lg: 14px;        /* admin.css legacy */
+
+    /* ─────────────────────────────────────────────
+       SHADOW — Navy-tinted elevation (premium feel)
+       ───────────────────────────────────────────── */
+    --shadow-xs:  0 1px 2px rgba(15, 35, 71, 0.04);
+    --shadow-sm:  0 1px 3px rgba(15, 35, 71, 0.06), 0 1px 2px rgba(15, 35, 71, 0.04);
+    --shadow-md:  0 4px 12px rgba(15, 35, 71, 0.08), 0 2px 4px rgba(15, 35, 71, 0.04);
+    --shadow-lg:  0 12px 28px rgba(15, 35, 71, 0.12), 0 4px 8px rgba(15, 35, 71, 0.06);
+    --shadow-xl:  0 24px 48px rgba(15, 35, 71, 0.16), 0 8px 16px rgba(15, 35, 71, 0.08);
+    --shadow-2xl: 0 36px 72px rgba(15, 35, 71, 0.20), 0 12px 24px rgba(15, 35, 71, 0.10);
+    --shadow-inner:inset 0 2px 4px rgba(15, 35, 71, 0.06);
+    --shadow-gold-glow: 0 0 0 4px rgba(201, 168, 76, 0.18);
+
+    /* Aliases */
+    --sh-sm: var(--shadow-xs);
+    --sh:    var(--shadow-sm);
+    --sh-md: var(--shadow-md);
+    --sh-lg: var(--shadow-lg);
+
+    /* ─────────────────────────────────────────────
+       Z-INDEX — 9-layer scale
+       ───────────────────────────────────────────── */
+    --z-base:      0;
+    --z-dropdown:  1000;
+    --z-sticky:    1100;
+    --z-navbar:    1200;
+    --z-overlay:   1300;
+    --z-modal:     1400;
+    --z-popover:   1500;
+    --z-toast:     1600;
+    --z-tooltip:   1700;
+    --z-cookie:    1800;
+
+    /* ─────────────────────────────────────────────
+       MOTION — 5 durations × 6 easings
+       ───────────────────────────────────────────── */
+    --motion-instant: 0ms;
+    --motion-fast:    150ms;
+    --motion:         250ms;
+    --motion-medium:  350ms;
+    --motion-slow:    500ms;
+    --motion-slower:  700ms;
+
+    --ease-linear:     linear;
+    --ease-in:         cubic-bezier(0.4, 0, 1, 1);
+    --ease-out:        cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);    /* Material 3 */
+    --ease-bounce:     cubic-bezier(0.5, 1.5, 0.5, 1);
+    --ease-spring:     cubic-bezier(0.5, 1.4, 0.5, 1);
+
+    /* Aliases for current usage */
+    --transition: 0.28s ease;
+    --tx: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ─────────────────────────────────────────────
+       LAYOUT
+       ───────────────────────────────────────────── */
+    --container-max:  1200px;
+    --container-pad:  1.25rem;
+    --content-narrow: 65ch;
+    --content-wide:   85ch;
+    --nav-height:     70px;
+    --footer-height:  auto;
+
+    /* ─────────────────────────────────────────────
+       BREAKPOINTS (em-based for zoom-friendliness)
+       Use in @media or container queries
+       ───────────────────────────────────────────── */
+    --bp-sm:  30em;   /* 480px */
+    --bp-md:  48em;   /* 768px */
+    --bp-lg:  64em;   /* 1024px */
+    --bp-xl:  80em;   /* 1280px */
+    --bp-2xl: 96em;   /* 1536px */
+
+    /* ─────────────────────────────────────────────
+       FOCUS RING (mouse vs keyboard handled in base)
+       ───────────────────────────────────────────── */
+    --focus-ring-color:  var(--gold-500);
+    --focus-ring-width:  3px;
+    --focus-ring-offset: 2px;
+  }
+
+  /* ─────────────────────────────────────────────
+     PERCEPTUAL LCH SCALE — opt-in via these
+     dedicated tokens (e.g. var(--navy-perceptual-500)).
+     The standard --navy-* / --gold-* scales above
+     remain pixel-identical to the legacy hex anchors
+     so existing CSS renders without any shift.
+     ───────────────────────────────────────────── */
+  @supports (color: lch(50% 50 250)) {
+    :root {
+      --navy-perceptual-50:  lch(96% 4 250);
+      --navy-perceptual-100: lch(89% 10 250);
+      --navy-perceptual-200: lch(78% 18 250);
+      --navy-perceptual-300: lch(64% 26 250);
+      --navy-perceptual-400: lch(46% 34 250);
+      --navy-perceptual-500: lch(28% 32 250);
+      --navy-perceptual-600: lch(23% 30 250);
+      --navy-perceptual-700: lch(19% 28 250);
+      --navy-perceptual-800: lch(15% 26 250);
+      --navy-perceptual-900: lch(10% 18 250);
+
+      --gold-perceptual-50:  lch(96% 8 85);
+      --gold-perceptual-100: lch(91% 24 85);
+      --gold-perceptual-200: lch(85% 42 85);
+      --gold-perceptual-300: lch(78% 52 85);
+      --gold-perceptual-400: lch(74% 56 85);
+      --gold-perceptual-500: lch(70% 55 85);
+      --gold-perceptual-600: lch(62% 52 80);
+      --gold-perceptual-700: lch(54% 48 75);
+      --gold-perceptual-800: lch(42% 38 70);
+      --gold-perceptual-900: lch(28% 24 65);
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────
+   GLOBAL EDGE POLISH (A20 preview)
+   These apply site-wide — both public + CRM.
+   ───────────────────────────────────────────── */
+@layer base {
+  /* Branded selection */
+  ::selection {
+    background: var(--color-selection-bg);
+    color: var(--color-selection-fg);
+  }
+  ::-moz-selection {
+    background: var(--color-selection-bg);
+    color: var(--color-selection-fg);
+  }
+
+  /* Branded scrollbar — subtle navy/gold accent */
+  @media (pointer: fine) {
+    *::-webkit-scrollbar          { width: 12px; height: 12px; }
+    *::-webkit-scrollbar-track    { background: var(--navy-50); }
+    *::-webkit-scrollbar-thumb    {
+      background: var(--gray-300);
+      border-radius: 6px;
+      border: 3px solid var(--navy-50);
+    }
+    *::-webkit-scrollbar-thumb:hover { background: var(--gold-500); }
+    * { scrollbar-color: var(--gray-300) var(--navy-50); scrollbar-width: thin; }
+  }
+
+  /* Focus rings — keyboard-only visible */
+  :focus { outline: 2px solid transparent; }
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+    border-radius: var(--radius);
+  }
+
+  /* Smooth scroll with sticky-header offset */
+  html { scroll-padding-top: calc(var(--nav-height) + 12px); }
+  :target { scroll-margin-top: calc(var(--nav-height) + 12px); }
+
+  /* Reduced motion — globally honored */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}

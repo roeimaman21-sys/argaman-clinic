@@ -32,9 +32,12 @@
   <link rel="dns-prefetch" href="https://www.google-analytics.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha384-/rJKQnzOkEo+daG0jMjU1IwwY9unxt1NBw3Ef2fmOJ3PW/TfAg2KXVoWwMZQZtw9" crossorigin="anonymous"><noscript>
-</noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
 
   <script type="application/ld+json">
@@ -114,7 +117,7 @@
 <header class="navbar" role="banner">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo" aria-label="קליניקת ארגמן — לדף הבית">
-      <img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async">
+      <picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture>
       <div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div>
     </a>
     <nav class="nav-links" aria-label="ניווט ראשי">
@@ -128,7 +131,7 @@
       <a href="tips.html" class="active">טיפים</a>
       <a href="faq.html">שאלות נפוצות</a>
       <a href="contact.html">צור קשר</a>
-      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer" aria-label="שלחו הודעה בוואטסאפ">📱 וואטסאפ</a>
+      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer" aria-label="שלחו הודעה בוואטסאפ"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
     </nav>
     <button class="hamburger" aria-label="פתח תפריט" aria-expanded="false" aria-controls="mobile-drawer">
       <span></span><span></span><span></span>
@@ -140,7 +143,7 @@
 <nav class="mobile-drawer" id="mobile-drawer" aria-label="תפריט ניידים">
   <div class="drawer-header">
     <span class="nav-logo-text" style="font-size:1.1rem">קליניקת ארגמן</span>
-    <button class="drawer-close" aria-label="סגור תפריט">✕</button>
+    <button class="drawer-close" aria-label="סגור תפריט"><svg class="icon-inline" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
   </div>
   <div class="drawer-links">
     <a href="index.html">🏠 ראשי</a>
@@ -155,7 +158,7 @@
     <a href="contact.html">✉ צור קשר</a>
   </div>
   <div class="drawer-wa">
-    <a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer">📱 שלחו הודעה בוואטסאפ</a>
+    <a href="https://wa.me/972506415222" class="btn btn-wa" style="width:100%;justify-content:center" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שלחו הודעה בוואטסאפ</a>
   </div>
 </nav>
 
@@ -164,7 +167,7 @@
 <!-- HERO -->
 <section class="page-hero" style="background: linear-gradient(135deg, #0a1f3c 0%, #1a3a6b 40%, #2d5f5f 100%);">
   <div class="container">
-    <div class="page-hero-content" data-aos="fade-up">
+    <div class="page-hero-content reveal reveal-up">
       <div class="section-tag">💡 עזרה ראשונה עצמית</div>
       <h1>טיפים מעשיים לזוגיות ולנפש</h1>
       <p class="hero-sub">כלים שתוכלו ליישם עוד היום — לזוגיות במשבר, לפרידה, למשבר אמון ולתקשורת בריאה. אלה לא תחליף לליווי מקצועי, אבל יכולים לעזור לכם לעבור את הרגע.</p>
@@ -188,44 +191,44 @@
 <!-- ===== SECTION 1: זוגיות במשבר ===== -->
 <section class="section" id="couples" style="background: var(--color-bg-light);">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag">💔 זוגיות במשבר</div>
       <h2>כשהאהבה מרגישה רחוקה</h2>
       <p class="section-sub">משבר זוגי הוא לא אות לסוף — לעיתים הוא הזמנה לחידוש עמוק יותר. הנה כלים שיכולים לעזור עכשיו.</p>
     </div>
     <div class="grid grid-3" style="margin-top:2.5rem; gap:1.5rem;">
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card reveal reveal-up">
         <div class="tip-number">01</div>
         <h3>הפרידו בין כעס לסיום</h3>
         <p>כשאתם כועסים, המוח מרגיש שהכל גמור. הזכירו לעצמכם: "אני כועס/ת עכשיו — זה לא אומר שאני רוצה להיפרד." הכעס הוא גל, לא עובדה.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card reveal reveal-up" data-delay="1">
         <div class="tip-number">02</div>
         <h3>טיים-אאוט מוסכם — 20 דקות</h3>
         <p>כשהדיון מתלהט, הסכימו מראש על סימן עצירה. 20 דקות הרגעה — כל אחד לעצמו — לפני שחוזרים לשיחה. ברח מהחדר, לא מהקשר.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card reveal reveal-up" data-delay="2">
         <div class="tip-number">03</div>
         <h3>אל תחליטו בשיא המשבר</h3>
         <p>החלטות גורליות שמתקבלות בלחץ רגשי נוטות להיות מוטות. תנו לעצמכם לפחות 48 שעות לפני שמחליטים על כיוון שקשה לחזור ממנו.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card reveal reveal-up">
         <div class="tip-number">04</div>
         <h3>שמרו על שגרה משותפת אחת</h3>
         <p>ארוחה אחת ביום יחד, טיול קצר, כוס קפה. שגרה משותפת אחת ששומרים עליה גם בזמן המשבר — שומרת על קשר הלב גם כשהראש כועס.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card reveal reveal-up" data-delay="1">
         <div class="tip-number">05</div>
         <h3>כתבו 5 דברים שאתם מוקירים</h3>
         <p>כשהזוגיות כואבת, הנטייה היא לראות רק את הרע. שבו עם נייר ועט וכתבו 5 דברים — קטנים ככל שיהיו — שאתם מעריכים בבן/בת הזוג. הרשימה תפתיע אתכם.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card reveal reveal-up" data-delay="2">
         <div class="tip-number">06</div>
         <h3>דברו על עצמכם, לא עליהם</h3>
         <p>"אני מרגיש/ה פגוע/ה כשזה קורה" — במקום "אתה/את תמיד מתעלם/ת ממני." מסרי "אני" פותחים דלת; מסרי "אתה/את" מחסומים אותה.</p>
@@ -238,44 +241,44 @@
 <!-- ===== SECTION 2: פרידה ===== -->
 <section class="section" id="breakup" style="background: white;">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag">🕊 פרידה ואבל על הקשר</div>
       <h2>כשהקשר מסתיים — איך מתאוששים</h2>
       <p class="section-sub">פרידה היא אחת החוויות הכואבות ביותר שאדם יכול לעבור. האבל הוא לגיטימי — וגם ההחלמה אפשרית.</p>
     </div>
     <div class="grid grid-3" style="margin-top:2.5rem; gap:1.5rem;">
 
-      <div class="tip-card tip-card--dark" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card tip-card--dark reveal reveal-up">
         <div class="tip-number">01</div>
         <h3>הרשו לעצמכם לאבל</h3>
         <p>בכי הוא לא חולשה — הוא עיבוד. הגוף יודע לרפא כשנותנים לו. אמרו לעצמכם: "מותר לי לכאוב. הכאב הזה יעבור."</p>
       </div>
 
-      <div class="tip-card tip-card--dark" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card tip-card--dark reveal reveal-up" data-delay="1">
         <div class="tip-number">02</div>
         <h3>הגבילו מעקב ברשתות</h3>
         <p>כל פעם שאתם בודקים את הפרופיל שלו/שלה — אתם פותחים מחדש את הפצע. הגדירו לעצמכם כלל: לא יותר מפעם אחת ביום, ואחר כך בכלל לא.</p>
       </div>
 
-      <div class="tip-card tip-card--dark" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card tip-card--dark reveal reveal-up" data-delay="2">
         <div class="tip-number">03</div>
         <h3>כתבו מכתב שלא תשלחו</h3>
         <p>כתבו לבן/בת הזוג לשעבר כל מה שאתם מרגישים — ואל תשלחו. הכתיבה עצמה משחררת רגשות שתקועים בפנים. אפשר גם לשרוף בסוף.</p>
       </div>
 
-      <div class="tip-card tip-card--dark" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card tip-card--dark reveal reveal-up">
         <div class="tip-number">04</div>
         <h3>חפשו את המתנה</h3>
         <p>כל קשר — גם הכואב — משאיר משהו. מה למדתם על עצמכם? מה תעשו אחרת בקשר הבא? הפיכת כאב לתובנה היא אחד הכלים החזקים ביותר שיש.</p>
       </div>
 
-      <div class="tip-card tip-card--dark" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card tip-card--dark reveal reveal-up" data-delay="1">
         <div class="tip-number">05</div>
         <h3>אל תתבודדו</h3>
         <p>הנטייה הטבעית בפרידה היא להסתגר. אבל בידוד מאריך את הכאב. צרו קשר עם חבר אחד, בן משפחה אחד — ותנו להם להיות שם בשבילכם.</p>
       </div>
 
-      <div class="tip-card tip-card--dark" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card tip-card--dark reveal reveal-up" data-delay="2">
         <div class="tip-number">06</div>
         <h3>חזרו לעצמכם</h3>
         <p>מה אהבתם לעשות לפני הקשר? ספורט, יצירה, מוזיקה, נסיעות? זה הזמן לחזור לזה. פרידה היא גם הזדמנות לפגוש מחדש את מי שאתם.</p>
@@ -288,7 +291,7 @@
 <!-- ===== SECTION 3: משבר אמון ===== -->
 <section class="section" id="trust" style="background: var(--color-bg-light);">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag">🔓 משבר אמון ובגידה</div>
       <h2>כשהאמון נשבר — אפשר לבנות מחדש?</h2>
       <p class="section-sub">בגידה היא אחת הפציעות הקשות ביותר בזוגיות. האמון ניתן לבנות מחדש — אבל זה דורש כוונה, עבודה וסבלנות משני הצדדים.</p>
@@ -296,17 +299,17 @@
     <div class="grid grid-2" style="margin-top:2.5rem; gap:2rem;">
 
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <div class="tip-card tip-card--accent" data-aos="fade-right" data-aos-delay="0">
+        <div class="tip-card tip-card--accent reveal reveal-right">
           <div class="tip-number">01</div>
           <h3>אל תחליטו מיידית על גורל הקשר</h3>
           <p>בשעות וימים הראשונים — הלם. ההחלטה על "להישאר או לעזוב" לא חייבת להתקבל עכשיו. תנו לרגשות להתייצב לפני שמחליטים.</p>
         </div>
-        <div class="tip-card tip-card--accent" data-aos="fade-right" data-aos-delay="80">
+        <div class="tip-card tip-card--accent reveal reveal-right" data-delay="1">
           <div class="tip-number">02</div>
           <h3>שאלו רק כשאתם מוכנים לשמוע</h3>
           <p>יש שאלות שאנחנו שואלים ורוצים לדעת — ויש שאנחנו שואלים ומקווים שהתשובה תכאב פחות. הבחינו בין השתיים לפני ששואלים.</p>
         </div>
-        <div class="tip-card tip-card--accent" data-aos="fade-right" data-aos-delay="160">
+        <div class="tip-card tip-card--accent reveal reveal-right" data-delay="2">
           <div class="tip-number">03</div>
           <h3>מחילה ≠ שכחה</h3>
           <p>אפשר למחול — ואפשר לזכור. מחילה אינה אומרת "מה שקרה לא קרה." היא אומרת "אני בוחר/ת לא לתת לזה לשלוט בחיי." זה תהליך, לא אירוע.</p>
@@ -314,17 +317,17 @@
       </div>
 
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <div class="tip-card tip-card--accent" data-aos="fade-left" data-aos-delay="0">
+        <div class="tip-card tip-card--accent reveal reveal-left">
           <div class="tip-number">04</div>
           <h3>למי שבגד: שקיפות מלאה</h3>
           <p>התגוננות, הסברים ו"אבל גם אתה/את..." הורסים כל סיכוי לאמון מחדש. שקיפות מוחלטת — טלפון, מיקום, שאלות — היא התנאי הבסיסי לריפוי.</p>
         </div>
-        <div class="tip-card tip-card--accent" data-aos="fade-left" data-aos-delay="80">
+        <div class="tip-card tip-card--accent reveal reveal-left" data-delay="1">
           <div class="tip-number">05</div>
           <h3>חפשו את "למה" — לא רק את "מה"</h3>
           <p>בגידה היא סימפטום, לא הסיבה. מה היה חסר? מה גרם לפריצת הגבולות? הבנת הסיבה — לא כהצדקה — חיונית כדי שזה לא יחזור.</p>
         </div>
-        <div class="tip-card tip-card--accent" data-aos="fade-left" data-aos-delay="160">
+        <div class="tip-card tip-card--accent reveal reveal-left" data-delay="2">
           <div class="tip-number">06</div>
           <h3>הסכמה על כללי שקיפות ברורים</h3>
           <p>אם אתם ממשיכים — הסכמו מפורשות: מה מותר, מה אסור, מה מצפים מכל אחד. כללים ברורים מחליפים את הניחושים שמגדילים את הפחד.</p>
@@ -338,14 +341,14 @@
 <!-- ===== SECTION 4: תקשורת ===== -->
 <section class="section" id="communication" style="background: white;">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag">💬 תקשורת בריאה</div>
       <h2>לדבר כך שהצד השני יוכל לשמוע</h2>
       <p class="section-sub">רוב הקריסות הזוגיות לא נובעות מחוסר אהבה — אלא מחוסר תקשורת. הנה חמישה עקרונות שמשנים הכל.</p>
     </div>
     <div class="grid grid-3" style="margin-top:2.5rem; gap:1.5rem;">
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card reveal reveal-up">
         <div class="tip-icon">🗣</div>
         <h3>מסרי "אני" — לא "אתה/את"</h3>
         <p><strong style="color:var(--color-primary)">במקום:</strong> "אתה/את תמיד מתעלם/ת ממני"<br>
@@ -353,19 +356,19 @@
         מסרי "אני" מתארים רגש. מסרי "אתה/את" מאשימים — ומפעילים הגנתיות.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card reveal reveal-up" data-delay="1">
         <div class="tip-icon">👂</div>
         <h3>חזרו לפני שאתם מגיבים</h3>
         <p>לפני שאתם עונים — חזרו על מה ששמעתם: "מה שהבנתי זה ש..." זה לא חולשה, זה עוצמה. חזרה מונעת אי-הבנות ומגבירה תחושת הקשבה.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card reveal reveal-up" data-delay="2">
         <div class="tip-icon">⏰</div>
         <h3>תזמון הוא הכל</h3>
         <p>שיחה קשה ממש לפני שינה, כשמישהו רעב, עייף או בלחץ — נידונה לכישלון. בחרו זמן ניטרלי: "יש לי משהו על הלב, מתי נוח לדבר?"</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card reveal reveal-up">
         <div class="tip-icon">🔍</div>
         <h3>עובדה מול פרשנות</h3>
         <p><strong>עובדה:</strong> "לא התקשרת"<br>
@@ -373,13 +376,13 @@
         פרשנויות מאשימות לא מבוססות על עובדות — ויוצרות ריב שלם על משהו שאולי לא קרה.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card reveal reveal-up" data-delay="1">
         <div class="tip-icon">🏁</div>
         <h3>סיימו בחיובי</h3>
         <p>גם אחרי שיחה קשה — סיימו במשפט אחד חיובי: "אני שמח/ה שאנחנו מדברים על זה." "אני אוהב/ת אותך גם כשקשה." זה לא מוחק את הכאב, אבל מזכיר למה אתם כאן.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card reveal reveal-up" data-delay="2">
         <div class="tip-icon">🚫</div>
         <h3>הימנעו מ"תמיד" ו"אף פעם"</h3>
         <p>"אתה תמיד עושה את זה", "את אף פעם לא מקשיבה" — הכללות אלה נדחות אינסטינקטיבית. מוחנו מחפש מיד את החריג ומתמקד בו במקום בבעיה האמיתית.</p>
@@ -392,28 +395,28 @@
 <!-- ===== SECTION 5: אינטימיות ===== -->
 <section class="section" id="intimacy" style="background: var(--color-bg-light);">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag">🤍 אינטימיות וקרבה</div>
       <h2>קרבה שנבנית בטיפות קטנות</h2>
       <p class="section-sub">אינטימיות היא לא רק מה שקורה בחדר השינה. היא נבנית ברגעים קטנים לאורך כל היום.</p>
     </div>
     <div class="grid grid-2" style="margin-top:2.5rem; gap:2rem; align-items:start;">
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <div class="intimacy-card" data-aos="fade-right" data-aos-delay="0">
+        <div class="intimacy-card reveal reveal-right">
           <span style="font-size:2rem;">🤲</span>
           <div>
             <h3>נגיעה ללא מין</h3>
             <p>יד על כתף, חיבוק של 20 שניות, קשר עיניים. נגיעות קטנות ללא אג'נדה מינית שומרות על גשר רגשי גם בתקופות שהמין נעדר.</p>
           </div>
         </div>
-        <div class="intimacy-card" data-aos="fade-right" data-aos-delay="80">
+        <div class="intimacy-card reveal reveal-right" data-delay="1">
           <span style="font-size:2rem;">💋</span>
           <div>
             <h3>נשיקת 6 שניות (שיטת גוטמן)</h3>
             <p>פרופ' ג'ון גוטמן גילה שנשיקת פרידה/שלום של לפחות 6 שניות — לא חטופה — יוצרת רצף אינטימי שמשפיע על כל היום. נסו שבוע.</p>
           </div>
         </div>
-        <div class="intimacy-card" data-aos="fade-right" data-aos-delay="160">
+        <div class="intimacy-card reveal reveal-right" data-delay="2">
           <span style="font-size:2rem;">🗓</span>
           <div>
             <h3>ערב זוגי שבועי</h3>
@@ -422,21 +425,21 @@
         </div>
       </div>
       <div style="display:flex; flex-direction:column; gap:1.25rem;">
-        <div class="intimacy-card" data-aos="fade-left" data-aos-delay="0">
+        <div class="intimacy-card reveal reveal-left">
           <span style="font-size:2rem;">💬</span>
           <div>
             <h3>הוקרה יומית — ספציפית</h3>
             <p>"אני אוהב/ת אותך" — נהדר. אבל "הערכתי שחיכית לי עם אוכל גם כשאיחרתי" — זה חודר עמוק יותר. הוקרה ספציפית מראה שאתם רואים.</p>
           </div>
         </div>
-        <div class="intimacy-card" data-aos="fade-left" data-aos-delay="80">
+        <div class="intimacy-card reveal reveal-left" data-delay="1">
           <span style="font-size:2rem;">🌙</span>
           <div>
             <h3>סיום יום בחיבור</h3>
             <p>לפני השינה — שאלה אחת: "מה היה הרגע הכי טוב שלך היום?" שאלה פשוטה שיוצרת שיחה אמיתית ומחזקת את תחושת הקשר.</p>
           </div>
         </div>
-        <div class="intimacy-card" data-aos="fade-left" data-aos-delay="160">
+        <div class="intimacy-card reveal reveal-left" data-delay="2">
           <span style="font-size:2rem;">🎯</span>
           <div>
             <h3>דברו על הרצונות — לא רק על הבעיות</h3>
@@ -451,14 +454,14 @@
 <!-- ===== SECTION 6: עזרה ראשונה מיידית ===== -->
 <section class="section" id="first-aid" style="background: var(--color-primary); color: white;">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag" style="background: rgba(201,168,76,0.2); color: var(--color-gold);">🚨 עזרה ראשונה מיידית</div>
       <h2 style="color:white;">כשהמשבר מגיע עכשיו</h2>
       <p class="section-sub" style="color:rgba(255,255,255,0.75);">ארבע טכניקות מיידיות לוויסות עצמי — לשימוש כשהרגש מציף ואתם צריכים להירגע מהר</p>
     </div>
     <div class="grid grid-2" style="margin-top:2.5rem; gap:2rem;">
 
-      <div class="first-aid-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="first-aid-card reveal reveal-up">
         <div class="first-aid-num">4–7–8</div>
         <h3>נשימה 4-7-8</h3>
         <ol style="margin:0.75rem 0 0; padding-right:1.25rem; line-height:2; color:rgba(255,255,255,0.85); font-size:0.95rem;">
@@ -470,7 +473,7 @@
         <p style="margin-top:0.75rem; font-size:0.85rem; color:rgba(255,255,255,0.6);">הטכניקה מאטה את הלב ומפעילה את מערכת העצבים הפאראסימפתטית — תוך דקה-שתיים.</p>
       </div>
 
-      <div class="first-aid-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="first-aid-card reveal reveal-up" data-delay="1">
         <div class="first-aid-num">5-4-3-2-1</div>
         <h3>גראונדינג 5-4-3-2-1</h3>
         <ol style="margin:0.75rem 0 0; padding-right:1.25rem; line-height:2; color:rgba(255,255,255,0.85); font-size:0.95rem;">
@@ -483,14 +486,14 @@
         <p style="margin-top:0.75rem; font-size:0.85rem; color:rgba(255,255,255,0.6);">מחזיר אתכם לרגע הנוכחי ומשבית מחשבות חרדתיות על העתיד.</p>
       </div>
 
-      <div class="first-aid-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="first-aid-card reveal reveal-up" data-delay="2">
         <div class="first-aid-num">✍</div>
         <h3>כתיבה לא מסוננת</h3>
         <p style="color:rgba(255,255,255,0.85); font-size:0.95rem; line-height:1.7; margin-top:0.75rem;">קחו נייר ועט. כתבו במשך <strong>10 דקות ברצף</strong> — ללא עצירה, ללא תיקונים, ללא שיפוטים. כל מה שעובר לכם בראש. אחרי שסיימתם — אפשר לשרוף, לקרוע, לשמור.</p>
         <p style="margin-top:0.75rem; font-size:0.85rem; color:rgba(255,255,255,0.6);">מחקרים מראים שכתיבה רגשית חופשית מפחיתה מתח ומשפרת עיבוד רגשי.</p>
       </div>
 
-      <div class="first-aid-card" data-aos="fade-up" data-aos-delay="240">
+      <div class="first-aid-card reveal reveal-up" data-delay="3">
         <div class="first-aid-num">📞</div>
         <h3>שיחה עם אדם תומך</h3>
         <p style="color:rgba(255,255,255,0.85); font-size:0.95rem; line-height:1.7; margin-top:0.75rem;">חשבו על אדם אחד שאתם סומכים עליו. התקשרו ואמרו: <strong>"אני עובר/ת תקופה קשה, אני צריך/ה מישהו שישמע אותי."</strong></p>
@@ -500,7 +503,7 @@
     </div>
 
     <!-- Emergency note -->
-    <div style="margin-top:2.5rem; background:rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:1.5rem; text-align:center;" data-aos="fade-up">
+    <div class="reveal reveal-up" style="margin-top:2.5rem; background:rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:1.5rem; text-align:center;">
       <p style="color:rgba(255,255,255,0.9); margin:0; font-size:0.95rem;">
         🆘 <strong>במצבי מצוקה חמורה או מחשבות אובדניות</strong> — פנו מיד ל<strong>ער"ן</strong> בטלפון <a href="tel:1201" style="color:var(--color-gold); font-weight:700;">1201</a> (24/7, ללא עלות)
         או ל<strong>סה"ר</strong> בטלפון <a href="tel:1212" style="color:var(--color-gold); font-weight:700;">1212</a>
@@ -512,26 +515,26 @@
 <!-- ===== SECTION 7: אחרי הריב ===== -->
 <section class="section" id="after-fight" style="background: var(--color-bg-light);">
   <div class="container">
-    <div class="section-header" data-aos="fade-up">
+    <div class="section-header reveal reveal-up">
       <div class="section-tag">🤝 אחרי הריב — פיוס נכון</div>
       <h2>כיצד מתפייסים בצורה שמחזקת</h2>
       <p class="section-sub">הדרך בה אתם מסיימים ריב חשובה לא פחות מהריב עצמו. פיוס נכון בונה — פיוס שגוי מרחיק.</p>
     </div>
     <div class="grid grid-3" style="margin-top:2.5rem; gap:1.5rem;">
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="0">
+      <div class="tip-card reveal reveal-up">
         <div class="tip-icon">⏳</div>
         <h3>24 שעות קירור</h3>
         <p>אל תנסו להתפייס מיד אחרי ריב חם. תנו לשניכם זמן להירגע — לפחות כמה שעות, לעיתים יממה. פיוס מוקדם מדי נראה כניצחון, לא כחיבור.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="80">
+      <div class="tip-card reveal reveal-up" data-delay="1">
         <div class="tip-icon">🪞</div>
         <h3>קחו אחריות על החלק שלכם</h3>
         <p>"אני מצטער/ת על מה שאמרתי/עשיתי" — ולא "אני מצטער/ת שהרגשת כך." הסתכלו על התרומה שלכם לריב, לא רק על זו של הצד השני.</p>
       </div>
 
-      <div class="tip-card" data-aos="fade-up" data-aos-delay="160">
+      <div class="tip-card reveal reveal-up" data-delay="2">
         <div class="tip-icon">🌱</div>
         <h3>הסכמה על שיפור אחד</h3>
         <p>בסוף שיחת הפיוס — הסכימו על דבר אחד קטן שכל אחד ינסה לשפר. לא רשימה — דבר אחד. כך הריב הופך להזדמנות לצמיחה.</p>
@@ -544,12 +547,12 @@
 <!-- ===== CTA ===== -->
 <section class="section" style="background: linear-gradient(135deg, #1B3A6B 0%, #0F2347 100%); color:white; text-align:center;">
   <div class="container" style="max-width:700px;">
-    <div data-aos="fade-up">
+    <div class="reveal reveal-up">
       <div class="section-tag" style="background:rgba(201,168,76,0.2); color:var(--color-gold);">🌿 מוכנים לצעד הבא?</div>
       <h2 style="color:white; margin:1rem 0;">כלים עוזרים — אבל לפעמים צריך מישהו לצד</h2>
       <p style="color:rgba(255,255,255,0.8); line-height:1.8; margin-bottom:2rem;">הטיפים כאן יכולים לעזור לכם לעבור את הרגע. אבל שינוי עמוק — בזוגיות, בפצעים ישנים, בדפוסים שחוזרים — מגיע מליווי אישי ומותאם. שיחת היכרות ראשונה היא ללא עלות ולא מחייבת.</p>
       <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-        <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer">📱 שיחת ייעוץ חינמית בוואטסאפ</a>
+        <a href="https://wa.me/972506415222" class="btn btn-wa btn-lg" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> שיחת ייעוץ חינמית בוואטסאפ</a>
         <a href="contact.html" class="btn btn-secondary btn-lg" style="border-color:rgba(255,255,255,0.4); color:white;">✉ השאירו פרטים</a>
       </div>
     </div>
@@ -619,7 +622,6 @@
 </footer>
 
 <!-- AOS -->
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js" integrity="sha384-wziAfh6b/qT+3LrqebF9WeK4+J5sehS6FA10J1t3a866kJ/fvU5UwofWnQyzLtwu" crossorigin="anonymous"></script>
 <script src="script.js"></script>
 <script src="consent.js"></script>
 
@@ -726,9 +728,13 @@
 }
 </style>
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

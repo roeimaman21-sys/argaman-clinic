@@ -26,8 +26,7 @@
   <meta name="theme-color" content="#1B3A6B">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.gstatic.com/s/heebo/v26/NGSpv5_NC0k9P_v6ZUCbLRAHxK1EiSysd1WQ.woff2" as="font" type="font/woff2" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap" rel="stylesheet">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -49,6 +48,11 @@
     ]
   }
   </script>
+  <link rel="stylesheet" href="design-tokens.css">
+  <link rel="stylesheet" href="typography.css">
+  <link rel="stylesheet" href="trust-bar.css">
+  <link rel="stylesheet" href="motion.css">
+  <link rel="stylesheet" href="hero-polish.css">
   <link rel="stylesheet" href="style.css">
   <style>
     .press-hero{background:linear-gradient(135deg,#1B3A6B,#2C5F8B);color:#fff;padding:3rem 1.5rem;border-radius:16px;margin-bottom:2rem}
@@ -69,7 +73,7 @@
 <header class="navbar" role="banner">
   <div class="container nav-inner">
     <a href="index.html" class="nav-logo" aria-label="קליניקת ארגמן — לדף הבית">
-      <img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async">
+      <picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="קליניקת ארגמן" class="nav-logo-img" loading="lazy" width="48" height="48" decoding="async"></picture>
       <div class="nav-logo-text">קליניקת ארגמן<small>ייעוץ זוגי, מיני, משפחתי ואישי</small></div>
     </a>
     <nav class="nav-links" aria-label="ניווט ראשי">
@@ -78,7 +82,7 @@
       <a href="services.html">שירותים</a>
       <a href="blog.html">מאמרים</a>
       <a href="contact.html">צור קשר</a>
-      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer">📱 וואטסאפ</a>
+      <a href="https://wa.me/972506415222" class="nav-wa-btn" target="_blank" rel="noopener noreferrer"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
     </nav>
     <button class="hamburger" aria-label="פתח תפריט"><span></span><span></span><span></span></button>
   </div>
@@ -146,11 +150,11 @@
     <p style="color:#6b7280;font-size:.95rem">לבקשת תמונות באיכות הדפסה — צרו קשר בוואטסאפ. נשלח תמונות בפורמט JPG/PNG ברזולוציה גבוהה.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:1rem">
       <div style="background:#f9fafb;padding:1rem;border-radius:10px;text-align:center">
-        <img src="gal.webp" onerror="this.onerror=null;this.src='gal.jpg'" alt="גל ממן — פורטרט" style="width:100%;max-width:200px;border-radius:12px" loading="lazy" width="600" height="420" decoding="async">
+        <picture><source srcset="gal.avif" type="image/avif"><source srcset="gal.webp" type="image/webp"><img src="gal.jpg" alt="גל ממן — פורטרט" style="width:100%;max-width:200px;border-radius:12px" loading="lazy" width="600" height="420" decoding="async"></picture>
         <p style="margin:.5rem 0 0;font-size:.85rem">פורטרט · 1200×1500</p>
       </div>
       <div style="background:#f9fafb;padding:1rem;border-radius:10px;text-align:center">
-        <img src="logo.webp" onerror="this.onerror=null;this.src='logo.jpg'" alt="לוגו קליניקת ארגמן" style="width:100%;max-width:200px;border-radius:12px" loading="lazy" width="48" height="48" decoding="async">
+        <picture><source srcset="logo.avif" type="image/avif"><source srcset="logo.webp" type="image/webp"><img src="logo.jpg" alt="לוגו קליניקת ארגמן" style="width:100%;max-width:200px;border-radius:12px" loading="lazy" width="48" height="48" decoding="async"></picture>
         <p style="margin:.5rem 0 0;font-size:.85rem">לוגו · SVG + PNG</p>
       </div>
     </div>
@@ -160,11 +164,11 @@
     <h2>📞 קשר ישיר לתקשורת</h2>
     <p>גל זמין לראיונות בשעות העבודה (א׳-ה׳ 09:00-21:00, ו׳ 09:00-13:00). תגובות מהירות במיוחד לתקשורת:</p>
     <ul style="line-height:2">
-      <li>📱 <strong>WhatsApp (מועדף לעיתונאים):</strong> <a href="https://wa.me/972506415222?text=שלום, פונה מתקשורת — מבקש/ת ראיון" target="_blank" rel="noopener noreferrer">050-641-5222</a></li>
+      <li><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> <strong>WhatsApp (מועדף לעיתונאים):</strong> <a href="https://wa.me/972506415222?text=שלום, פונה מתקשורת — מבקש/ת ראיון" target="_blank" rel="noopener noreferrer">050-641-5222</a></li>
       <li>✉️ <strong>מייל:</strong> argamanclinic@gmail.com</li>
       <li>📍 <strong>כתובת:</strong> דרך יצחק רבין 8, בית שמש (גם פגישות בקליניקה)</li>
       <li>🌐 <strong>אתר:</strong> argamanclinic.com</li>
-      <li>📱 <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1CgDECpXp9/" target="_blank" rel="noopener noreferrer">קליניקת ארגמן</a></li>
+      <li><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> <strong>Facebook:</strong> <a href="https://www.facebook.com/share/1CgDECpXp9/" target="_blank" rel="noopener noreferrer">קליניקת ארגמן</a></li>
     </ul>
   </section>
 
@@ -206,9 +210,13 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
 </script>
 <script src="script.js"></script>
 <div class="mobile-sticky-cta" role="navigation" aria-label="פעולות מהירות">
-  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp">📱 וואטסאפ</a>
+  <a href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer" class="cta-wa" aria-label="שיחה ב-WhatsApp"><svg class="icon-inline" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg> וואטסאפ</a>
   <a href="tel:0506415222" class="cta-call" aria-label="חיוג טלפוני">📞 חייגו</a>
 </div>
   <script src="/cookie-consent.js" defer></script>
+  <script src="trust-bar.js" defer></script>
+  <script src="motion.js" defer></script>
+  <script src="share-buttons.js" defer></script>
+  <script src="sw-register.js" defer></script>
 </body>
 </html>

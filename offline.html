@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>אין חיבור | קליניקת ארגמן</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231B3A6B'/><text x='50%25' y='72%25' font-family='Arial' font-size='20' font-weight='800' fill='%23C9A84C' text-anchor='middle'>א</text></svg>">
+  <meta name="theme-color" content="#1B3A6B">
+  <style>
+    /* Fully self-contained — no external fonts/CDN, must work with zero network */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{direction:rtl}
+    body{
+      font-family:system-ui,-apple-system,'Segoe UI',Arial,sans-serif;
+      background:linear-gradient(135deg,#0F2347 0%,#1B3A6B 60%,#2C3E7A 100%);
+      color:#fff;
+      min-height:100dvh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:1.5rem;
+      line-height:1.6;
+    }
+    .card{
+      max-width:440px;
+      width:100%;
+      text-align:center;
+    }
+    .icon{
+      width:88px;height:88px;
+      margin:0 auto 1.5rem;
+      border-radius:50%;
+      background:rgba(255,255,255,0.08);
+      border:2px solid rgba(201,168,76,0.35);
+      display:flex;align-items:center;justify-content:center;
+    }
+    h1{font-size:clamp(1.5rem,4vw,2rem);font-weight:800;margin-bottom:0.75rem}
+    p{color:rgba(255,255,255,0.8);font-size:1rem;margin-bottom:2rem}
+    .actions{display:flex;flex-direction:column;gap:0.75rem}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+      padding:0.9rem 1.5rem;
+      border-radius:50px;
+      font-weight:700;
+      font-size:1rem;
+      text-decoration:none;
+      min-height:44px;
+      transition:transform 0.2s;
+      cursor:pointer;
+      border:none;
+    }
+    .btn:active{transform:scale(0.98)}
+    .btn-primary{background:#C9A84C;color:#1a1a1a}
+    .btn-secondary{background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.3)}
+    .hint{margin-top:2rem;font-size:0.85rem;color:rgba(255,255,255,0.5)}
+    @media (prefers-reduced-motion: reduce){ .btn{transition:none} }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon" aria-hidden="true">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h.01"/><path d="M8.5 16.5a5 5 0 0 1 7 0"/><path d="M5 12.859a10 10 0 0 1 5.17-2.69"/><path d="M19 12.859a10 10 0 0 0-2.007-1.523"/><path d="M2 8.82a15 15 0 0 1 4.177-2.643"/><path d="M22 8.82a15 15 0 0 0-11.288-3.764"/><path d="m2 2 20 20"/></svg>
+    </div>
+    <h1>אין חיבור לאינטרנט</h1>
+    <p>אבל את/ה עדיין כאן — ואנחנו כאן בשבילך. ברגע שהחיבור יחזור, האתר יעבוד כרגיל.</p>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="location.reload()">נסו שוב</button>
+      <a class="btn btn-secondary" href="https://wa.me/972506415222" target="_blank" rel="noopener noreferrer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        שלחו הודעה בוואטסאפ
+      </a>
+    </div>
+    <p class="hint">קליניקת ארגמן · גל ממן · בית שמש</p>
+  </div>
+  <script src="sw-register.js" defer></script>
+</body>
+</html>
